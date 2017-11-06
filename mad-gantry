@@ -1,0 +1,60 @@
+#!/bin/bash
+
+TEMPLATES_DIR="templates"
+
+usage="$0 [option]
+
+ -n:  Use docker-compose no-cache option
+ -t:  Test templates [default: $TEMPLATES_DIR]
+
+ -c:  Put country containers onto a ship  [all or country_code]
+ -p:  Put site containers onto a ship [all or site]
+
+
+ Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>"
+
+if [ $# -eq 0 ]; then
+    echo "$usage"
+    exit 0
+fi
+
+
+#--------------------------
+# Functions
+#--------------------------
+test_templates(){
+    cd $1
+    docker-compose build $DOCKER_COMPOSE_NO_CACHE
+    
+
+}
+
+
+#--------------------------
+# Getopt
+#--------------------------
+while getopts "nt:c:p:hv" op
+  do
+  case $op in
+      n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
+	  ;;
+      t) test_templates $OPTARG
+	  ;;
+      c) put_container_onto_country_ship $OPTARG
+	  ;;
+      p) put_container_onto_ship $OPTARG
+	  ;;
+      h) echo "$usage"
+	  exit 0
+	  ;;
+      v) echo "$version"
+	  exit 0
+	  ;;
+      ?) echo "$usage"
+	  exit 0
+	  ;;
+  esac
+done
+
+
+
