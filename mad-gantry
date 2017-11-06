@@ -1,11 +1,20 @@
 #!/bin/bash
 
-TEMPLATES_DIR="templates"
+## making dirs
+[ ! -e $(dirname $0)/ship ] && mkdir -v $(dirname $0)/ship
+[ ! -e $(dirname $0)/payloads ] && mkdir -v $(dirname $0)/payloads
+
+YML_FILE=templates/hf.template/docker-compose.yml
+cd $(dirname $0)
 
 usage="$0 [option]
 
  -n:  Use docker-compose no-cache option
- -t:  Test templates [default: $TEMPLATES_DIR]
+ -y:  Set a template YML file [default: $YML_FILE]
+ -a:  Actions [build/up/down/logs]
+
+
+ -s:  Generate ship
 
  -c:  Put country containers onto a ship  [all or country_code]
  -p:  Put site containers onto a ship [all or site]
@@ -22,27 +31,45 @@ fi
 #--------------------------
 # Functions
 #--------------------------
-test_templates(){
-    cd $1
-    docker-compose build $DOCKER_COMPOSE_NO_CACHE
-    
-
+docker_compose_action(){
+    case $1 in
+	build)
+	    docker-compose -f $YML_FILE build $DOCKER_COMPOSE_NO_CACHE
+	    ;;
+	up)
+	    docker-compose -f $YML_FILE up -d
+	    ;;
+	down)
+	    docker-compose -f $YML_FILE down
+	    ;;
+	logs)
+	    docker-compose -f $YML_FILE logs
+	    ;;
+	*)
+	    echo "$usage"
+	    exit -1
+	    ;;
+    esac
 }
 
 
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "nt:c:p:hv" op
+while getopts "na:y:c:p:shv" op
   do
   case $op in
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
 	  ;;
-      t) test_templates $OPTARG
+      y) YML_FILE=$OPTARG
+	  ;;
+      a) docker_compose_action $OPTARG
 	  ;;
       c) put_container_onto_country_ship $OPTARG
 	  ;;
       p) put_container_onto_ship $OPTARG
+	  ;;
+      s) generate_ship
 	  ;;
       h) echo "$usage"
 	  exit 0
