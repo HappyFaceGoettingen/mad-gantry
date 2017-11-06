@@ -63,7 +63,7 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 | MF Core el6 | OK | OK |
 | MF Core el7 | OK | OK |
 | HF Mobile el6 | OK | -- |
-| HF Mobile el7 | NO | -- |
+| HF Mobile el7 | OK | -- |
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
 | Jenkins | X | OK |
