@@ -1,6 +1,24 @@
 version: "2.0"
 
 services:
+ ## Images of HF & MF
+ # happyface basic system
+ happyface.el6:
+  build: happyface.el6
+  image: happyface/hf.core.el6
+ happyface.el7:
+  build: happyface.el7
+  image: happyface/hf.core.el7
+
+ # madface basic system
+ madface.el6:
+  build: madface.el6
+  image: happyface/mf.core.el6
+ madface.el7:
+  build: madface.el7
+  image: happyface/mf.core.el7
+
+ ## Services prividing HF & MF
  happyface-core:
   image: happyface/hf.core.el6
   ports:
@@ -10,18 +28,3 @@ services:
   ports:
     - "8111:8111"
 
- # happyface basic system
- happyface.el6:
-  build: happyface.el6
-  image: happyface/hf.core.el6
-# happyface.el7:
-#  build: happyface.el7
-#  image: happyface/hf.core.el7
-
- # madface basic system
- madface.el6:
-  build: madface.el6
-  image: happyface/mf.core.el6
- madface.el7:
-  build: madface.el7
-  image: happyface/mf.core.el7

@@ -1,0 +1,20 @@
+version: "2.0"
+
+services:
+ ## Images of HF & MF
+ # happyface mobile dev system
+ happyface.mobile.el6:
+  build: happyface.mobile.el6
+  image: happyface/hf.mobile.el6
+ happyface.mobile.el7:
+  build: happyface.mobile.el7
+  image: happyface/hf.mobile.el7
+
+ # madface mobile dev system
+ madface.mobile.el6:
+  build: madface.mobile.el6
+  image: happyface/mf.mobile.el6
+ madface.mobile.el7:
+  build: madface.mobile.el7
+  image: happyface/mf.mobile.el7
+

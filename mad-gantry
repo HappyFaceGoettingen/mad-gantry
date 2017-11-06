@@ -1,11 +1,17 @@
 #!/bin/bash
 
-## making dirs
-[ ! -e $(dirname $0)/ship ] && mkdir -v $(dirname $0)/ship
-[ ! -e $(dirname $0)/payloads ] && mkdir -v $(dirname $0)/payloads
+## Check requirements
+! which docker-compose &> /dev/null && echo "docker-compose does not exist" && exit -1
 
-YML_FILE=templates/hf.template/docker-compose.yml
+## making dirs
 cd $(dirname $0)
+source mad-gantry.conf
+
+[ ! -e $SHIP_DIR ] && mkdir -v $SHIP_DIR
+[ ! -e $PAYLOADS_DIR ] && mkdir -v $PAYLOADS_DIR
+
+## Set a YML template
+YML_FILE=$HF_CORE_TEMPLATE/docker-compose.yml
 
 usage="$0 [option]
 
