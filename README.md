@@ -38,7 +38,7 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 
 
 
-# Directory structure
+## Directory structure
 
     ├── configs
     │   ├── commons   ---> Common configuratio for HF instance
@@ -56,3 +56,15 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
         └── jenkins.template
             └── docker-compose.yml
 
+## Build & Run status
+| Template | build | run |
+----|----|----
+| HF Core el6 | OK | OK |
+| HF Core el7 | OK | NO |
+| MF Core el6 | OK | OK |
+| MF Core el7 | OK | OK |
+| HF Mobile el6 | -- | -- |
+| HF Mobile el7 | -- | -- |
+| MF Mobile el6 | OK | -- |
+| MF Mobile el7 | OK | -- |
+| Jenkins | X | OK |
