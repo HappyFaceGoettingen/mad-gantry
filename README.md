@@ -41,12 +41,11 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 ## Directory structure
 
     ├── configs
-    │   ├── commons   ---> Common configuratio for HF instance
-    │   └── customs   ---> Custom configuratio for HF instance
+    │   ├── commons   ---> Common configurations for HF instance
+    │   └── customs   ---> Custom configurations for HF instance
     ├── mad-gantry
     ├── mad-gantry.conf
-    ├── payloads      ---> Container Local volumes
-    ├── README.md
+    ├── payloads      ---> Container local volumes
     ├── ship          ---> Configurations of WLCG sites
     └── templates
         ├── hf.core.template
@@ -64,7 +63,7 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 | MF Core el6 | OK | OK |
 | MF Core el7 | OK | OK |
 | HF Mobile el6 | OK | -- |
-| HF Mobile el7 | OK | -- |
+| HF Mobile el7 | NO | -- |
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
 | Jenkins | X | OK |
