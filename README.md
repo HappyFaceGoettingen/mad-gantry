@@ -57,14 +57,15 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
             └── docker-compose.yml
 
 ## Build & Run status
-| Template | build | run |
+| Template | Img build | Web/ApkBuilder Run |
 ----|----|----
 | HF Core el6 | OK | OK |
 | HF Core el7 | OK | NO |
 | MF Core el6 | OK | OK |
 | MF Core el7 | OK | OK |
-| HF Mobile el6 | -- | -- |
-| HF Mobile el7 | -- | -- |
+| HF Mobile el6 | OK | -- |
+| HF Mobile el7 | OK | -- |
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
 | Jenkins | X | OK |
+

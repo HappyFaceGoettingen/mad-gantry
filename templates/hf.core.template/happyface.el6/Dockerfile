@@ -11,7 +11,7 @@ RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusio
 #--------------------------------------------------------
 RUN hostname
 RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
-RUN cd /var/lib/HappyFace-Integration-Server && ./rebuild.sh happyface
+RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
 
 #--------------------------------------------------------
 # Installing HappyFace instance
