@@ -10,13 +10,15 @@ source mad-gantry.conf
 [ ! -e $SHIP_DIR ] && mkdir -v $SHIP_DIR
 [ ! -e $PAYLOADS_DIR ] && mkdir -v $PAYLOADS_DIR
 
-## Set a YML template
-YML_FILE=$HF_CORE_TEMPLATE/docker-compose.yml
+## Set a default YML template
+TEMPLATE_DIR=templates/hf.core
+YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 
 usage="$0 [option]
 
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
+ -t:  Select a template [hf.core/hf.mobile/jenkins/ELK/TD]
  -a:  Actions [build/up/down/logs]
 
 
@@ -62,10 +64,14 @@ docker_compose_action(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "na:y:c:p:shv" op
+while getopts "nt:a:y:c:p:shv" op
   do
   case $op in
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
+	  ;;
+      t) TEMPLATE_DIR=templates/$OPTARG
+	  [ ! -e $TEMPLATE_DIR ] && echo "No template for [$TEMPLATE_DIR]" && exit -1
+	  YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 	  ;;
       y) YML_FILE=$OPTARG
 	  ;;
