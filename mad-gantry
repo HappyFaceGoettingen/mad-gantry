@@ -18,7 +18,7 @@ usage="$0 [option]
 
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
- -t:  Select a template [hf.core/hf.mobile/jenkins/ELK/TD]
+ -t:  Select a template [hf.core/hf.mobile/jenkins/docker-elk/TD]
  -a:  Actions [build/up/down/logs]
 
 
