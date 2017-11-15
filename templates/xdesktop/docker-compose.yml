@@ -1,0 +1,12 @@
+version: "2.0"
+
+##--------------------
+## Testing X-desktop
+##--------------------
+ xdesktop.el6:
+  build: xdesktop.el6
+  image: happyface/xdesktop.el6
+ xdesktop:
+  image: happyface/xdesktop.el6
+  ports:
+    - "22:8022"
