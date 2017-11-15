@@ -48,12 +48,19 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
     ├── payloads      ---> Container local volumes
     ├── ship          ---> Configurations of WLCG sites
     └── templates
-        ├── hf.core.template
+        ├── docker-efk
         │   └── docker-compose.yml
-        ├── hf.mobile.templates
+        ├── docker-elk
         │   └── docker-compose.yml
-        └── jenkins.template
+        ├── hf.core
+        │   └── docker-compose.yml
+        ├── hf.mobile
+        │   └── docker-compose.yml
+        ├── hf.integration
+        │   └── docker-compose.yml
+        └── jenkins
             └── docker-compose.yml
+
 
 ## Build & Run status
 | Template | Img build | Web/ApkBuilder Run |
