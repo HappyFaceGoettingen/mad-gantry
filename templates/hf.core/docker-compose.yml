@@ -22,9 +22,9 @@ services:
  happyface-core:
   image: happyface/hf.core.el6
   ports:
-    - "80:80"
+    - "80:8080"
  madface-core:
   image: happyface/mf.core.el6
   ports:
-    - "8111:8111"
+    - "8111:9111"
 
