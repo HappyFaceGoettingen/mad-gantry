@@ -23,5 +23,4 @@ RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
 #--------------------------------------------------------
 # Run MadFace
 #--------------------------------------------------------
-CMD dbus-uuidgen > /var/lib/dbus/machine-id
-CMD /usr/sbin/madface-default-start
+CMD dbus-uuidgen > /var/lib/dbus/machine-id && /usr/sbin/madface-default-start

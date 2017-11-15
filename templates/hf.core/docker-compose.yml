@@ -22,9 +22,14 @@ services:
  happyface-core:
   image: happyface/hf.core.el6
   ports:
-    - "80:8080"
+    - "80:8001"
+  volumes: 
+    - "$PWD/payloads:/tmp/payloads"
  madface-core:
   image: happyface/mf.core.el6
   ports:
-    - "8111:9111"
+    - "8111:9001"
+  volumes: 
+    - "$PWD/payloads:/tmp/payloads"
+
 
