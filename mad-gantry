@@ -16,9 +16,12 @@ YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 
 usage="$0 [option]
 
+$(basename $0), which uses docker-compose, is designed to build the standard HappyFace/HappyFaceMobile/Kibana Monitoring systems on containers. This powerful command can easily ship many complex monitoring frameworks to Cloud/Cluster/WLCG environments.
+
+
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
- -t:  Select a template [hf.core/hf.mobile/jenkins/docker-elk/TD]
+ -t:  Select a template [hf.core/hf.mobile/xdesktop/jenkins/docker-elk/TD]
  -a:  Actions [build/up/down/logs]
 
 
@@ -26,6 +29,15 @@ usage="$0 [option]
 
  -c:  Put country containers onto a ship  [all or country_code]
  -p:  Put site containers onto a ship [all or site]
+
+
+ * Examples
+
+ ** Build hf.core images and run them
+ $0 -a build; $0 -a up
+
+ ** Build xdesktop images and run them
+ $0 -t xdesktop -a build; $0 -t xdesktop -a up
 
 
  Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>"
