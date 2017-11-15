@@ -18,7 +18,7 @@ RUN cd /var/lib/MadFace-rpm &&  git pull origin && ./rebuild.sh build madface
 # Installing MadFace instance
 #--------------------------------------------------------
 RUN yum clean all
-RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
+RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/extras/el7/*.rpm /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
 
 #--------------------------------------------------------
 # Run MadFace
