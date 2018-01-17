@@ -3,15 +3,14 @@ version: "2.0"
 services:
  ## Images of HF & MF
  # HappyFace & MadFace Integration platform
- hmf.el6:
-  build: hmf.integration.el6
-  image: happyface/hmf.el6
+
 # hmf.el7:
 #  build: hmf.integration.el7
 #  image: happyface/hmf.el7
 
  ## Services prividing HF & MF
- hmf.integration-dev:
+ hmf.integration-dev.el6:
+  build: hmf.integration.el6
   image: happyface/hmf.el6
   ports:
     - "8901:80"

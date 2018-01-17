@@ -13,6 +13,7 @@ source mad-gantry.conf
 ## Set a default YML template
 TEMPLATE_DIR=templates/hf.core
 YML_FILE=$TEMPLATE_DIR/docker-compose.yml
+ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g")
 
 usage="$0 [option]
 
@@ -21,7 +22,7 @@ $(basename $0), which uses docker-compose, is designed to build the standard Hap
 
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
- -t:  Select a template [hf.core/hf.mobile/xdesktop/jenkins/docker-elk/TD]
+ -t:  Select a template [$ALL_TEMPLATES]
  -a:  Actions [build/up/down/logs]
 
 

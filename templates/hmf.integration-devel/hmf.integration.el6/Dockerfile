@@ -43,10 +43,6 @@ RUN echo '*' >> /etc/X11/xdm/Xaccess
 ADD startup.sh /src/startup.sh
 ADD scim /etc/skel/.scim
 
-EXPOSE 22
-CMD ["/src/startup.sh"]
-
-
 
 #--------------------------------------------------------
 # Rebuilding HappyFace instance
@@ -60,12 +56,6 @@ RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh 
 RUN yum clean all
 RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/extras/python-migrate-*.rpm
 RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/*.rpm
-
-#--------------------------------------------------------
-# Run HappyFace
-#--------------------------------------------------------
-CMD ["-D", "FOREGROUND", "-e", "DEBUG"]
-ENTRYPOINT ["/usr/sbin/httpd"]
 
 
 #--------------------------------------------------------
@@ -85,4 +75,7 @@ RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
 #--------------------------------------------------------
 # Run MadFace
 #--------------------------------------------------------
-CMD dbus-uuidgen > /var/lib/dbus/machine-id && /usr/sbin/madface-default-start
+CMD dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madface-default-start
+
+EXPOSE 22
+CMD ["/src/startup.sh"]
