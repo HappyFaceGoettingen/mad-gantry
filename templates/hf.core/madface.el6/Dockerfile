@@ -18,7 +18,7 @@ RUN cd /var/lib/MadFace-rpm && git pull origin && ./rebuild.sh build madface
 #--------------------------------------------------------
 RUN yum clean all
 RUN yum -y install ftp://mirror.switch.ch/pool/4/mirror/scientificlinux/6.6/x86_64/updates/security/firefox-38.6.1-1.el6_7.x86_64.rpm 
-RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/extras/el6/*.rpm /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
+RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
 
 #--------------------------------------------------------
 # Run MadFace

@@ -22,7 +22,6 @@ RUN yum -y install gnome-panel gnome-terminal gnome-applets nautilus
 RUN yum -y install xinetd xorg-x11-xdm
 RUN yum -y install vlgothic-fonts vlgothic-p-fonts ipa-gothic-fonts ipa-mincho-fonts ipa-pgothic-fonts ipa-pmincho-fonts
 RUN yum -y install system-config-users
-RUN yum -y install emacs
 RUN yum -y install nautilus-open-terminal
 RUN yum -y install system-config-language system-config-date
 RUN yum -y install system-gnome-theme system-icon-theme 

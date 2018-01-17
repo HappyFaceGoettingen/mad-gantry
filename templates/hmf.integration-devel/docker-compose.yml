@@ -14,6 +14,7 @@ services:
  hmf.integration-dev:
   image: happyface/hmf.el6
   ports:
-    - "80:8001"
-    - "8111:9001"
+    - "8901:80"
+    - "9901:8111"
+    - "9922:22"
 
