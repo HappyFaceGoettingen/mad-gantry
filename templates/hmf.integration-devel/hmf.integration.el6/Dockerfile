@@ -50,9 +50,8 @@ ADD scim /etc/skel/.scim
 RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
 RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
 RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
-RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh extra
+#RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh extra
 #RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh webservice
-
 
 
 #--------------------------------------------------------
@@ -64,26 +63,17 @@ RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_6
 
 
 #--------------------------------------------------------
-# Rebuilding MadMask instance
+# Rebuilding MadMask plugin
 #--------------------------------------------------------
+RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel
+#RUN cd /var/lib && git clone https://github.com/MadMask -b developement_2018
+#RUN cd /var/lib/MadMask && git pull origin && ./rebuild.sh build madmask
 
-
-#RUN yum -y install ftp://mirror.switch.ch/pool/4/mirror/scientificlinux/6.6/x86_64/updates/security/firefox-38.6.1-1.el6_7.x86_64.rpm 
-#RUN yum --nogpgcheck -y install firefox
-#RUN yum --nogpgcheck -y install fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel
-#RUN cd /var/lib && git clone https://github.com/MadFace/MadFace-rpm -b MadUpdate
-#RUN cd /var/lib/MadFace-rpm && git pull origin && ./rebuild.sh build madface
-
-#--------------------------------------------------------
-# Installing MadFace instance
-#--------------------------------------------------------
-#RUN yum clean all
-#RUN yum --nogpgcheck -y install /var/lib/MadFace-rpm/RPMS/x86_64/MadFace*.rpm
 
 #--------------------------------------------------------
 # For running MadFace instance
 #--------------------------------------------------------
-CMD dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madface-default-start
+CMD dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madmask-default-start
 
 EXPOSE 22
 CMD ["/src/startup.sh"]
