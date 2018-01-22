@@ -16,4 +16,6 @@ services:
     - "8901:80"
     - "9901:8111"
     - "9922:22"
+  volumes: 
+    - "$PWD/payloads/hmf.integration-devel:/devel"
 

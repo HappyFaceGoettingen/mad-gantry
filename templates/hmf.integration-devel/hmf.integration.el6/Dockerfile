@@ -48,8 +48,8 @@ ADD scim /etc/skel/.scim
 # Rebuilding HappyFace instance
 #--------------------------------------------------------
 RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
-RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
 RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
+RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
 #RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh extra
 #RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh webservice
 
@@ -59,13 +59,14 @@ RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh 
 #--------------------------------------------------------
 RUN yum clean all
 RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/extras/python-migrate-*.rpm
-RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/*.rpm /var/lib/HappyFace-Integration-Server/RPMS/noarch/*.rpm
+RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFaceCore-*.rpm
+RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFace-ATLAS-*.rpm
 
 
 #--------------------------------------------------------
 # Rebuilding MadMask plugin
 #--------------------------------------------------------
-RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel
+#RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel
 #RUN cd /var/lib && git clone https://github.com/MadMask -b developement_2018
 #RUN cd /var/lib/MadMask && git pull origin && ./rebuild.sh build madmask
 
@@ -75,5 +76,8 @@ RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo lib
 #--------------------------------------------------------
 CMD dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madmask-default-start
 
-EXPOSE 22
+RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel festival npm nodejs tmpwatch bc xdotool ImageMagick jq
+
+
+#EXPOSE 22
 CMD ["/src/startup.sh"]
