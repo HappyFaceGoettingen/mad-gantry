@@ -1,8 +1,8 @@
-# Start HappyFace & MadFace services
-## Build HF & MF template services 
+# Start HappyFace & HappyFaceMobile services
+## Build HF template services 
 $ ./mad-gantry -a build
 
-## Start HF & MF template services
+## Start HF template services
 $ ./mad-gantry -a up
 
 
@@ -20,38 +20,55 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 
 # The mad-gantry CLI
 ## CLI options
-    $ ./mad-gantry
     ./mad-gantry [option]
-   
+    
+    mad-gantry, which uses docker-compose, is designed to build the standard HappyFace/HappyFaceMobile/Kibana Monitoring systems on containers. This powerful command can easily ship many complex monitoring frameworks to Cloud/Cluster/WLCG environments.
+    
+    
     -n:  Use docker-compose no-cache option
-    -y:  Set a template YML file [default: templates/hf.core.template/docker-compose.yml]
+    -y:  Set a template YML file [default: templates/hf.core/docker-compose.yml]
+    -t:  Select a template [hf.core/hf.mobile/hmf.integration-devel/jenkins/xdesktop/]
     -a:  Actions [build/up/down/logs]
     
     
-    -s:  Generate ship
+    -s:  Select a ship template [adcos/de/fr/goegrid/]
     
-    -c:  Put country containers onto a ship  [all or country_code]
-    -p:  Put site containers onto a ship [all or site]
+    -A:  Put all (top, countries, sites) containers onto a ship
+    -T:  Put a top container onto a ship
+    -C:  Put a country container onto a ship  [country_code or all]
+    -S:  Put a site container onto a a ship [site_name or all]
     
     
-    Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>
+     * Examples
+    
+     ** Build hf.core images and run them
+     ./mad-gantry -a build; ./mad-gantry -a up
+    
+     ** Build xdesktop images and run them
+     ./mad-gantry -t xdesktop -a build; ./mad-gantry -t xdesktop -a up
+    
+     ** Make a Top level template and run its container
+     ./mad-gantry -T; ./mad-gantry -s adcos -a up
+    
+     ** Make a Country level template and run its container
+     ./mad-gantry -C de; ./mad-gantry -s de -a up
+    
+     ** Make a Site level template and run its container
+     ./mad-gantry -S goegrid; ./mad-gantry -s goegrid -a up
+    
+    
+     Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>
+
 
 
 
 ## Directory structure
-
-    ├── configs
-    │   ├── commons   ---> Common configurations for HF instance
-    │   └── customs   ---> Custom configurations for HF instance
     ├── mad-gantry
     ├── mad-gantry.conf
-    ├── payloads      ---> Container local volumes
-    ├── ship          ---> Configurations of WLCG sites
+    ├── ticket.conf   ---> Site configuration
+    ├── payloads      ---> Container local volumes of WLCG sites
+    ├── ship          ---> Container definitions of WLCG sites
     └── templates
-        ├── docker-efk
-        │   └── docker-compose.yml
-        ├── docker-elk
-        │   └── docker-compose.yml
         ├── hf.core
         │   └── docker-compose.yml
         ├── hf.mobile
@@ -73,5 +90,6 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 | HF Mobile el7 | OK | -- |
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
+| HMF Mobile el6 | OK | -- |
 | Jenkins | X | OK |
 
