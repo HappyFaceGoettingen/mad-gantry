@@ -6,6 +6,7 @@
 ## making dirs
 cd $(dirname $0)
 source mad-gantry.conf
+source ticket.conf
 
 [ ! -e $SHIP_DIR ] && mkdir -v $SHIP_DIR
 [ ! -e $PAYLOADS_DIR ] && mkdir -v $PAYLOADS_DIR
@@ -14,6 +15,9 @@ source mad-gantry.conf
 TEMPLATE_DIR=templates/hf.core
 YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g")
+
+## All existing ship containers
+ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | perl -pe "s/\s/\//g")
 
 usage="$0 [option]
 
@@ -26,10 +30,11 @@ $(basename $0), which uses docker-compose, is designed to build the standard Hap
  -a:  Actions [build/up/down/logs]
 
 
- -s:  Generate ship
+ -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
 
- -c:  Put country containers onto a ship  [all or country_code]
- -p:  Put site containers onto a ship [all or site]
+ -T:  Put a top container onto a ship
+ -C:  Put a country container onto a ship  [country_code]
+ -S:  Put a site container onto a a ship [site]
 
 
  * Examples
@@ -39,6 +44,9 @@ $(basename $0), which uses docker-compose, is designed to build the standard Hap
 
  ** Build xdesktop images and run them
  $0 -t xdesktop -a build; $0 -t xdesktop -a up
+
+ ** Make a template and build a container
+ $0 -T; $0 -a build
 
 
  Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>"
@@ -74,10 +82,131 @@ docker_compose_action(){
 }
 
 
+output_docker_yml(){
+    local site_names=($1)
+    local hosts=($2)
+    local ports=($3)
+
+    local i
+    for i in $(seq 0 $((${#site_names[*]} - 1)))
+    do
+	local docker_yml_file=$SHIP_DIR/${site_names[$i]}/docker-compose.yml
+	local host=${hosts[$i]}
+	local web_port=$(($WEB_PORT_START + ${ports[$i]}))
+	local mobile_port=$(($MOBILE_PORT_START + ${ports[$i]}))
+
+	echo "Writing [$docker_yml_file] ($host, $web_port, $mobile_port)..."
+	[ ! -e $(dirname $docker_yml_file) ] && mkdir -v $(dirname $docker_yml_file)
+
+	## Output minimum site configuration
+	echo "version: \"2.0\"
+services:
+
+ # Mad-Gantry Ship Platform
+ ${site_names[$i]}:
+  image: $SHIP_IMAGE
+  ports:
+    - \"${web_port}:$DEFAULT_WEB_PORT\"
+    - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
+  volumes: 
+    - \"\$PWD/payloads/${site_names[$i]}:$PAYLOAD_MOUNT_POINT\"
+    - \"\$PWD/payloads/hmf.integration-devel:/devel\"
+" > $docker_yml_file
+    done
+
+}
+
+
+output_meta_meta_config(){
+    local site_names=($1)
+    local hosts=($2)
+    local ports=($3)
+    local meta_meta_json=$4
+
+    ## Outputting a meta_meta_config content
+    [ ! -e $(dirname $meta_meta_json) ] && mkdir -v $(dirname $meta_meta_json)
+    if [ -z "$1" ] && [ -e $meta_meta_json ]; then
+	echo "Skipping [$meta_meta_json]" && return 0
+    fi
+
+    ## Begining
+    echo "Writing [$meta_meta_json] ..."
+    echo "[{" > $meta_meta_json
+
+    local i
+    for i in $(seq 0 $((${#site_names[*]} - 1)))
+    do
+
+	## Main content
+	local web_port=$(($WEB_PORT_START + ${ports[$i]}))
+	local mobile_port=$(($MOBILE_PORT_START + ${ports[$i]}))
+
+	echo "   \"name\": \"${site_names[$i]}\",
+   \"host\": \"${hosts[$i]}\",
+   \"web_port\": \"${web_port}\",
+   \"mobile_port\": \"${mobile_port}\",
+   \"dir\": \"sites/${site_names[$i]}\" " >> $meta_meta_json
+
+	## Next
+	[ $i -ne $((${#site_names[*]} - 1)) ] && echo "},{" >> $meta_meta_json
+    done
+
+    ## Ending
+    echo "}]" >> $meta_meta_json
+
+    return 0
+}
+
+
+## This function is generating template of a "top" level container into a ship directory
+put_top_container_onto_ship(){
+    local meta_meta_json=$PAYLOADS_DIR/$LEVEL0_SITE/meta-meta.json
+
+    output_docker_yml "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT"
+    output_meta_meta_config "$LEVEL1_SITES" "$LEVEL1_HOSTS" "$LEVEL1_PORTS" $meta_meta_json
+}
+
+
+## This function is generating template of "contry" level container(s) into a ship directory
+put_country_container_onto_ship(){
+    local country=$1
+    local i
+    for i in $(seq 0 $((${#LEVEL1_SITES[*]} - 1)))
+    do
+	if [ "${LEVEL1_SITES[$i]}" == "$country" ] || [ "$country" == "all" ]; then
+	    local country_code=${LEVEL1_SITES[$i]}
+	    output_docker_yml "${LEVEL1_SITES[$i]}" "${LEVEL1_HOSTS[$i]}" "${LEVEL1_PORTS[$i]}"
+
+	    local sites=$(eval echo "\${LEVEL2_${country_code}_SITES[*]}")
+	    local hosts=$(eval echo "\${LEVEL2_${country_code}_HOSTS[*]}")
+	    local ports=$(eval echo "\${LEVEL2_${country_code}_PORTS[*]}")
+	    local meta_meta_json=$PAYLOADS_DIR/$country_code/meta-meta.json
+	    output_meta_meta_config "$sites" "$hosts" "$ports" $meta_meta_json
+	fi
+    done
+}
+
+
+## This function is generating template of "site" level container(s) into a ship directory
+put_site_container_onto_ship(){
+    local site=$1
+
+    local i
+    for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
+    do
+	if [ "${ALL_LEVEL2_SITES[$i]}" == "$site" ] || [ "$site" == "all" ]; then
+	    local meta_meta_json=$PAYLOADS_DIR/${ALL_LEVEL2_SITES[$i]}/meta-meta.json
+	    output_docker_yml "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}"
+	    output_meta_meta_config "" "" "" $meta_meta_json
+	fi
+    done
+}
+
+
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "nt:a:y:c:p:shv" op
+while getopts "nt:a:y:TC:S:s:hv" op
   do
   case $op in
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
@@ -90,11 +219,15 @@ while getopts "nt:a:y:c:p:shv" op
 	  ;;
       a) docker_compose_action $OPTARG
 	  ;;
-      c) put_container_onto_country_ship $OPTARG
+      T) put_top_container_onto_ship
 	  ;;
-      p) put_container_onto_ship $OPTARG
+      C) put_country_container_onto_ship $OPTARG
 	  ;;
-      s) generate_ship
+      S) put_site_container_onto_ship $OPTARG
+	  ;;
+      s) TEMPLATE_DIR=$SHIP_DIR/$OPTARG
+	  [ ! -e $TEMPLATE_DIR ] && echo "No template for [$TEMPLATE_DIR]" && exit -1
+	  YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 	  ;;
       h) echo "$usage"
 	  exit 0
