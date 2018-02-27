@@ -32,6 +32,7 @@ $(basename $0), which uses docker-compose, is designed to build the standard Hap
 
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
 
+ -A:  Put all (top, countries, sites) containers onto a ship
  -T:  Put a top container onto a ship
  -C:  Put a country container onto a ship  [country_code]
  -S:  Put a site container onto a a ship [site]
@@ -94,6 +95,7 @@ output_docker_yml(){
 	local host=${hosts[$i]}
 	local web_port=$(($WEB_PORT_START + ${ports[$i]}))
 	local mobile_port=$(($MOBILE_PORT_START + ${ports[$i]}))
+	local ssh_port=$(($SSH_PORT_START + ${ports[$i]}))
 
 	echo "Writing [$docker_yml_file] ($host, $web_port, $mobile_port)..."
 	[ ! -e $(dirname $docker_yml_file) ] && mkdir -v $(dirname $docker_yml_file)
@@ -108,9 +110,10 @@ services:
   ports:
     - \"${web_port}:$DEFAULT_WEB_PORT\"
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
+    - \"${ssh_port}:$DEFAULT_SSH_PORT\"
   volumes: 
-    - \"\$PWD/payloads/${site_names[$i]}:$PAYLOAD_MOUNT_POINT\"
-    - \"\$PWD/payloads/hmf.integration-devel:/devel\"
+    - \"$PWD/$PAYLOADS_DIR/${site_names[$i]}:$PAYLOAD_MOUNT_POINT\"
+    - \"$PWD/$PAYLOADS_DIR/hmf.integration-devel:/devel\"
 " > $docker_yml_file
     done
 
@@ -163,7 +166,7 @@ put_top_container_onto_ship(){
     local meta_meta_json=$PAYLOADS_DIR/$LEVEL0_SITE/meta-meta.json
 
     output_docker_yml "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT"
-    output_meta_meta_config "$LEVEL1_SITES" "$LEVEL1_HOSTS" "$LEVEL1_PORTS" $meta_meta_json
+    output_meta_meta_config "${LEVEL1_SITES[*]}" "${LEVEL1_HOSTS[*]}" "${LEVEL1_PORTS[*]}" $meta_meta_json
 }
 
 
@@ -206,7 +209,7 @@ put_site_container_onto_ship(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "nt:a:y:TC:S:s:hv" op
+while getopts "nt:a:y:ATC:S:s:hv" op
   do
   case $op in
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
@@ -218,6 +221,10 @@ while getopts "nt:a:y:TC:S:s:hv" op
       y) YML_FILE=$OPTARG
 	  ;;
       a) docker_compose_action $OPTARG
+	  ;;
+      A) put_top_container_onto_ship
+	  put_country_container_onto_ship all
+	  put_site_container_onto_ship all
 	  ;;
       T) put_top_container_onto_ship
 	  ;;
