@@ -1,0 +1,51 @@
+{
+      "myname": "HappyFace",
+	"site": "World wide Atlas Distributed Computing System",
+	"port": "8111",
+	"summary_json": "data/adcos/json/summary.json",
+	"capture": "data/adcos/capture",
+	"thumbnail": "data/adcos/thumbnail",
+        "index": "data/adcos/index",
+	"analysis": "data/adcos/analysis",
+	"analysis_image_size": "384x384",
+	"keep_data_days": 20,
+	"debug_mode": 0,
+	"xdisplay": [{
+		"name": "default",
+		"resolution": "1600x1600",
+		"number": "201",
+		"wait_firefox": 120
+		}, {
+		"name": "large",
+		"resolution": "1800x3840",
+		"number": "202",
+		"wait_firefox": 70
+		}],
+	"firefox_profile": "firefox_profiles/dbzvej40.default",
+	"parallel_analysis": 4,
+	"status": [{
+		"name": "Normal",
+		"color": "item-calm",
+		"file": "http://i.ytimg.com/vi/hEJnMQG9ev8/maxresdefault.jpg"
+            },{
+		"name": "Notification",
+		"color": "item-calm",
+		"file": "https://mysterybabalon.files.wordpress.com/2011/07/madmax2.jpg?w=284&h=196"
+            },{
+		"name": "Validation",
+		"color": "item-balanced",
+		"file": "http://images.techtimes.com/data/images/full/65853/mad-max-desert-drifter.jpg?w=600"
+            },{
+		"name": "Warning",
+		"color": "item-balanced",
+		"file": "http://surbrook.devermore.net/adaptationsmovie/madmax/wez.jpg"
+            },{
+		"name": "Error",
+		"color": "item-energized",
+		"file": "https://shutupandwatchthemovie.files.wordpress.com/2011/03/mad-max-2-humungus.jpg"
+            },{
+		"name": "Critical",
+		"color": "item-assertive",
+		"file": "http://papystreaming.com/fr/files/2013/10/Mad-Max-2.jpg"
+            }]
+}

@@ -11,18 +11,20 @@ source ticket.conf
 [ ! -e $SHIP_DIR ] && mkdir -v $SHIP_DIR
 [ ! -e $PAYLOADS_DIR ] && mkdir -v $PAYLOADS_DIR
 
+
 ## Set a default YML template
-TEMPLATE_DIR=templates/hf.core
+TEMPLATE_DIR=templates/$DEFAULT_TEMPLATE
 YML_FILE=$TEMPLATE_DIR/docker-compose.yml
-ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g")
+ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
 ## All existing ship containers
-ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | perl -pe "s/\s/\//g")
+ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
 usage="$0 [option]
 
-$(basename $0), which uses docker-compose, is designed to build the standard HappyFace/HappyFaceMobile/Kibana Monitoring systems on containers. This powerful command can easily ship many complex monitoring frameworks to Cloud/Cluster/WLCG environments.
+$(basename $0), which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
 
+ -d:  Make development environments in $PAYLOADS_DIR
 
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
@@ -118,8 +120,9 @@ services:
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
     - \"${ssh_port}:$DEFAULT_SSH_PORT\"
   volumes: 
-    - \"$PWD/$PAYLOADS_DIR/${site_names[$i]}:$PAYLOAD_MOUNT_POINT\"
-    - \"$PWD/$PAYLOADS_DIR/hmf.integration-devel:/devel\"
+    - \"$PWD/$PAYLOADS_DIR/sites/${site_names[$i]}:$PAYLOAD_SITES/${site_names[$i]}\"
+    - \"$PWD/$PAYLOADS_DIR/data:$PAYLOAD_DATA\"
+    - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
 " > $docker_yml_file
     done
 
@@ -130,10 +133,11 @@ output_meta_meta_config(){
     local site_names=($1)
     local hosts=($2)
     local ports=($3)
-    local meta_meta_json=$4
+    local site_dir=$4
+    local meta_meta_json=$site_dir/meta-meta.json
 
     ## Outputting a meta_meta_config content
-    [ ! -e $(dirname $meta_meta_json) ] && mkdir -v $(dirname $meta_meta_json)
+    [ ! -e $site_dir ] && mkdir -pv $site_dir
     if [ -z "$1" ] && [ -e $meta_meta_json ]; then
 	echo "Skipping [$meta_meta_json]" && return 0
     fi
@@ -167,12 +171,34 @@ output_meta_meta_config(){
 }
 
 
+copy_site_configs(){
+    local level=$1
+    local site_dir=$2
+    local site=$(basename $site_dir)
+
+    [ ! -e $site_dir ] && mkdir -pv $site_dir
+
+    ## Copying default site configuration
+    if [ -e configs/$level ]; then
+	echo "Copying [$site] site configuration from [configs/$level]..."
+	cp -r configs/$level/* $site_dir
+    fi
+
+    ## Overwriting by custom configurations
+    if [ -e configs/customs/$site ]; then
+	echo "Copying [$site] custom onfiguration from [configs/customs/$site]..."
+	cp -rv configs/customs/$site/* $site_dir
+    fi
+}
+
+
 ## This function is generating template of a "top" level container into a ship directory
 put_top_container_onto_ship(){
-    local meta_meta_json=$PAYLOADS_DIR/$LEVEL0_SITE/meta-meta.json
+    local site_dir=$PAYLOADS_DIR/sites/$LEVEL0_SITE
 
     output_docker_yml "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT"
-    output_meta_meta_config "${LEVEL1_SITES[*]}" "${LEVEL1_HOSTS[*]}" "${LEVEL1_PORTS[*]}" $meta_meta_json
+    copy_site_configs level0 $site_dir
+    output_meta_meta_config "${LEVEL1_SITES[*]}" "${LEVEL1_HOSTS[*]}" "${LEVEL1_PORTS[*]}" $site_dir
 }
 
 
@@ -189,8 +215,9 @@ put_country_container_onto_ship(){
 	    local sites=$(eval echo "\${LEVEL2_${country_code}_SITES[*]}")
 	    local hosts=$(eval echo "\${LEVEL2_${country_code}_HOSTS[*]}")
 	    local ports=$(eval echo "\${LEVEL2_${country_code}_PORTS[*]}")
-	    local meta_meta_json=$PAYLOADS_DIR/$country_code/meta-meta.json
-	    output_meta_meta_config "$sites" "$hosts" "$ports" $meta_meta_json
+	    local site_dir=$PAYLOADS_DIR/sites/$country_code
+	    copy_site_configs level1 $site_dir
+	    output_meta_meta_config "$sites" "$hosts" "$ports" $site_dir
 	fi
     done
 }
@@ -204,20 +231,34 @@ put_site_container_onto_ship(){
     for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
     do
 	if [ "${ALL_LEVEL2_SITES[$i]}" == "$site" ] || [ "$site" == "all" ]; then
-	    local meta_meta_json=$PAYLOADS_DIR/${ALL_LEVEL2_SITES[$i]}/meta-meta.json
+	    local site_dir=$PAYLOADS_DIR/sites/${ALL_LEVEL2_SITES[$i]}
 	    output_docker_yml "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}"
-	    output_meta_meta_config "" "" "" $meta_meta_json
+	    copy_site_configs level2 $site_dir
+	    output_meta_meta_config "" "" "" $site_dir
 	fi
     done
+}
+
+
+prepare_madmask_devel_env(){
+    pushd $PAYLOADS_DIR
+    [ ! -e data ] && mkdir -v data
+    if [ ! -e devel ]; then
+	git clone https://github.com/HappyFaceGoettingen/HappyFace-MadMask.git
+	ln -s HappyFace-MadMask devel
+    fi
+    popd
 }
 
 
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "nt:a:y:ATC:S:s:hv" op
+while getopts "dnt:a:y:ATC:S:s:hv" op
   do
   case $op in
+      d) prepare_madmask_devel_env
+	  ;;
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
 	  ;;
       t) TEMPLATE_DIR=templates/$OPTARG

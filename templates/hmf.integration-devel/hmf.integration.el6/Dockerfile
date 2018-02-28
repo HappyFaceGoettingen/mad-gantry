@@ -40,10 +40,6 @@ RUN sed -i "s/DisplayManager.requestPort:\t0/DisplayManager.requestPort:   177/"
 RUN echo '*' >> /etc/X11/xdm/Xaccess
 
 
-ADD startup.sh /src/startup.sh
-ADD scim /etc/skel/.scim
-
-
 #--------------------------------------------------------
 # Rebuilding HappyFace instance
 #--------------------------------------------------------
@@ -72,7 +68,7 @@ RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo lib
 
 
 #--------------------------------------------------------
-# For running MadFace instance
+# For running MadMask instance
 #--------------------------------------------------------
 RUN dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madmask-default-start
 
@@ -80,4 +76,6 @@ RUN dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madmask-default-star
 
 
 #EXPOSE 22
+ADD startup.sh /src/startup.sh
+ADD scim /etc/skel/.scim
 CMD ["/src/startup.sh"]
