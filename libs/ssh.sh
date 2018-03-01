@@ -3,7 +3,7 @@ generate_sshkey(){
 	mkdir -pv $PAYLOADS_DIR/ssh $PAYLOADS_DIR/ssh-key
 	ssh-keygen -b 4096 -t rsa -P "" -C "Mad-Gantry RSA SSH Key" -f $PAYLOADS_DIR/ssh/rsa
 	ln -s rsa.pub $PAYLOADS_DIR/ssh/authorized_keys
-	mv -v $PAYLOADS_DIR/rsa $PAYLOADS_DIR/ssh-key/rsa
+	mv -v $PAYLOADS_DIR/ssh/rsa $PAYLOADS_DIR/ssh-key/rsa
     fi
 }
 
