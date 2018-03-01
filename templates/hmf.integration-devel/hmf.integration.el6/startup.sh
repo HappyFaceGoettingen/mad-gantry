@@ -24,6 +24,7 @@ fi
 
 ## Changing ownership of Docker volume dirs to the HappyFace user.
 chown -R happyface3:happyface3 /devel /sites /var/lib/MadMaskData
+chown -R root:root /root/.ssh 
 
 ## Installing MadMask
 pushd /devel/HappyFace-MadMask
