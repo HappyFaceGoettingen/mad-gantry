@@ -3,11 +3,15 @@
 ## Check requirements
 ! which docker-compose &> /dev/null && echo "docker-compose does not exist" && exit -1
 
-## making dirs
+## Changing PWD
 cd $(dirname $0)
+
+## Configs and Libs
 source mad-gantry.conf
 source ticket.conf
+for func in $(ls libs/*.sh); do source $func; done
 
+## Making dirs
 [ ! -e $SHIP_DIR ] && mkdir -v $SHIP_DIR
 [ ! -e $PAYLOADS_DIR ] && mkdir -v $PAYLOADS_DIR
 
@@ -33,6 +37,7 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
 
 
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
+ -c:  Connect a container via ssh
 
  -A:  Put all (top, countries, sites) containers onto a ship
  -T:  Put a top container onto a ship
@@ -57,6 +62,8 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  ** Make a Site level template and run its container
  $0 -S goegrid; $0 -s goegrid -a up
 
+ ** Connect a site container via ssh
+ $0 -s goegrid -c
 
  Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>"
 
@@ -123,6 +130,7 @@ services:
     - \"$PWD/$PAYLOADS_DIR/sites/${site_names[$i]}:$PAYLOAD_SITES/${site_names[$i]}\"
     - \"$PWD/$PAYLOADS_DIR/data:$PAYLOAD_DATA\"
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
+    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
 " > $docker_yml_file
     done
 
@@ -192,69 +200,50 @@ copy_site_configs(){
 }
 
 
-## This function is generating template of a "top" level container into a ship directory
-put_top_container_onto_ship(){
-    local site_dir=$PAYLOADS_DIR/sites/$LEVEL0_SITE
+output_href(){
+    local site="$1"
+    local host="$2"
+    local port="$3"
 
-    output_docker_yml "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT"
-    copy_site_configs level0 $site_dir
-    output_meta_meta_config "${LEVEL1_SITES[*]}" "${LEVEL1_HOSTS[*]}" "${LEVEL1_PORTS[*]}" $site_dir
+    local web_port=$(($WEB_PORT_START + ${port}))
+    local mobile_port=$(($MOBILE_PORT_START + ${port}))    
+
+    echo "<a href=\"http://$host:$web_port\">HappyFace Web: $site</a></br>"
+    echo "<a href=\"http://$host:$mobile_port\">HappyFace Mobile: $site</a></br>"
 }
 
 
-## This function is generating template of "contry" level container(s) into a ship directory
-put_country_container_onto_ship(){
-    local country=$1
-    local i
+output_ship_html(){
+    echo "Outputting [$SHIP_DIR/ship.html] ..."
+
+    ## Header
+    echo "<html><header></header><body>" > $SHIP_DIR/ship.html
+
+    ## Level 0
+    output_href "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT" >> $SHIP_DIR/ship.html
+
+    ## Level 1
     for i in $(seq 0 $((${#LEVEL1_SITES[*]} - 1)))
     do
-	if [ "${LEVEL1_SITES[$i]}" == "$country" ] || [ "$country" == "all" ]; then
-	    local country_code=${LEVEL1_SITES[$i]}
-	    output_docker_yml "${LEVEL1_SITES[$i]}" "${LEVEL1_HOSTS[$i]}" "${LEVEL1_PORTS[$i]}"
-
-	    local sites=$(eval echo "\${LEVEL2_${country_code}_SITES[*]}")
-	    local hosts=$(eval echo "\${LEVEL2_${country_code}_HOSTS[*]}")
-	    local ports=$(eval echo "\${LEVEL2_${country_code}_PORTS[*]}")
-	    local site_dir=$PAYLOADS_DIR/sites/$country_code
-	    copy_site_configs level1 $site_dir
-	    output_meta_meta_config "$sites" "$hosts" "$ports" $site_dir
-	fi
+	output_href "${LEVEL1_SITES[$i]}" "${LEVEL1_HOSTS[$i]}" "${LEVEL1_PORTS[$i]}" >> $SHIP_DIR/ship.html
     done
-}
 
-
-## This function is generating template of "site" level container(s) into a ship directory
-put_site_container_onto_ship(){
-    local site=$1
-
-    local i
+    ## Level 2
     for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
     do
-	if [ "${ALL_LEVEL2_SITES[$i]}" == "$site" ] || [ "$site" == "all" ]; then
-	    local site_dir=$PAYLOADS_DIR/sites/${ALL_LEVEL2_SITES[$i]}
-	    output_docker_yml "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}"
-	    copy_site_configs level2 $site_dir
-	    output_meta_meta_config "" "" "" $site_dir
-	fi
+	output_href "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}" >> $SHIP_DIR/ship.html
     done
-}
 
+    ## Footer
+    echo "</body></html>" >> $SHIP_DIR/ship.html
 
-prepare_madmask_devel_env(){
-    pushd $PAYLOADS_DIR
-    [ ! -e data ] && mkdir -v data
-    if [ ! -e devel ]; then
-	git clone https://github.com/HappyFaceGoettingen/HappyFace-MadMask.git
-	ln -s HappyFace-MadMask devel
-    fi
-    popd
 }
 
 
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "dnt:a:y:ATC:S:s:hv" op
+while getopts "dnt:a:y:ATC:S:s:chv" op
   do
   case $op in
       d) prepare_madmask_devel_env
@@ -267,21 +256,27 @@ while getopts "dnt:a:y:ATC:S:s:hv" op
 	  ;;
       y) YML_FILE=$OPTARG
 	  ;;
-      a) docker_compose_action $OPTARG
+      a) generate_sshkey
+	  docker_compose_action $OPTARG
 	  ;;
-      A) put_top_container_onto_ship
-	  put_country_container_onto_ship all
-	  put_site_container_onto_ship all
+      A) put_level0_container_onto_ship
+	  put_level1_containers_onto_ship all
+	  put_level2_containers_onto_ship all
+	  output_ship_html
 	  ;;
-      T) put_top_container_onto_ship
+      T) put_level0_container_onto_ship
 	  ;;
-      C) put_country_container_onto_ship $OPTARG
+      C) put_level1_containers_onto_ship $OPTARG
 	  ;;
-      S) put_site_container_onto_ship $OPTARG
+      S) put_level2_containers_onto_ship $OPTARG
 	  ;;
-      s) TEMPLATE_DIR=$SHIP_DIR/$OPTARG
+      s) 
+	  SITE_NAME=$OPTARG
+	  TEMPLATE_DIR=$SHIP_DIR/$SITE_NAME
 	  [ ! -e $TEMPLATE_DIR ] && echo "No template for [$TEMPLATE_DIR]" && exit -1
 	  YML_FILE=$TEMPLATE_DIR/docker-compose.yml
+	  ;;
+      c)  connect_via_ssh $SITE_NAME
 	  ;;
       h) echo "$usage"
 	  exit 0
