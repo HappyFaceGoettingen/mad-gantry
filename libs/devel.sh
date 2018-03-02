@@ -7,7 +7,12 @@ prepare_madmask_devel_env(){
 	ln -s HappyFace-MadMask devel
     else
 	pushd devel
+
+	local cuser=$(ls -l | tail -n 1 | awk '{print $3}')
+	[ "$user" != "$USER" ] && sudo chown -R $USER .
 	git pull origin
+	sudo chown -R $cuser .
+
 	popd
     fi
     popd
