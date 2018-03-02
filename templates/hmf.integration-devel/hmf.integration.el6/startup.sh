@@ -40,8 +40,8 @@ ln -vs /sites $MADMASK_HOME/sites
 popd
 
 ## Starting MadFoxd & MadMaskd
-service madfoxd start
 service madmaskd start
+service madfoxd start
 
 ##  Done!! 
 

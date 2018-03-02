@@ -22,10 +22,9 @@ YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
 ## All existing ship containers
-ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
+ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | grep -v .html| perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
 usage="$0 [option]
-
 $(basename $0), which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
 
  -d:  Make development environments in $PAYLOADS_DIR
@@ -35,7 +34,6 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -t:  Select a template [$ALL_TEMPLATES]
  -a:  Actions [build/up/down/logs]
 
-
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
  -c:  Connect a container via ssh
 
@@ -44,26 +42,20 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -C:  Put a country container onto a ship  [country_code or all]
  -S:  Put a site container onto a a ship [site_name or all]
 
-
  * Examples
-
- ** Build hf.core images and run them
+ ** Build $DEFAULT_TEMPLATE images and run them
  $0 -a build; $0 -a up
 
  ** Build xdesktop images and run them
  $0 -t xdesktop -a build; $0 -t xdesktop -a up
 
- ** Make a Top level template and run its container
- $0 -T; $0 -s adcos -a up
-
- ** Make a Country level template and run its container
- $0 -C de; $0 -s de -a up
-
- ** Make a Site level template and run its container
- $0 -S goegrid; $0 -s goegrid -a up
+ ** Make deferent levels templates and run their containers
+ $0 -T; $0 -s ADC -a up
+ $0 -C DE; $0 -s DE -a up
+ $0 -S GoeGrid; $0 -s GoeGrid -a up
 
  ** Connect a site container via ssh
- $0 -s goegrid -c
+ $0 -s GoeGrid -c
 
  Report Bugs to Gen Kawamura <gen.kawamura@cern.ch>"
 

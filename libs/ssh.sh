@@ -16,7 +16,8 @@ connect_via_ssh(){
     [ -z "$ssh_port" ] && echo "Cannot find ssh_port [$ssh_port]" && return 1 
     local ssh_host=localhost
     echo "Connecting to $site_name container [$ssh_host:$ssh_port] ..."
-    ssh -Y -o "StrictHostKeyChecking=no" -i $PAYLOADS_DIR/ssh-key/rsa -p $ssh_port root@$ssh_host
+    echo "ssh -Y -o StrictHostKeyChecking=no -i $PAYLOADS_DIR/ssh-key/rsa -p $ssh_port root@$ssh_host"
+    ssh -Y -o StrictHostKeyChecking=no -i $PAYLOADS_DIR/ssh-key/rsa -p $ssh_port root@$ssh_host
     return $?
 }
 

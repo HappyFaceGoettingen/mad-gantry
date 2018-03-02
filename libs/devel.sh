@@ -5,6 +5,10 @@ prepare_madmask_devel_env(){
     if [ ! -e devel ]; then
 	git clone https://github.com/HappyFaceGoettingen/HappyFace-MadMask.git
 	ln -s HappyFace-MadMask devel
+    else
+	pushd devel
+	git pull origin
+	popd
     fi
     popd
 }
