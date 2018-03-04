@@ -19,27 +19,28 @@ fi
 
 
 ## --------------------------------------
-##  MadMask development env
+##  HappyFace-MadMask development env
 ## --------------------------------------
 
 ## Changing ownership of Docker volume dirs to the HappyFace user.
 chown -R happyface3:happyface3 /devel /sites /var/lib/MadMaskData
 chown -R root:root /root/.ssh 
 
-## Installing MadMask
+## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
 ./rebuild.sh build madmask
 ./rebuild.sh build madfoxd
 #./rebuild.sh build libs
 ./rebuild.sh test
+popd
 
 ## Changing directories
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
 [ ! -L  $MADMASK_HOME/sites ] && mv -v $MADMASK_HOME/sites $MADMASK_HOME/sites.org
 ln -vs /sites $MADMASK_HOME/sites
-popd
 
-## Starting MadFoxd & MadMaskd
+
+## Starting MadFoxd & MadMaskd (Ionic Mobile Server)
 service madmaskd start
 service madfoxd start
 
