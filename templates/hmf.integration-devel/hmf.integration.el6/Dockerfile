@@ -74,9 +74,15 @@ RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo lib
 RUN dbus-uuidgen > /var/lib/dbus/machine-id ## && /usr/sbin/madmask-default-start
 
 
-
+#--------------------------------------------------------
+# In startup.sh script
+#--------------------------------------------------------
 
 #EXPOSE 22
-ADD startup.sh /src/startup.sh
 ADD scim /etc/skel/.scim
+ADD startup.sh /src/startup.sh
+
+## MadMask builder
+ADD build-madmask.sh /src/build-madmask.sh
+
 CMD ["/src/startup.sh"]
