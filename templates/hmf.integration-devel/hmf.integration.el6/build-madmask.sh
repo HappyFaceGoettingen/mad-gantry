@@ -12,8 +12,8 @@ chown -R root:root /root/.ssh
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
 ./rebuild.sh -b madmask
+./rebuild.sh -b madmodules
 ./rebuild.sh -b madfoxd
-./rebuild.sh -b rlibs
 ./rebuild.sh -t
 popd
 
