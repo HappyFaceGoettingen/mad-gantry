@@ -63,17 +63,19 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 
 
 ## Directory structure
-    ├── mad-gantry
-    ├── mad-gantry.conf
-    ├── ticket.conf   ---> Site configuration
-    ├── payloads      ---> Container local volumes of WLCG sites
-    ├── ship          ---> Container definitions of WLCG sites
-    └── templates
+    ├── configs         ---> Level0, 1, 2 site configurations
+    ├── libs            ---> Custom libraries
+    ├── mad-gantry      ---> Main program
+    ├── mad-gantry.conf 
+    ├── ticket.conf     ---> Site configuration
+    ├── payloads        ---> Container local volumes of WLCG sites
+    ├── ship            ---> Container definitions of WLCG sites
+    └── templates       ---> Docker image templates
         ├── hf.core
         │   └── docker-compose.yml
         ├── hf.mobile
         │   └── docker-compose.yml
-        ├── hf.integration
+        ├── hmf.integration-devel (= Default template)
         │   └── docker-compose.yml
         └── jenkins
             └── docker-compose.yml
@@ -90,6 +92,7 @@ $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 | HF Mobile el7 | OK | -- |
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
-| HMF Mobile el6 | OK | -- |
+| HMF Integration el6 | OK | TESTING |
+| HMF Integration el7 | NO | NO |
 | Jenkins | X | OK |
 

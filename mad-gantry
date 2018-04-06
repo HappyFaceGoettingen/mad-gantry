@@ -41,6 +41,7 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -T:  Put a top container onto a ship
  -C:  Put a country container onto a ship  [country_code or all]
  -S:  Put a site container onto a a ship [site_name or all]
+ -L:  Put a local site container onto a ship [local_name or all]
 
  * Examples
  ** Build [$DEFAULT_TEMPLATE] template images and run them
@@ -53,8 +54,9 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  $0 -T; $0 -s ADC -a up
  $0 -C DE; $0 -s DE -a up
  $0 -S GoeGrid; $0 -s GoeGrid -a up
+ $0 -L GoeGrid_Custom; $0 -s GoeGrid_Custom -a up
 
- ** Make all templates
+ ** Make all templates [from level0 to level3]
  $0 -A
 
  ** Connect a site container via ssh
@@ -131,6 +133,7 @@ services:
     - \"$PWD/$PAYLOADS_DIR/sites/${site}:$PAYLOAD_SITES/${site}\"
     - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
+    - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
     - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
 " > $docker_yml_file
     done
