@@ -11,7 +11,8 @@ prepare_madmask_devel_env(){
 	ln -s HappyFace-MadMask devel
     else
 	pushd devel
-	git pull origin
+	local git_branch=$(git branch | grep "^\*" | awk '{print $2}')
+	git pull origin $git_branch
 	popd
     fi
     popd
