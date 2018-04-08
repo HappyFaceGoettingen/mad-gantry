@@ -1,6 +1,6 @@
 install_basic_packages(){
     ## Basic pacakges
-    sudo yum -y --nogpgcheck install emacs screen htop git nmap mail
+    sudo yum -y --nogpgcheck install emacs screen htop git nmap mail iotop
     
     ## Docker
     sudo yum -y --nogpgcheck install docker docker-compose

@@ -44,7 +44,7 @@ if [ "$SITE_NAME" == "ADC" ]; then
     rsync -avlogp --delete $MADMASK_HOME/.android /usr/local/android-tools/
 fi
 
-su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
+#su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 
 ## Changing configurations in HappyFace MadModules
 
