@@ -27,6 +27,7 @@ ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | grep -v .html| perl -pe "s/\s/\//g" | perl -
 usage="$0 [option]
 $(basename $0), which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
 
+ -I:  Install basic packages in this host node
  -d:  Make development environments in $PAYLOADS_DIR
 
  -n:  Use docker-compose no-cache option
@@ -288,9 +289,11 @@ gunship(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "dnt:a:y:ATC:S:s:chv" op
+while getopts "Idnt:a:y:ATC:S:s:chv" op
   do
   case $op in
+      I) install_basic_packages
+	  ;;
       d) prepare_madmask_devel_env
 	  ;;
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"

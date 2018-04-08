@@ -44,10 +44,7 @@ if [ "$SITE_NAME" == "ADC" ]; then
     rsync -avlogp --delete $MADMASK_HOME/.android /usr/local/android-tools/
 fi
 
-su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b 2>&1 | tee /tmp/madmask.android-build.log"
-
-
-
+su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 
 ## Changing configurations in HappyFace MadModules
 
@@ -58,6 +55,7 @@ su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b 2>&1 | tee /tmp/mad
 echo "Starting MadMask and MadFox daemons"
 service madmaskd start
 service madfoxd start
+service crond start
 
 ##  Done!! 
 
