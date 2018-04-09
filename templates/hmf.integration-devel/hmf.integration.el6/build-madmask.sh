@@ -41,7 +41,7 @@ rsync -avlogp /usr/local/android-tools/.android $MADMASK_HOME/
 if [ "$SITE_NAME" == "ADC" ]; then
     chown -R happyface3:happyface3 /usr/local/android-tools
     su - happyface3 -c ". /etc/profile; update-android-sdk"
-    rsync -avlogp --delete $MADMASK_HOME/.android /usr/local/android-tools/
+    rsync -avlogp --delete $MADMASK_HOME/../.android /usr/local/android-tools/
 fi
 
 #su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
