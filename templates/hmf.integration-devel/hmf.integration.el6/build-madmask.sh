@@ -40,11 +40,11 @@ rsync -avlogp /usr/local/android-tools/.android $MADMASK_HOME/
 ## Changing ownership of Android SDK and updating it
 if [ "$SITE_NAME" == "ADC" ]; then
     chown -R happyface3:happyface3 /usr/local/android-tools
-    su - happyface3 -c ". /etc/profile; update-android-sdk"
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; update-android-sdk"
     rsync -avlogp --delete $MADMASK_HOME/../.android /usr/local/android-tools/
 fi
 
-#su - happyface3 -c ". /etc/profile; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
+#su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 
 ## Changing configurations in HappyFace MadModules
 
