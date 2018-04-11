@@ -4,9 +4,10 @@ services:
  ## Images of HF devel
  # HappyFace & Mobile Application Integration platform
 
-# hmf.el7:
-#  build: hmf.integration.el7
-#  image: happyface/hmf.el7
+ # hmf.el7:
+ hmf.integration-dev.el7:
+  build: hmf.integration.el7
+  image: happyface/hmf.el7
 
  ## Services prividing HF & HF Mobile
  hmf.integration-dev.el6:
