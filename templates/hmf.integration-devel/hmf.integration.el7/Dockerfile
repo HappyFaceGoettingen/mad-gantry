@@ -5,7 +5,6 @@ RUN yum --nogpgcheck -y install epel-release
 RUN yum --nogpgcheck -y install git unzip wget rpm-build screen emacs tar initscripts cronie-anacron
 RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusion-free-release-6.noarch.rpm
 
-RUN dbus-uuidgen > /var/lib/dbus/machine-id
 
 #--------------------------------------------------------
 # Xwindow system
@@ -71,10 +70,20 @@ RUN yum --nogpgcheck -y install ant ant-apache-regexp ant-nodeps java-1.5.0-gcj 
 #RUN cd /var/lib/HappyFace-MadMask/HappyFace-MadMask && git pull origin && ./rebuild.sh build all
 
 
-
 #--------------------------------------------------------
 # In startup.sh script
 #--------------------------------------------------------
+#RUN dbus-uuidgen > /var/lib/dbus/machine-id
+
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+
 
 #EXPOSE 22
 #ADD scim /etc/skel/.scim

@@ -121,12 +121,16 @@ output_docker_yml(){
 	[ ! -e $(dirname $docker_yml_file) ] && mkdir -v $(dirname $docker_yml_file)
 
 	## Output minimum site configuration
-	echo "version: \"2.0\"
+	echo "version: \"2.1\"
 services:
 
  # Mad-Gantry Ship Platform
  ${site}:
   image: $SHIP_IMAGE
+  cap_add:
+    - SYS_ADMIN
+  security_opt:
+    - seccomp:unconfined
   ports:
     - \"${web_port}:$DEFAULT_WEB_PORT\"
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
@@ -137,6 +141,8 @@ services:
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
     - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
     - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+    - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
+  privileged: true
 " > $docker_yml_file
     done
 

@@ -1,0 +1,14 @@
+version: "2.0"
+
+services:
+ el7.test:
+  build: el7.test
+  image: my.el7.test
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - "80:80"
