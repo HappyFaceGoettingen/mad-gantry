@@ -35,6 +35,7 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -t:  Select a template [$ALL_TEMPLATES]
  -a:  Actions [build/up/down/logs]
 
+ -i:  Select a ship image [default: $SHIP_IMAGE]
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
  -c:  Connect a container via ssh
 
@@ -289,7 +290,7 @@ gunship(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "Idnt:a:y:ATC:S:s:chv" op
+while getopts "Idnt:a:i:y:ATC:S:s:chv" op
   do
   case $op in
       I) install_basic_packages
@@ -307,6 +308,8 @@ while getopts "Idnt:a:y:ATC:S:s:chv" op
       a) generate_sshkey
 	  gunship "$SITE_NAME" "$OPTARG" && exit 0
 	  docker_compose_action $OPTARG
+	  ;;
+      i) SHIP_IMAGE="$OPTARG"
 	  ;;
       A) put_level0_container_onto_ship
 	  put_level1_containers_onto_ship all
