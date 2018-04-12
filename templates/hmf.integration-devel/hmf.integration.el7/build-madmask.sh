@@ -57,6 +57,7 @@ systemctl enable madmaskd.service
 systemctl enable madfoxd.service
 systemctl enable crond.service
 systemctl enable sshd.service
+systemctl enable httpd.service
 
 
 ##  Done!! 
