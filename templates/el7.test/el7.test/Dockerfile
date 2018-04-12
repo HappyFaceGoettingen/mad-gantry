@@ -36,7 +36,11 @@ RUN systemctl enable httpd.service
 
 # Without this, init won't start the enabled services and exec'ing and starting
 # them reports "Failed to get D-Bus connection: Operation not permitted".
-VOLUME /run /tmp
+#VOLUME /run /tmp
+
+#
+ADD startup.sh /src/startup.sh
 
 # Don't know if it's possible to run services without starting this
-CMD /usr/sbin/init
+CMD /src/startup.sh
+

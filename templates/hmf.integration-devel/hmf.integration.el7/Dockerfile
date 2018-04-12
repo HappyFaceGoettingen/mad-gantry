@@ -7,12 +7,12 @@ RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusio
 
 
 #--------------------------------------------------------
-# Xwindow system
+# Basic packages relating to SSH and Xwin 
+#  (I do not know if we can remove some of those)
 #--------------------------------------------------------
 RUN yum update -y
 
 RUN yum -y install openssh openssh-server openssh-clients
-#RUN service sshd start; service sshd stop
 RUN sed -i '/pam_loginuid\.so/s/required/optional/' /etc/pam.d/sshd
 
 RUN yum -y install xorg-x11-server-Xvfb xorg-x11-fonts-Type1 xorg-x11-fonts-misc dejavu-lgc-sans-fonts xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi
@@ -22,22 +22,9 @@ RUN yum -y install gnome-panel gnome-terminal gnome-applets nautilus
 RUN yum -y install xinetd xorg-x11-xdm
 RUN yum -y install vlgothic-fonts vlgothic-p-fonts ipa-gothic-fonts ipa-mincho-fonts ipa-pgothic-fonts ipa-pmincho-fonts
 RUN yum -y install system-config-users
-#RUN yum -y install nautilus-open-terminal
 RUN yum -y install system-config-language system-config-date
-#RUN yum -y install system-gnome-theme system-icon-theme 
 RUN yum -y install centos-indexhtml
-#ADD rpms /src/rpms
-#RUN yum -y install /src/rpms/*.rpm
 
-RUN cd /src ; wget https://bintray.com/artifact/download/tigervnc/stable/tigervnc-Linux-x86_64-1.4.2.tar.gz
-#RUN cd / ; tar --no-same-owner -xf src/tigervnc-Linux-x86_64-1.4.2.tar.gz
-
-
-#RUN echo "vnc1 5901/tcp" >> /etc/services
-#ADD vnc /etc/xinetd.d/vnc
-#RUN sed -i 's$:0 local /usr/bin/X :0$:0 local /usr/bin/Xvnc :0 -SecurityTypes None -desktop CentOS6 DisconnectClients=0$' /etc/X11/xdm/Xservers  
-#RUN sed -i "s/DisplayManager.requestPort:\t0/DisplayManager.requestPort:   177/" /etc/X11/xdm/xdm-config
-#RUN echo '*' >> /etc/X11/xdm/Xaccess
 
 
 #--------------------------------------------------------
@@ -71,10 +58,8 @@ RUN yum --nogpgcheck -y install ant ant-apache-regexp ant-nodeps java-1.5.0-gcj 
 
 
 #--------------------------------------------------------
-# In startup.sh script
+# To avoid 'D-Bus Operation not permitted error'
 #--------------------------------------------------------
-#RUN dbus-uuidgen > /var/lib/dbus/machine-id
-
 RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /lib/systemd/system/multi-user.target.wants/*;\
 rm -f /etc/systemd/system/*.wants/*;\
@@ -85,11 +70,6 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 
-#EXPOSE 22
-#ADD scim /etc/skel/.scim
-ADD startup.sh /src/startup.sh
-
 ## MadMask builder
 ADD build-madmask.sh /src/build-madmask.sh
-
-CMD ["/src/startup.sh"]
+CMD ["/src/build-madmask.sh"]

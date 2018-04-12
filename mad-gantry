@@ -121,16 +121,12 @@ output_docker_yml(){
 	[ ! -e $(dirname $docker_yml_file) ] && mkdir -v $(dirname $docker_yml_file)
 
 	## Output minimum site configuration
-	echo "version: \"2.1\"
+	echo "version: \"$DOCKER_YML_VERSION\"
 services:
 
  # Mad-Gantry Ship Platform
  ${site}:
   image: $SHIP_IMAGE
-  cap_add:
-    - SYS_ADMIN
-  security_opt:
-    - seccomp:unconfined
   ports:
     - \"${web_port}:$DEFAULT_WEB_PORT\"
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
@@ -141,8 +137,12 @@ services:
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
     - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
     - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+  # The followings are to avoid D-Bus error in CentOS7
     - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
-  privileged: true
+  cap_add:
+    - SYS_ADMIN
+  security_opt:
+    - seccomp:unconfined
 " > $docker_yml_file
     done
 
