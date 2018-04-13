@@ -19,18 +19,20 @@
 
 # The mad-gantry CLI
 ## CLI options
-    ./mad-gantry [option]
-    
+     ./mad-gantry [option]
      mad-gantry, which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
      
       -I:  Install basic packages in this host node
       -d:  Make development environments in payloads
+      -E:  email addresses
      
       -n:  Use docker-compose no-cache option
       -y:  Set a template YML file [default: templates/hmf.integration-devel/docker-compose.yml]
-      -t:  Select a template [hf.core/hf.mobile/hmf.integration-devel/jenkins/xdesktop]
-      -a:  Actions [build/up/down/logs]
+      -t:  Select a template [el7.test/hf.core/hf.mobile/hmf.devel/hmf.integration-devel/jenkins/xdesktop]
+      -a:  Actions [build/up/down/logs/reload/inspect]
+      -u:  Update development environments, and reload all running containers
      
+      -i:  Select a ship image [default: happyface/hmf.el7]
       -s:  Select a ship template [ADC/DE/DESY-HH/FR/GoeGrid/MPPMU]
       -c:  Connect a container via ssh
      
@@ -58,6 +60,7 @@
      
       ** Connect a site container via ssh
       ./mad-gantry -s GoeGrid -c
+     
 
 
 
@@ -92,6 +95,11 @@
 | MF Mobile el6 | OK | -- |
 | MF Mobile el7 | OK | -- |
 | HMF Integration el6 | OK | OK |
-| HMF Integration el7 | TESGING | TESTING |
+| HMF Integration el7 | OK | OK |
 | Jenkins | X | OK |
+
+
+## Automatic rebuild (hourly CRON job)
+     # Add the following line into crontab, then mad-gantry checks, rebuilds and reload the running containers every hour
+     1 */1 * * *  /home/cloud/mad-gantry/mad-gantry -e "emails@example.com" -u &> /tmp/mad-gantry.cron.log
 

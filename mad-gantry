@@ -350,6 +350,9 @@ while getopts "IdE:nt:a:ui:y:ATC:S:s:chv" op
 	  docker_compose_action $OPTARG
 	  ;;
       u) 
+	  ## For CRON jobs
+	  source /etc/profile
+
 	  ## If payloads/devel is updated, then start rebuilding
 	  if prepare_madmask_devel_env; then
 	      message_file=/tmp/mad-gantry.autobuild.log 
