@@ -42,9 +42,11 @@ if [ "$SITE_NAME" == "ADC" ]; then
     chown -R happyface3:happyface3 /usr/local/android-tools
     su - happyface3 -c ". /etc/profile; setup_android_sdk; update-android-sdk"
     rsync -avlogp --delete $MADMASK_HOME/../.android /usr/local/android-tools/
+
+    ## Building the mobile application in a backgroud process
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 fi
 
-#su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 
 ## Changing configurations in HappyFace MadModules
 

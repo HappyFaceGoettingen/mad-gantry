@@ -357,7 +357,7 @@ while getopts "IdE:nt:a:ui:y:ATC:S:s:chv" op
 	  if prepare_madmask_devel_env; then
 	      message_file=/tmp/mad-gantry.autobuild.log 
 	      docker_compose_action build templates/$DEFAULT_TEMPLATE/docker-compose.yml 2>&1 | tee $message_file
-	      gunship "all" "reload" | tee -a $message_file
+	      gunship "all" "reload" 2>&1 | tee -a $message_file
 	      SENDEMAIL "Starting automatic mad-gantry build [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
 	  fi
 	  ;;
