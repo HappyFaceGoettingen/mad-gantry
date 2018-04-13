@@ -112,6 +112,7 @@ docker_compose_action(){
 	reload)
 	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
 	    [ $? -ne 0 ] && echo "[$yml_file] --> [Stopped]" && return 1
+	    echo "Reloading a VM [$(grep -B 1 image: $yml_file | perl -pe 'chomp')]"
 	    docker-compose -f $yml_file down
 	    docker-compose -f $yml_file up -d
 	    return $?
@@ -324,6 +325,32 @@ gunship(){
 }
 
 
+update_by_cron_reload(){
+    local base_image=$1
+
+    ## For env of a CRON job
+    source /etc/profile
+    
+    ## If payloads/devel is updated, then start rebuilding
+    if prepare_madmask_devel_env; then
+
+	## Set parameters
+	local message_file=/tmp/mad-gantry.autobuild.log 
+	local template_yml=templates/$base_image/docker-compose.yml 
+	[ ! -e $template_yml ] && echo "YML: [$template_yml] does not exist" && exit -1
+	
+	## Sending a notification
+	echo -e "* Base image is [$base_image]\n\n" > $message_file
+	cat ship/ship.html >> $message_file
+	SENDEMAIL "Starting automatic mad-gantry build: [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
+	
+	## Build and Reload
+	docker_compose_action build $template_yml 2>&1 | tee -a $message_file
+	gunship "all" "reload" 2>&1 | tee -a $message_file
+	SENDEMAIL "Reloading the running VMs: [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
+    fi
+}
+
 
 #--------------------------
 # Getopt
@@ -349,19 +376,7 @@ while getopts "IdE:nt:a:u:i:y:ATC:S:s:chv" op
 	  gunship "$SITE_NAME" "$OPTARG" && exit 0
 	  docker_compose_action $OPTARG
 	  ;;
-      u) 
-	  ## For CRON jobs
-	  source /etc/profile
-
-	  ## If payloads/devel is updated, then start rebuilding
-	  if prepare_madmask_devel_env; then
-	      message_file=/tmp/mad-gantry.autobuild.log 
-	      template_yml=templates/$OPTARG/docker-compose.yml 
-	      [ ! -e $template_yml ] && echo "YML: [$template_yml] does not exist" && exit -1
-	      docker_compose_action build $template_yml 2>&1 | tee $message_file
-	      gunship "all" "reload" 2>&1 | tee -a $message_file
-	      SENDEMAIL "Starting automatic mad-gantry build [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
-	  fi
+      u) update_by_cron_reload $OPTARG
 	  ;;
       i) SHIP_IMAGE="$OPTARG"
 	  ;;
