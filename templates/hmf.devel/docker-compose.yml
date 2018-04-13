@@ -1,0 +1,11 @@
+version: "2.0"
+
+services:
+ ## Images of HF devel
+ # HappyFace & Mobile Application Integration platform
+
+ # hmf.el7:
+ hmf.devel.el7:
+  build: hmf.devel.el7
+  image: happyface/hmf.devel.el7
+

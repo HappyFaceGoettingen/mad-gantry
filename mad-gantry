@@ -1,10 +1,11 @@
 #!/bin/bash
 
-## Check requirements
-! which docker-compose &> /dev/null && echo "docker-compose does not exist" && exit -1
 
 ## Changing PWD
 cd $(dirname $0)
+
+## For sending emails
+EMAILS=
 
 ## Configs and Libs
 source mad-gantry.conf
@@ -24,16 +25,20 @@ ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 ## All existing ship containers
 ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | grep -v .html| perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
+
+
 usage="$0 [option]
 $(basename $0), which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
 
  -I:  Install basic packages in this host node
  -d:  Make development environments in $PAYLOADS_DIR
+ -E:  email addresses
 
  -n:  Use docker-compose no-cache option
  -y:  Set a template YML file [default: $YML_FILE]
  -t:  Select a template [$ALL_TEMPLATES]
- -a:  Actions [build/up/down/logs]
+ -a:  Actions [build/up/down/logs/reload/inspect]
+ -u:  Update development environments, and reload all running containers
 
  -i:  Select a ship image [default: $SHIP_IMAGE]
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
@@ -77,28 +82,55 @@ fi
 #--------------------------
 docker_compose_action(){
     local action="$1"
+    local yml_file="$2"
+    [ -z "$yml_file" ] && yml_file=$YML_FILE
 
-    [ ! -e $YML_FILE ] && echo "No YML file [$YML_FILE]" && return 1
-    echo "YML = [$YML_FILE], docker-compose action = [$action]"
+    ## Check requirements
+    ! which docker-compose &> /dev/null && echo "docker-compose does not exist. Use -I option." && exit -1
+
+    ## Check YML file
+    [ ! -e $yml_file ] && echo "No YML file [$yml_file]" && return 1
+    echo "YML = [$yml_file], docker-compose action = [$action]"
 
     case $action in
 	build)
-	    docker-compose -f $YML_FILE build $DOCKER_COMPOSE_NO_CACHE
+	    docker-compose -f $yml_file build $DOCKER_COMPOSE_NO_CACHE
+	    return $?
 	    ;;
 	up)
-	    docker-compose -f $YML_FILE up -d
+	    docker-compose -f $yml_file up -d
+	    return $?
 	    ;;
 	down)
-	    docker-compose -f $YML_FILE down
+	    docker-compose -f $yml_file down
+	    return $?
 	    ;;
 	logs)
-	    docker-compose -f $YML_FILE logs
+	    docker-compose -f $yml_file logs
+	    return $?
+	    ;;
+	reload)
+	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
+	    [ $? -ne 0 ] && echo "[$yml_file] --> [Stopped]" && return 1
+	    docker-compose -f $yml_file down
+	    docker-compose -f $yml_file up -d
+	    return $?
+	    ;;
+	inspect)
+	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
+	    if [ $? -eq 0 ]; then
+		echo "[$yml_file] --> [Running]" && return 0
+	    else
+		echo "[$yml_file] --> [Stopped]" && return 1
+	    fi
 	    ;;
 	*)
 	    echo "$usage"
 	    exit -1
 	    ;;
     esac
+
+    return 1
 }
 
 
@@ -296,12 +328,14 @@ gunship(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "Idnt:a:i:y:ATC:S:s:chv" op
+while getopts "IdE:nt:a:ui:y:ATC:S:s:chv" op
   do
   case $op in
       I) install_basic_packages
 	  ;;
       d) prepare_madmask_devel_env
+	  ;;
+      E) EMAILS="$OPTARG"
 	  ;;
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
 	  ;;
@@ -314,6 +348,15 @@ while getopts "Idnt:a:i:y:ATC:S:s:chv" op
       a) generate_sshkey
 	  gunship "$SITE_NAME" "$OPTARG" && exit 0
 	  docker_compose_action $OPTARG
+	  ;;
+      u) 
+	  ## If payloads/devel is updated, then start rebuilding
+	  if prepare_madmask_devel_env; then
+	      message_file=/tmp/mad-gantry.autobuild.log 
+	      docker_compose_action build templates/$DEFAULT_TEMPLATE/docker-compose.yml 2>&1 | tee $message_file
+	      gunship "all" "reload" | tee -a $message_file
+	      SENDEMAIL "Starting automatic mad-gantry build [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
+	  fi
 	  ;;
       i) SHIP_IMAGE="$OPTARG"
 	  ;;
@@ -343,6 +386,4 @@ while getopts "Idnt:a:i:y:ATC:S:s:chv" op
 	  ;;
   esac
 done
-
-
 

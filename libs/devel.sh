@@ -1,5 +1,6 @@
 ## This function is fetching a target development repository (HappyFaceMobile modules)
 prepare_madmask_devel_env(){
+    local ret=1
     pushd $PAYLOADS_DIR
 
     ## Making dirs (data, devel, android-tools)
@@ -12,9 +13,17 @@ prepare_madmask_devel_env(){
     else
 	pushd devel
 	local git_branch=$(git branch | grep "^\*" | awk '{print $2}')
-	git pull origin $git_branch
+	git pull origin $git_branch | grep "^Already up-to-date"
+	[ $? -ne 0 ] && ret=0
 	popd
     fi
     popd
+    return $ret
 }
 
+
+get_devel_branch_name(){
+    pushd $PAYLOADS_DIR/devel &> /dev/null
+    echo $(git branch | grep "^\*" | awk '{print $2}')
+    popd &> /dev/null
+}
