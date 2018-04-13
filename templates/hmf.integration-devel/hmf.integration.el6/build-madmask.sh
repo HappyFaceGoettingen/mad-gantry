@@ -5,7 +5,7 @@
 ## --------------------------------------
 
 ## Changing ownership of Docker volume dirs to the HappyFace user.
-chown -R happyface3:happyface3 /var/lib/MadMaskData
+chown happyface3:happyface3 /var/lib/MadMaskData/*
 chown -R root:root /root/.ssh 
 
 
