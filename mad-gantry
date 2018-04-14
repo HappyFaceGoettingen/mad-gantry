@@ -351,10 +351,10 @@ update_by_cron_reload(){
 	[ ! -e $template_yml ] && echo "YML: [$template_yml] does not exist" && exit -1
 	
 	## Sending a notification
-	local message="$(date): * Base image is [$base_image]"
+	local message="$(date): Base image is [$base_image]"
 	echo -e "$message\n\n" > $message_file
 	cat ship/ship.html >> $message_file
-	SENDEMAIL "Starting automatic mad-gantry build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
+	SENDEMAIL "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
 	sleep 30
 	
 	## Build and Reload
@@ -367,7 +367,7 @@ update_by_cron_reload(){
 	## Inspect VMs and sending emails
 	echo -e "\n\n$(date): Inspecting Running VMs" >> $message_file
 	gunship "all" "inspect" 2>&1 | tee -a $message_file
-	SENDEMAIL "Reloading the running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
+	SENDEMAIL "Reloading the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
     fi
 }
 
