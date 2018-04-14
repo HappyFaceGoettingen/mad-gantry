@@ -7,6 +7,9 @@ cd $(dirname $0)
 ## For sending emails
 EMAILS=
 
+## Force to reload and update all running VMs
+FORCE_UPDATE=
+
 ## Configs and Libs
 source mad-gantry.conf
 source ticket.conf
@@ -332,7 +335,7 @@ update_by_cron_reload(){
     source /etc/profile
     
     ## If payloads/devel is updated, then start rebuilding
-    if prepare_madmask_devel_env; then
+    if prepare_madmask_devel_env || [ "$FORCE_UPDATE" == "true" ]; then
 
 	## Set parameters
 	local message_file=/tmp/mad-gantry.autobuild.log 
@@ -356,7 +359,7 @@ update_by_cron_reload(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "IdE:nt:a:u:i:y:ATC:S:s:chv" op
+while getopts "IdE:nt:a:fu:i:y:ATC:S:s:chv" op
   do
   case $op in
       I) install_basic_packages
@@ -376,6 +379,8 @@ while getopts "IdE:nt:a:u:i:y:ATC:S:s:chv" op
       a) generate_sshkey
 	  gunship "$SITE_NAME" "$OPTARG" && exit 0
 	  docker_compose_action $OPTARG
+	  ;;
+      f) FORCE_UPDATE=true
 	  ;;
       u) update_by_cron_reload $OPTARG
 	  ;;
