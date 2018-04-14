@@ -115,10 +115,17 @@ docker_compose_action(){
 	reload)
 	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
 	    [ $? -ne 0 ] && echo "[$yml_file] --> [Stopped]" && return 1
-	    echo "Reloading a VM [$(grep -B 1 image: $yml_file | perl -pe 'chomp')]"
-	    docker-compose -f $yml_file down
-	    docker-compose -f $yml_file up -d
-	    return $?
+	    ## Looping until it succeeds
+	    for i in $(seq 1 5)
+	    do
+		echo "Reloading a VM [$(grep -B 1 image: $yml_file | perl -pe 'chomp')]"
+		docker-compose -f $yml_file down
+		docker-compose -f $yml_file up -d
+		[ $? -eq 0 ] && return 0
+		echo "Retrying [$i/10]..."
+		sleep 60
+	    done
+	    return 1
 	    ;;
 	inspect)
 	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
@@ -333,6 +340,7 @@ update_by_cron_reload(){
 
     ## For env of a CRON job
     source /etc/profile
+    export TERM=xterm
     
     ## If payloads/devel is updated, then start rebuilding
     if prepare_madmask_devel_env || [ "$FORCE_UPDATE" == "true" ]; then
@@ -345,13 +353,18 @@ update_by_cron_reload(){
 	## Sending a notification
 	echo -e "$(date): * Base image is [$base_image]\n\n" > $message_file
 	cat ship/ship.html >> $message_file
-	SENDEMAIL "Starting automatic mad-gantry build: [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
+	SENDEMAIL "Starting automatic mad-gantry build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message_file" "$EMAILS"
 	
 	## Build and Reload
 	echo -e "\n\n$(date): Building [$YML_FILE]" >> $message_file
 	docker_compose_action build $template_yml 2>&1
 	gunship "all" "reload" 2>&1 | tee -a $message_file
-	SENDEMAIL "Reloading the running VMs: [$(get_devel_branch_name)] on [$(hostname -s)] ..." "$message_file" "$EMAILS"
+	sleep 60
+
+	## Inspect VMs and sending emails
+	echo -e "\n\n$(date): Inspecting Running VMs" >> $message_file
+	gunship "all" "inspect" 2>&1 | tee -a $message_file
+	SENDEMAIL "Reloading the running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message_file" "$EMAILS"
     fi
 }
 
