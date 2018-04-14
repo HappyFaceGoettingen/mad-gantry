@@ -354,6 +354,7 @@ update_by_cron_reload(){
 	echo -e "$(date): * Base image is [$base_image]\n\n" > $message_file
 	cat ship/ship.html >> $message_file
 	SENDEMAIL "Starting automatic mad-gantry build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message_file" "$EMAILS"
+	sleep 30
 	
 	## Build and Reload
 	echo -e "\n\n$(date): Building [$YML_FILE]" >> $message_file
