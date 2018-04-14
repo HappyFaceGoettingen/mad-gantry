@@ -8,6 +8,6 @@ SENDEMAIL(){
     for e in $emails
     do
         cat "$message_file" | $MAILER -s "$subject" $e
-        sleep 0.5
+        sleep 5
     done
 }
