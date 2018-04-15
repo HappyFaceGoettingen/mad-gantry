@@ -357,7 +357,7 @@ update_by_cron_reload(){
 	
 	## Build and Reload
 	echo -e "\n\n$(date): Building and reloading VMs [$base_image]" >> $message_file
-	docker_compose_action build $template_yml 2>&1 | tee -a $message_file 
+	docker_compose_action build $template_yml 2>&1
 	gunship "all" "reload" 2>&1 | tee -a $message_file
 	sleep 10
 
