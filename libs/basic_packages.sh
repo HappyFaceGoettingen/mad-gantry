@@ -1,4 +1,6 @@
 install_basic_packages(){
+    echo "Installing basic packages"
+
     ## Basic pacakges
     sudo yum -y --nogpgcheck install emacs screen htop git nmap mail iotop
     

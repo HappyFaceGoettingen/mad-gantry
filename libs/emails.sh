@@ -1,7 +1,14 @@
 deploy_mailrc(){
+    echo "Installing mail packages ..."
     sudo yum -y install mailx msmtp ca-certificates sharutils
 
     echo "Writing mailrc and msmtprc configurations ..."
+
+    ## User and Password
+    echo -n "Gmail user name > "
+    read GMAIL_USER
+    echo -n "Gmail password > "
+    read -s GMAIL_PASS
 
     ## .mailrc
     echo "# gmail account
@@ -13,11 +20,6 @@ set sendmail=\"/usr/bin/msmtp\"
 set message-sendmail-extra-arguments=\"-a gmail\"
 }
 " > $HOME/.mailrc
-
-    echo -n "Gmail user name > "
-    read GMAIL_USER
-    echo -s -n "Gmail password > "
-    read GMAIL_PASS
 
     ## .msmtprc
 echo "defaults
@@ -43,7 +45,9 @@ account default : gmail
 
     chmod 600 $HOME/.msmtprc
 
-    echo "Turn 'allow less secure apps of gmail' on."
+    echo "Turn 'allow less secure apps of gmail' on.
+  * https://myaccount.google.com/lesssecureapps?pli=1"
+
 }
 
 

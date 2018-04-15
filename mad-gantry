@@ -116,13 +116,13 @@ docker_compose_action(){
 	    docker-compose -f $yml_file ps | grep  " Up " &> /dev/null
 	    [ $? -ne 0 ] && echo "[$yml_file] --> [Stopped]" && return 1
 	    ## Looping until it succeeds
-	    for i in $(seq 1 5)
+	    for i in $(seq 1 $DOCKER_RELOAD_TRIAL)
 	    do
 		echo "Reloading a VM [$(grep -B 1 image: $yml_file | perl -pe 'chomp')]"
 		docker-compose -f $yml_file down
 		docker-compose -f $yml_file up -d
 		[ $? -eq 0 ] && return 0
-		echo "Retrying [$i/10]..."
+		echo "Retrying [$i/$DOCKER_RELOAD_TRIAL]..."
 		sleep 60
 	    done
 	    return 1
@@ -351,22 +351,20 @@ update_by_cron_reload(){
 	[ ! -e $template_yml ] && echo "YML: [$template_yml] does not exist" && exit -1
 	
 	## Sending a notification
-	local message="$(date): Base image is [$base_image]"
-	echo -e "$message\n\n" > $message_file
+	echo -e "$(date): Base image is [$base_image]\n\n" > $message_file
 	cat ship/ship.html >> $message_file
-	send_email "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$EMAILS"
+	send_email "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(cat $message_file)" "$EMAILS"
 	
 	## Build and Reload
-	local message="$(date): Building and reloading VMs [$base_image]"
-	echo -e "\n\n$message" >> $message_file
+	echo -e "\n\n$(date): Building and reloading VMs [$base_image]" >> $message_file
 	docker_compose_action build $template_yml 2>&1 | tee -a $message_file 
 	gunship "all" "reload" 2>&1 | tee -a $message_file
-	sleep 60
+	sleep 10
 
 	## Inspect VMs and sending emails
 	echo -e "\n\n$(date): Inspecting Running VMs" >> $message_file
 	gunship "all" "inspect" 2>&1 | tee -a $message_file
-	send_email "Reloaded the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$EMAILS"
+	send_email "Reloaded the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(cat $message_file)" "$EMAILS"
     fi
 }
 
