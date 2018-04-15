@@ -354,11 +354,10 @@ update_by_cron_reload(){
 	local message="$(date): Base image is [$base_image]"
 	echo -e "$message\n\n" > $message_file
 	cat ship/ship.html >> $message_file
-	SENDEMAIL "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
-	sleep 30
+	send_email "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$EMAILS"
 	
 	## Build and Reload
-	local message="$(date): Building [$YML_FILE]"
+	local message="$(date): Building and reloading VMs [$base_image]"
 	echo -e "\n\n$message" >> $message_file
 	docker_compose_action build $template_yml 2>&1 | tee -a $message_file 
 	gunship "all" "reload" 2>&1 | tee -a $message_file
@@ -367,7 +366,7 @@ update_by_cron_reload(){
 	## Inspect VMs and sending emails
 	echo -e "\n\n$(date): Inspecting Running VMs" >> $message_file
 	gunship "all" "inspect" 2>&1 | tee -a $message_file
-	SENDEMAIL "Reloading the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$message_file" "$EMAILS"
+	send_email "Reloaded the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$message" "$EMAILS"
     fi
 }
 
@@ -378,7 +377,8 @@ update_by_cron_reload(){
 while getopts "IdE:nt:a:fu:i:y:ATC:S:s:chv" op
   do
   case $op in
-      I) install_basic_packages
+      I) deploy_mailrc
+	  install_basic_packages
 	  ;;
       d) prepare_madmask_devel_env
 	  ;;
