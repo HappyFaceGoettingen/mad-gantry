@@ -54,13 +54,16 @@ account default : gmail
 send_email(){
     local subject="$1"
     local message="$2"
-    local emails="$3"
+    local message_file="$3"
+    local emails="$4"
+
+    [ ! -z "$message_file" ] && message_file="-a $message_file"
 
     echo "Sending [$subject] email to [" $emails "] ..."
     local e=
     for e in $emails
     do
-        echo "$message" | $MAILER -A gmail -s "$subject" $e
+        echo "$message" | $MAILER -A gmail -s "$subject" $message_file $e
         sleep 5
     done
 }
