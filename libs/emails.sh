@@ -1,10 +1,14 @@
 deploy_mailrc(){
     echo "Installing mail packages ..."
-    sudo yum -y install mailx msmtp ca-certificates sharutils
+    rpm -q mailx msmtp ca-certificates sharutils || sudo yum -y install mailx msmtp ca-certificates sharutils
 
-    echo "Writing mailrc and msmtprc configurations ..."
+    ## ask if we need
+    echo -n "Configure Gmail account? [y/n]> "
+    read proceed
+    [ "$proceed" == "n" ] && return 0
 
     ## User and Password
+    echo "Writing mailrc and msmtprc configurations ..."
     echo -n "Gmail user name > "
     read GMAIL_USER
     echo -n "Gmail password > "
