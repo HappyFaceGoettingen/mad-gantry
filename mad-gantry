@@ -35,6 +35,7 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
 
  -I:  Install basic packages in this host node
  -d:  Make development environments in $PAYLOADS_DIR
+ -U:  Update mad-gantry
  -E:  email addresses
 
  -n:  Use docker-compose no-cache option
@@ -356,7 +357,7 @@ update_by_cron_reload(){
 	send_email "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(cat $message_file)" "$EMAILS"
 	
 	## Build and Reload
-	echo -e "\n\n$(date): Building and reloading VMs [$base_image]" >> $message_file
+	echo -e "\n\n$(date): Building and reloading VMs [$base_image]" > $message_file
 	docker_compose_action build $template_yml 2>&1
 	gunship "all" "reload" 2>&1 | tee -a $message_file
 	sleep 10
@@ -372,13 +373,16 @@ update_by_cron_reload(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "IdE:nt:a:fu:i:y:ATC:S:s:chv" op
+while getopts "IdUE:nt:a:fu:i:y:ATC:S:s:chv" op
   do
   case $op in
       I) deploy_mailrc
 	  install_basic_packages
 	  ;;
       d) prepare_madmask_devel_env
+	  ;;
+      U) echo "Updating Mad-Gantry ..."
+	  git pull origin
 	  ;;
       E) EMAILS="$OPTARG"
 	  ;;

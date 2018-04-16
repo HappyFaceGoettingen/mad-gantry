@@ -101,5 +101,5 @@
 
 ## Automatic rebuild (hourly CRON job)
      # Add the following line into crontab, then mad-gantry checks, rebuilds and reload the running containers every hour
-     10 */1 * * *  /home/cloud/mad-gantry/mad-gantry -E "emails@example.com" -u hmf.devel &> /tmp/mad-gantry.cron.log
+     1 */1 * * *  /home/cloud/mad-gantry/mad-gantry -U; /home/cloud/mad-gantry/mad-gantry -E "emails@example.com" -u hmf.devel &> /tmp/mad-gantry.cron.log
 
