@@ -4,6 +4,9 @@
 ##  HappyFace-MadMask development env
 ## --------------------------------------
 
+## Wait due to the loads of the other Docker VMs
+sleep 60
+
 ## Changing ownership of Docker volume dirs to the HappyFace user.
 chown happyface3:happyface3 /var/lib/MadMaskData/*
 chown -R root:root /root/.ssh 
