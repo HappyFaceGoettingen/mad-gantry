@@ -27,3 +27,9 @@ get_devel_branch_name(){
     echo $(git branch | grep "^\*" | awk '{print $2}')
     popd &> /dev/null
 }
+
+git_last_log(){
+    pushd $PAYLOADS_DIR/devel &> /dev/null
+    echo $(git log -1)
+    popd &> /dev/null
+}

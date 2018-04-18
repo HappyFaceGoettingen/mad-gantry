@@ -13,7 +13,7 @@ RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusio
 RUN yum update -y
 
 RUN yum -y install openssh openssh-server openssh-clients
-RUN sed -i '/pam_loginuid\.so/s/required/optional/' /etc/pam.d/sshd
+#RUN sed -i '/pam_loginuid\.so/s/required/optional/' /etc/pam.d/sshd
 
 RUN yum -y install xorg-x11-server-Xvfb xorg-x11-fonts-Type1 xorg-x11-fonts-misc dejavu-lgc-sans-fonts xorg-x11-fonts-75dpi xorg-x11-fonts-100dpi
 RUN yum -y install xorg-x11-fonts-ISO8859-1-75dpi.noarch xorg-x11-fonts-ISO8859-1-100dpi.noarch

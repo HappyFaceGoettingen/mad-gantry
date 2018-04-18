@@ -353,6 +353,8 @@ update_by_cron_reload(){
 	
 	## Sending a notification
 	echo -e "$(date): Base image is [$base_image]\n\n" > $message_file
+	git_last_log >> $message_file
+	echo -e "\n\n" >> $message_file
 	cat ship/ship.html >> $message_file
 	send_email "Starting Automatic Build: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(cat $message_file)" "" "$EMAILS"
 	
