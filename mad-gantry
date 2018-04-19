@@ -372,6 +372,13 @@ update_by_cron_reload(){
 	echo -e "\n\n$(date): Inspecting Running VMs" >> $message_file
 	gunship "all" "inspect" 2>&1 | tee -a $message_file
 	send_email "Reloaded the Running VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(grep -A 1000 'Inspecting R' $message_file)" "$message_file" "$EMAILS"
+
+	## Sending logs
+	sleep 900
+	git_last_log >> $message_file
+	echo -e "\n\n" >> $message_file
+	gunship "all" "logs" 2>&1 | tee -a $message_file
+	send_email "Docker Logs from VMs: [$(get_devel_branch_name)] on [$(hostname -s)]" "$(git_last_log)" "$message_file" "$EMAILS"
     fi
 }
 
