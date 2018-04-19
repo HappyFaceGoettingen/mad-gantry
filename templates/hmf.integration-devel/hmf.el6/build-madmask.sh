@@ -57,7 +57,10 @@ fi
 
 
 
-## Starting MadFoxd & MadMaskd (Ionic Mobile Server)
+## Starting HappyFace, MadFoxd & MadMaskd (Ionic Mobile Server)
+echo "Starting HappyFace"
+service httpd restart
+
 echo "Starting MadMask and MadFox daemons"
 service madmaskd start
 service madfoxd start

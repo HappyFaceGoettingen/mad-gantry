@@ -47,6 +47,14 @@ echo "Applying a site configuration to [$MADMASK_HOME] in this container ..."
 ln -vs /sites $MADMASK_HOME/sites
 
 
+## For development env (Note: Remove this later)
+## Rebuilding node-sass to HFMobile again, due to a native hardware or vender issue 
+if [ ! -z "$MADMASK_DEVEL" ]; then
+    echo "Reinstalling node-sass to [$MADMASK_HOME/node_modules] again ..."
+    su - happyface3 -c "cd $MADMASK_HOME && npm rebuild node-sass --force"
+fi
+
+
 ## Building the Android application packages
 if [ "$SITE_NAME" == "ADC" ]; then
     ANDROID_TOOLS=/usr/local/android-tools
@@ -67,13 +75,6 @@ fi
 
 ## Changing configurations in HappyFace MadModules
 
-
-## For development env (Note: Remove this later)
-## Rebuilding node-sass to HFMobile again, due to a native hardware or vender issue 
-if [ ! -z "$MADMASK_DEVEL" ]; then
-    echo "Reinstalling node-sass to [$MADMASK_HOME/node_modules] again ..."
-    su - happyface3 -c "cd $MADMASK_HOME && npm rebuild node-sass --force"
-fi
 
 
 ## Starting MadFoxd & MadMaskd (Ionic Mobile Server)

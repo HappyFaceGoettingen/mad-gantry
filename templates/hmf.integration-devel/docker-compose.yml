@@ -1,22 +1,14 @@
 version: "2.0"
 
 services:
- ## Images of HF devel
- # HappyFace & Mobile Application Integration platform
+ # HappyFace & Mobile Application Device Integration platform
 
- # hmf.el7:
- hmf.integration-dev.el7:
-  build: hmf.integration.el7
+ ## Services prividing HF & HF Mobile on CentOS6
+ hmf.el7:
+  build: hmf.el7
   image: happyface/hmf.el7
 
- ## Services prividing HF & HF Mobile
- hmf.integration-dev.el6:
-  build: hmf.integration.el6
+ ## Services prividing HF & HF Mobile on CentOS6
+ hmf.el6:
+  build: hmf.el6
   image: happyface/hmf.el6
-  ports:
-    - "8901:80"
-    - "9901:8111"
-    ## - "9922:22"
-  volumes: 
-    - "$PWD/payloads/devel:/devel"
-
