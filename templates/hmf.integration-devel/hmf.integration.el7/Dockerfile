@@ -37,9 +37,9 @@ RUN yum -y install centos-indexhtml
 #--------------------------------------------------------
 # Rebuilding HappyFace instance
 #--------------------------------------------------------
-RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
-RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
-RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
+#RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
+#RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
+#RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
 #RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh extra
 #RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh webservice
 
@@ -47,10 +47,9 @@ RUN cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh 
 #--------------------------------------------------------
 # Installing HappyFace instance
 #--------------------------------------------------------
-RUN yum clean all
-#RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/extras/python-migrate-*.rpm
-RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFaceCore-*.rpm
-RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFace-ATLAS-*.rpm
+#RUN yum clean all
+#RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFaceCore-*.rpm
+#RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFace-ATLAS-*.rpm
 
 
 #--------------------------------------------------------

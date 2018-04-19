@@ -7,6 +7,16 @@
 ## Wait due to the loads of the other Docker VMs
 sleep 60
 
+
+## Building HappyFace Core
+cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
+cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh happyface
+cd /var/lib/HappyFace-Integration-Server && git pull origin && ./rebuild.sh atlas
+yum clean all
+yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFaceCore-*.rpm
+yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFace-ATLAS-*.rpm
+
+
 ## Changing ownership of Docker volume dirs to the HappyFace user.
 chown happyface3:happyface3 /var/lib/MadMaskData/*
 chown -R root:root /root/.ssh 
@@ -15,7 +25,8 @@ chown -R root:root /root/.ssh
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
 ./rebuild.sh -p
-./rebuild.sh -b madmask
+[ -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b madmask
+[ ! -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b devel
 ./rebuild.sh -b madmodules
 ./rebuild.sh -b madfoxd
 ./rebuild.sh -b rlibs
@@ -57,6 +68,12 @@ fi
 ## Changing configurations in HappyFace MadModules
 
 
+## For development env (Note: Remove this later)
+## Rebuilding node-sass to HFMobile again, due to a native hardware or vender issue 
+if [ ! -z "$MADMASK_DEVEL" ]; then
+    echo "Reinstalling node-sass to [$MADMASK_HOME/node_modules] again ..."
+    su - happyface3 -c "cd $MADMASK_HOME && npm rebuild node-sass --force"
+fi
 
 
 ## Starting MadFoxd & MadMaskd (Ionic Mobile Server)

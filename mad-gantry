@@ -44,6 +44,7 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -a:  Actions [build/up/down/logs/reload/inspect]
  -u:  Update development environments, and reload all running containers. Provide a template name [$ALL_TEMPLATES]
 
+ -D:  Set MADMASK_DEVEL
  -i:  Select a ship image [default: $SHIP_IMAGE]
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
  -c:  Connect a container via ssh
@@ -171,6 +172,8 @@ services:
  # Mad-Gantry Ship Platform
  ${site}:
   image: $SHIP_IMAGE
+  environment:
+    - MADMASK_DEVEL=\"$MADMASK_DEVEL\"
   ports:
     - \"${web_port}:$DEFAULT_WEB_PORT\"
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
@@ -386,7 +389,7 @@ update_by_cron_reload(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "IdUE:nt:a:fu:i:y:ATC:S:s:chv" op
+while getopts "IdUE:nDt:a:fu:i:y:ATC:S:s:chv" op
   do
   case $op in
       I) deploy_mailrc
@@ -400,6 +403,8 @@ while getopts "IdUE:nt:a:fu:i:y:ATC:S:s:chv" op
       E) EMAILS="$OPTARG"
 	  ;;
       n) DOCKER_COMPOSE_NO_CACHE="--no-cache"
+	  ;;
+      D) MADMASK_DEVEL=ON
 	  ;;
       t) TEMPLATE_DIR=templates/$OPTARG
 	  [ ! -e $TEMPLATE_DIR ] && echo "No template for [$TEMPLATE_DIR]" && exit -1
