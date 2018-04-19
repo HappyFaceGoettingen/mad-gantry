@@ -36,17 +36,20 @@ echo "Applying a site configuration to [$MADMASK_HOME] in this container ..."
 ln -vs /sites $MADMASK_HOME/sites
 
 
-## Building the Android application
-echo "Building the Android APKs ..."
-rsync -avlogp /usr/local/android-tools/.android $MADMASK_HOME/
-
-## Changing ownership of Android SDK and updating it
+## Building the Android application packages
 if [ "$SITE_NAME" == "ADC" ]; then
-    chown -R happyface3:happyface3 /usr/local/android-tools
+    ANDROID_TOOLS=/usr/local/android-tools
+
+    echo "Copying the Android APKs cache ..."
+    rsync -alogp $ANDROID_TOOLS/.android $MADMASK_HOME/
+
+    chown -R happyface3:happyface3 $ANDROID_TOOLS
     su - happyface3 -c ". /etc/profile; setup_android_sdk; update-android-sdk"
-    rsync -avlogp --delete $MADMASK_HOME/../.android /usr/local/android-tools/
+    rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
     ## Building the mobile application in a backgroud process
+    PLATFORMS=$ANDROID_TOOLS/platforms
+    su - happyface3 -c "! test -e $PLATFORMS && mkdir -v $PLATFORMS; ln -s $PLATFORMS $MADMASK_HOME/platforms"
     su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 fi
 

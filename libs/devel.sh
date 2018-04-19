@@ -6,6 +6,7 @@ prepare_madmask_devel_env(){
     ## Making dirs (data, devel, android-tools)
     [ ! -e data ] && mkdir -v data
     [ ! -e android-tools ] && mkdir -v android-tools
+    [ ! -e firefox ] && mkdir -v firefox
 
     if [ ! -e devel ]; then
 	git clone https://github.com/HappyFaceGoettingen/HappyFace-MadMask.git

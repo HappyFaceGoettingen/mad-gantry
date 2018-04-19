@@ -176,11 +176,12 @@ services:
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
     - \"${ssh_port}:$DEFAULT_SSH_PORT\"
   volumes: 
-    - \"$PWD/$PAYLOADS_DIR/sites/${site}:$PAYLOAD_SITES/${site}\"
+    - \"$PWD/$PAYLOADS_DIR/sites/${site}:$PAYLOAD_SITES/${site}:ro\"
     - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
-    - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL\"
+    - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL:ro\"
     - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
-    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh:ro\"
+    - \"$PWD/$PAYLOADS_DIR/firefox:/firefox:ro\"
   # The followings are to avoid D-Bus error in CentOS7
     - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
   cap_add:
@@ -254,6 +255,9 @@ copy_site_configs(){
 	echo "Copying [$site] custom onfiguration from [configs/customs/$site]..."
 	cp -rv configs/customs/$site/* $site_dir
     fi
+
+    ## Applying unique configurations for this ship
+    apply_custom_ship_configs $site_dir/config.json
 }
 
 

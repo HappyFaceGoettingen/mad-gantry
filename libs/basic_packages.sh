@@ -12,7 +12,7 @@ install_basic_packages(){
     sudo usermod -aG dockerroot $USER
 
     ## Docker storage configuraiton
-    sudo sed -e "s/^DOCKER_STORAGE_OPTIONS=.*$/DOCKER_STORAGE_OPTIONS=\"--storage-opt dm.basesize=$DOCKER_STORAGE_SIZE\"/g" -i /etc/sysconfig/docker-storage
+    [ ! -z "$DOCKER_STORAGE_SIZE" ] && sudo sed -e "s/^DOCKER_STORAGE_OPTIONS=.*$/DOCKER_STORAGE_OPTIONS=\"--storage-opt dm.basesize=$DOCKER_STORAGE_SIZE\"/g" -i /etc/sysconfig/docker-storage
 
     ## A useful alias to enable the docker socket    
     if [ ! -e /etc/profile.d/docker.sh ]; then

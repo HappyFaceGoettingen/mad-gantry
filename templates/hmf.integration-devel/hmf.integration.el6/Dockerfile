@@ -65,7 +65,7 @@ RUN yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_6
 RUN yum --nogpgcheck -y install htop bwm-ng nmap
 RUN yum --nogpgcheck -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel R-core R R-devel npm nodejs tmpwatch bc xdotool ImageMagick jq sysstat
 RUN yum --nogpgcheck -y install ant ant-apache-regexp ant-nodeps java-1.5.0-gcj java-1.7.0-openjdk java-1.7.0-openjdk-devel java-1.7.0-openjdk-headless java_cup libgcj regexp sinjdoc xerces-j2 xml-commons-apis xml-commons-resolver zip
-RUN yum --nogpgcheck -y install yum install nss-softokn-freebl.i686 libstdc++.i686 zlib.i686
+#RUN yum --nogpgcheck -y install yum install nss-softokn-freebl.i686 libstdc++.i686 zlib.i686
 
 #RUN cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-MadMask.git -b master
 #RUN cd /var/lib/HappyFace-MadMask/HappyFace-MadMask && git pull origin && ./rebuild.sh build all
