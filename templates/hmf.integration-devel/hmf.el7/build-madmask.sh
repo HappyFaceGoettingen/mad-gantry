@@ -42,9 +42,6 @@ echo "Site = [$SITE_NAME]"
 ## Changing Site directory in MadMask
 [ ! -e /sites/default ] && ln -vs $SITE_NAME /sites/default
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
-echo "Applying a site configuration to [$MADMASK_HOME] in this container ..."
-[ ! -L  $MADMASK_HOME/sites ] && mv -v $MADMASK_HOME/sites $MADMASK_HOME/sites.org
-ln -vs /sites $MADMASK_HOME/sites
 
 
 ## For development env (Note: Remove this later)
@@ -67,8 +64,8 @@ if [ "$SITE_NAME" == "ADC" ]; then
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
     ## Building the mobile application in a backgroud process
-    PLATFORMS=$ANDROID_TOOLS/platforms
-    su - happyface3 -c "! test -e $PLATFORMS && mkdir -v $PLATFORMS; ln -s $PLATFORMS $MADMASK_HOME/platforms"
+    PLATFORMS=$MADMASK_HOME/data/$SITE_NAME/platforms
+    su - happyface3 -c "! test -e $PLATFORMS && mkdir -pv $PLATFORMS; ln -s $PLATFORMS $MADMASK_HOME/platforms"
     su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 fi
 

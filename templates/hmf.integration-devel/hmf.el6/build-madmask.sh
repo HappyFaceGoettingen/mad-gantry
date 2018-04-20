@@ -31,9 +31,6 @@ echo "Site = [$SITE_NAME]"
 ## Changing Site directory in MadMask
 [ ! -e /sites/default ] && ln -vs $SITE_NAME /sites/default
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
-echo "Applying a site configuration to [$MADMASK_HOME] in this container ..."
-[ ! -L  $MADMASK_HOME/sites ] && mv -v $MADMASK_HOME/sites $MADMASK_HOME/sites.org
-ln -vs /sites $MADMASK_HOME/sites
 
 
 ## Building the Android application
