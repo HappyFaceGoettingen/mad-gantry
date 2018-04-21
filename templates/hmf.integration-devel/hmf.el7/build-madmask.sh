@@ -64,8 +64,8 @@ if [ "$SITE_NAME" == "ADC" ]; then
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
     ## Building the mobile application in a backgroud process
-    PLATFORMS=$MADMASK_HOME/data/$SITE_NAME/platforms
-    su - happyface3 -c "! test -e $PLATFORMS && mkdir -pv $PLATFORMS; ln -s $PLATFORMS $MADMASK_HOME/platforms"
+    #PLATFORMS=$MADMASK_HOME/data/$SITE_NAME/platforms
+    #su - happyface3 -c "! test -e $PLATFORMS && mkdir -pv $PLATFORMS; ln -s $PLATFORMS $MADMASK_HOME/platforms"
     su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/madmask -b &> /tmp/madmask.android-build.log &"
 fi
 
