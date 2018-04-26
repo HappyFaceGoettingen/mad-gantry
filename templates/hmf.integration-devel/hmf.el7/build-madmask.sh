@@ -7,6 +7,9 @@
 ## Wait due to the loads of the other Docker VMs
 sleep 60
 
+## Changing ownership of Docker volume dirs to the HappyFace user.
+chown happyface3:happyface3 /var/lib/MadMaskData/*
+chown -R root:root /root/.ssh 
 
 ## Building HappyFace Core
 cd /var/lib && git clone https://github.com/HappyFaceGoettingen/HappyFace-Integration-Server -b MadUpdate
@@ -16,15 +19,11 @@ yum clean all
 yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFaceCore-*.rpm
 yum --nogpgcheck -y install /var/lib/HappyFace-Integration-Server/RPMS/x86_64/HappyFace-ATLAS-*.rpm
 
-
-## Changing ownership of Docker volume dirs to the HappyFace user.
-chown happyface3:happyface3 /var/lib/MadMaskData/*
-chown -R root:root /root/.ssh 
-
-
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
 ./rebuild.sh -p
+#./rebuild.sh -b hf
+#./rebuild.sh -b hf_atlas
 [ -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b madmask
 [ ! -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b devel
 ./rebuild.sh -b madmodules
@@ -66,7 +65,7 @@ if [ "$SITE_NAME" == "ADC" ]; then
     ## Building the mobile application in a backgroud process
     BUILD_HOME=/tmp/HappyFaceMobile-build
     rsync -avlogp --delete $MADMASK_HOME/ $BUILD_HOME/
-    su - happyface3 -c ". /etc/profile; setup_android_sdk; $BUILD_HOME/madmask -b &> /tmp/madmask.android-build.log &"
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; $BUILD_HOME/madmask -b android &> /tmp/madmask.android-build.log &"
 fi
 
 
