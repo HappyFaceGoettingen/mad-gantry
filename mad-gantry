@@ -183,7 +183,7 @@ services:
     - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL:ro\"
     - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
-    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh:ro\"
+    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
     - \"$PWD/$PAYLOADS_DIR/firefox:/firefox:ro\"
   # The followings are to avoid D-Bus error in CentOS7
     - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
