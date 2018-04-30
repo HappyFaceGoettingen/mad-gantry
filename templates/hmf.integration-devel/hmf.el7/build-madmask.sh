@@ -10,7 +10,9 @@ sleep 60
 
 ## Changing ownership of Docker volume dirs to the HappyFace user.
 chown happyface3:happyface3 /var/lib/MadMaskData/*
+chown -R happyface3:happyface3 /firefox
 chown -R root:root /root/.ssh 
+
 
 
 ## Building and Installing HappyFace-MadMask
