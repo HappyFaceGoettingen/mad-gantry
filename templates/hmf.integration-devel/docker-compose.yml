@@ -8,7 +8,3 @@ services:
   build: hmf.el7
   image: happyface/hmf.el7
 
- ## Services prividing HF & HF Mobile on CentOS6
- hmf.el6:
-  build: hmf.el6
-  image: happyface/hmf.el6

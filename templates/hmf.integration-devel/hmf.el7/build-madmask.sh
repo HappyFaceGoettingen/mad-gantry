@@ -8,12 +8,6 @@
 echo "$(date): Waiting ..."
 sleep 60
 
-## Changing ownership of Docker volume dirs to the HappyFace user.
-chown happyface3:happyface3 /var/lib/MadMaskData/*
-chown -R happyface3:happyface3 /firefox
-chown -R root:root /root/.ssh 
-
-
 
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
@@ -29,22 +23,21 @@ pushd /devel/HappyFace-MadMask
 ./rebuild.sh -t
 popd
 
+## Changing ownership of Docker volume dirs to the HappyFace user.
+echo "Changing ownership of Docker volume dirs ..."
+chown -R root:root /root/.ssh 
+chown happyface3:happyface3 /var/lib/MadMaskData/*
+chown -R happyface3:happyface3 /firefox
+
 
 ## Getting the site name
 SITE_NAME=$(ls /sites | grep -v default | head -n 1)
 echo "Site = [$SITE_NAME]"
 
+
 ## Changing Site directory in MadMask
 [ ! -e /sites/default ] && ln -vs $SITE_NAME /sites/default
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
-
-
-## For development env (Note: Remove this later)
-## Rebuilding node-sass to HFMobile again, due to a native hardware or vender issue 
-if [ ! -z "$MADMASK_DEVEL" ]; then
-    echo "Reinstalling node-sass to [$MADMASK_HOME/node_modules] again ..."
-    su - happyface3 -c "cd $MADMASK_HOME && npm rebuild node-sass --force"
-fi
 
 
 ## Building the Android application packages
@@ -71,7 +64,7 @@ fi
 
 
 ## Starting MadFoxd & MadMaskd (Ionic Mobile Server)
-echo "Enabling MadMask and MadFox daemons"
+echo "Starting MadMask, MadFox, SSH, HappyFace daemons"
 systemctl enable madmaskd.service
 systemctl enable madfoxd.service
 systemctl enable crond.service
