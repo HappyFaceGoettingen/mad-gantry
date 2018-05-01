@@ -180,11 +180,11 @@ services:
     - \"${ssh_port}:$DEFAULT_SSH_PORT\"
   volumes: 
     - \"$PWD/$PAYLOADS_DIR/sites/${site}:$PAYLOAD_SITES/${site}:ro\"
-    - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
     - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL:ro\"
+    - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
     - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
     - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
-    - \"$PWD/$PAYLOADS_DIR/firefox:/firefox:ro\"
+    - \"$PWD/$PAYLOADS_DIR/firefox:/firefox\"
   # The followings are to avoid D-Bus error in CentOS7
     - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
   cap_add:
