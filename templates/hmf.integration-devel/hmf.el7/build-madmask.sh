@@ -27,7 +27,7 @@ popd
 echo "Changing ownership of Docker volume dirs ..."
 chown -R root:root /root/.ssh 
 chown happyface3:happyface3 /var/lib/MadMaskData/*
-chown -R happyface3:happyface3 /firefox
+chown -R happyface3:happyface3 /firefox/*
 
 
 ## Getting the site name
