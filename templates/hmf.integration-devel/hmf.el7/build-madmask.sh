@@ -40,9 +40,12 @@ echo "Site = [$SITE_NAME]"
 [ ! -e /sites/default ] && ln -vs $SITE_NAME /sites/default
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
 
-
-## Building the Android application packages
+## ADC is special for ATLAS
 if [ "$SITE_NAME" == "ADC" ]; then
+    ## Top level meta-meta file
+    ln -vs /sites/default/top.json /sites/top.json
+
+    ## Building the Android application packages
     ANDROID_TOOLS=/usr/local/android-tools
 
     echo "Copying the Android APKs cache ..."
