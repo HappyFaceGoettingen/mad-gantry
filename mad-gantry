@@ -173,7 +173,7 @@ services:
  ${site}:
   image: $SHIP_IMAGE
   environment:
-    - MADMASK_DEVEL=\"$MADMASK_DEVEL\"
+    - MADMASK_DEVEL=$MADMASK_DEVEL
   ports:
     - \"${web_port}:$DEFAULT_WEB_PORT\"
     - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"

@@ -12,13 +12,14 @@ sleep 60
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
 ./rebuild.sh -p
-./rebuild.sh -b hf
-./rebuild.sh -b hf_atlas
-[ -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b madmask
-[ ! -z "$MADMASK_DEVEL" ] && ./rebuild.sh -b devel
+echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
+[ "$MADMASK_DEVEL" != "ON" ] && ./rebuild.sh -b madmask
+[ "$MADMASK_DEVEL" == "ON" ] && ./rebuild.sh -b devel
 ./rebuild.sh -b madmodules
 ./rebuild.sh -b madfoxd
 ./rebuild.sh -b rlibs
+./rebuild.sh -b hf
+./rebuild.sh -b hf_atlas
 ./rebuild.sh -b android-sdk
 ./rebuild.sh -t
 popd
