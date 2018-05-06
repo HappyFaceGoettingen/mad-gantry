@@ -42,9 +42,6 @@ MADMASK_HOME=/var/lib/HappyFace3/MadMask
 
 ## ADC is special for ATLAS
 if [ "$SITE_NAME" == "ADC" ]; then
-    ## Top level meta-meta file
-    ln -vs /sites/default/top.json /sites/top.json
-
     ## Building the Android application packages
     ANDROID_TOOLS=/usr/local/android-tools
 
