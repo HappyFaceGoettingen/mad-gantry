@@ -34,3 +34,9 @@ git_last_log(){
     echo $(git log -1)
     popd &> /dev/null
 }
+
+devel_version_and_id(){
+    pushd $PAYLOADS_DIR/devel &> /dev/null
+    echo $(cat Version.txt) - Git $(git log -1 | grep "^commit")
+    popd &> /dev/null
+}
