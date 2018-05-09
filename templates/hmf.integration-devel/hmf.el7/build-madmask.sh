@@ -56,7 +56,8 @@ if [ "$SITE_NAME" == "ADC" ]; then
     BUILD_HOME=/tmp/HappyFaceMobile-build
     echo "Copying HappyFaceMobile from [$MADMASK_HOME] to [$BUILD_HOME] ..."
     rsync -alogp --delete $MADMASK_HOME/ $BUILD_HOME/
-    su - happyface3 -c "mkdir -v $BUILD_HOME/data/$SITE_NAME/platforms && ln -vs data/$SITE_NAME/platforms $BUILD_HOME/platforms"
+    su - happyface3 -c "test -e $BUILD_HOME/data/$SITE_NAME/platforms || mkdir -pv $BUILD_HOME/data/$SITE_NAME/platforms"
+    su - happyface3 -c "ln -vs data/$SITE_NAME/platforms $BUILD_HOME/platforms"
     su - happyface3 -c ". /etc/profile; setup_android_sdk; $BUILD_HOME/madmask -b android &> /tmp/madmask.android-build.log &"
 fi
 
