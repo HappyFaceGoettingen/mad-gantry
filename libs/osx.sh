@@ -1,25 +1,24 @@
-send_osx_build_command(){
-    local osx_host="$1"
-    local command="$2"
-    
-    local site_name=$1
-    [ ! -e $PAYLOADS_DIR/ssh-key/rsa ] && echo "$PAYLOADS_DIR/ssh-key/rsa does not exist" && return 1 
-    [ -z "$site_name" ] && echo "site_name [$site_name] is empty" && return 1
+send_ios_apk_build_request(){
+    local osx_host=${OSX[0]}
+    local osx_port=${OSX[1]}
+    local build_id=""
 
-    local ssh_port=$(get_ssh_port $site_name)
-    [ -z "$ssh_port" ] && echo "Cannot find ssh_port [$ssh_port]" && return 1 
-    local ssh_host=localhost
-    echo "Connecting to $site_name container [$ssh_host:$ssh_port] ..."
-    echo "ssh -Y -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $PAYLOADS_DIR/ssh-key/rsa -p $ssh_port root@$ssh_host"
-    ssh -Y -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $PAYLOADS_DIR/ssh-key/rsa -p $ssh_port root@$ssh_host
+    local ios_build_command="build-apk4ios.sh -i $build_id -b"
+    local ios_apk_file=""
+
+    local build_log="$PAYLOADS_DIR/data/ADC/logs/madmask.ios-build.log"
+    local local_ios_apk_file="$PAYLOADS_DIR/data/ADC/application/ios/HappyFace2"
+
+    ## Remove old one
+    [ -e $local_ios_apk_file ] && rm -vf $local_ios_apk_file
+
+    ## Build start
+    [ ! -e $PAYLOADS_DIR/ssh-key/rsa ] && echo "$PAYLOADS_DIR/ssh-key/rsa does not exist" && return 1
+    local request="ssh -Y -o StrictHostKeyChecking=no -o PasswordAuthentication=no -i $PAYLOADS_DIR/ssh-key/rsa -p $osx_port $osx_host '$ios_build_command'"
+    echo "$request"
+    eval $request 2>&1 | tee $local_ios_build_log
+
+    ## Copying new iPhoen APK
+    scp -P $osx_port $osx_host $ios_apk_file $local_ios_apk_file 2>&1 | tee -a $local_ios_build_log
     return $?
-}
-
-
-get_osx_built_application(){
-    local osx_host="$1"
-    local remote_dir="$2"
-    local local_dir="$3"
-
-    
 }

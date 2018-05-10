@@ -44,6 +44,8 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -a:  Actions [build/up/down/logs/reload/inspect]
  -u:  Update development environments, and reload all running containers. Provide a template name [$ALL_TEMPLATES]
 
+ -X:  Send a iPhone APK build request to [$MAC_OSX]
+
  -D:  Set MADMASK_DEVEL
  -i:  Select a ship image [default: $SHIP_IMAGE]
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
@@ -389,7 +391,7 @@ update_by_cron_reload(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "IdUE:nDt:a:fu:i:y:ATC:S:s:chv" op
+while getopts "IdUE:nDt:a:fu:Xi:y:ATC:S:s:chv" op
   do
   case $op in
       I) deploy_mailrc
@@ -419,6 +421,8 @@ while getopts "IdUE:nDt:a:fu:i:y:ATC:S:s:chv" op
       f) FORCE_UPDATE=true
 	  ;;
       u) update_by_cron_reload $OPTARG
+	  ;;
+      X) send_ios_apk_build_request
 	  ;;
       i) SHIP_IMAGE="$OPTARG"
 	  ;;
