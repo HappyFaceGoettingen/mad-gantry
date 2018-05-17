@@ -11,17 +11,17 @@ sleep 60
 
 ## Building and Installing HappyFace-MadMask
 pushd /devel/HappyFace-MadMask
-./rebuild.sh -p
+./build-rpms.sh -p
 echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
-[ "$MADMASK_DEVEL" != "ON" ] && ./rebuild.sh -b madmask
-[ "$MADMASK_DEVEL" == "ON" ] && ./rebuild.sh -b devel
-./rebuild.sh -b madmodules
-./rebuild.sh -b madfoxd
-./rebuild.sh -b rlibs
-./rebuild.sh -b hf
-./rebuild.sh -b hf_atlas
-./rebuild.sh -b android-sdk
-./rebuild.sh -t
+[ "$MADMASK_DEVEL" != "ON" ] && ./build-rpms.sh -b madmask
+[ "$MADMASK_DEVEL" == "ON" ] && ./build-rpms.sh -b devel
+./build-rpms.sh -b madmodules
+./build-rpms.sh -b madfoxd
+./build-rpms.sh -b rlibs
+./build-rpms.sh -b hf
+./build-rpms.sh -b hf_atlas
+./build-rpms.sh -b android-sdk
+./build-rpms.sh -t
 popd
 
 ## Changing ownership of Docker volume dirs to the HappyFace user.
@@ -40,7 +40,8 @@ echo "Site = [$SITE_NAME]"
 [ ! -e /sites/default ] && ln -vs $SITE_NAME /sites/default
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
 
-## ADC is special for ATLAS
+
+## ADC is special for ATLAS, so build android application
 if [ "$SITE_NAME" == "ADC" ]; then
     ## Building the Android application packages
     ANDROID_TOOLS=/usr/local/android-tools

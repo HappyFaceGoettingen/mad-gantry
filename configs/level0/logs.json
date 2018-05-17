@@ -11,6 +11,9 @@
     "name": "Andorid Build Log",
     "file": "/tmp/madmask.android-build.log"
 }, {
+    "name": "iOS Build Log",
+    "file": "madmask.ios-build.log"
+}, {
     "name": "Ionic Server Log",
     "file": "/var/log/HappyFace/ionic-server.8111.log"
 }, {
