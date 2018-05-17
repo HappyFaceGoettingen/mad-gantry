@@ -784,10 +784,10 @@
      "level": null,
      "urls": [{
 	 "name": "Android Debug Apk",
-	 "link": "data/ADC/application/android-debug.apk"
+	 "link": "data/ADC/application/android/android-debug.apk"
      },{	 
 	 "name": "Android Release Unsigned Apk",
-	 "link": "data/ADC/application/android-release-unsigned.apk"
+	 "link": "data/ADC/application/android/android-release-unsigned.apk"
      }]
  }
 ]
