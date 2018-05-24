@@ -9,8 +9,8 @@ echo "$(date): Waiting ..."
 sleep 60
 
 
-## Building and Installing HappyFace-MadMask
-pushd /devel/HappyFace-MadMask
+## Building and Installing HappyFace, MobileModules and so on
+pushd /devel/PackageBuilder
 ./build-rpms.sh -p
 echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
 [ "$MADMASK_DEVEL" != "ON" ] && ./build-rpms.sh -b madmask
