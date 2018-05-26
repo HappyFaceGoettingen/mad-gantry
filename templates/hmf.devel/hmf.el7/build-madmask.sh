@@ -9,6 +9,10 @@ echo "$(date): Waiting ..."
 sleep 60
 
 
+## Getting the site name
+SITE_NAME=$(ls /sites | grep -v default | head -n 1)
+echo "Site = [$SITE_NAME]"
+
 ## Building and Installing HappyFace, MobileModules and so on
 pushd /devel/PackageBuilder
 ./build-rpms.sh -p
@@ -20,20 +24,15 @@ echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
 ./build-rpms.sh -b rlibs
 ./build-rpms.sh -b hf
 ./build-rpms.sh -b hf_atlas
-./build-rpms.sh -b android-sdk
+[ "$SITE_NAME" == "ADC" ] && ./build-rpms.sh -b android-sdk
 ./build-rpms.sh -t
 popd
 
-## Changing ownership of Docker volume dirs to the HappyFace user.
+## Changing ownership of Docker volume dirs to root and HappyFace user.
 echo "Changing ownership of Docker volume dirs ..."
 chown -R root:root /root/.ssh 
-chown happyface3:happyface3 /var/lib/MadMaskData/*
+chown happyface3:happyface3 /var/lib/MadMaskData/$SITE_NAME
 chown -R happyface3:happyface3 /firefox/*
-
-
-## Getting the site name
-SITE_NAME=$(ls /sites | grep -v default | head -n 1)
-echo "Site = [$SITE_NAME]"
 
 
 ## Changing Site directory in MadMask
@@ -41,9 +40,9 @@ echo "Site = [$SITE_NAME]"
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
 
 
-## ADC is special for ATLAS, so build android application
+## ADC is special for ATLAS, so building android application
 if [ "$SITE_NAME" == "ADC" ]; then
-    ## Building the Android application packages
+    ## Building the Android application package
     ANDROID_TOOLS=/usr/local/android-tools
 
     echo "Copying the Android APKs cache ..."
@@ -53,7 +52,7 @@ if [ "$SITE_NAME" == "ADC" ]; then
     su - happyface3 -c ". /etc/profile; setup_android_sdk; update-android-sdk"
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
-    ## Building the mobile application in a backgroud process
+    ## Building the Android application in a backgroud process
     BUILD_HOME=/tmp/HappyFaceMobile-build
     echo "Copying HappyFaceMobile from [$MADMASK_HOME] to [$BUILD_HOME] ..."
     rsync -alogp --delete $MADMASK_HOME/ $BUILD_HOME/
