@@ -25,7 +25,7 @@ echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
 ./build-rpms.sh -b hf
 ./build-rpms.sh -b hf_atlas
 [ "$SITE_NAME" == "ADC" ] && ./build-rpms.sh -b android-sdk
-./build-rpms.sh -t
+./build-rpms.sh -t all
 popd
 
 ## Changing ownership of Docker volume dirs to root and HappyFace user.

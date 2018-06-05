@@ -29,6 +29,10 @@ ALL_TEMPLATES=$(ls templates | perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 ALL_SHIP_TEMPLATES=$(ls $SHIP_DIR | grep -v .html| perl -pe "s/\s/\//g" | perl -pe "s/\/$//g")
 
 
+## container level this command uses
+SITE_NAME=all
+CONTAINER_LEVEL=all
+
 
 usage="$0 [option]
 $(basename $0), which uses docker-compose, is designed to build and run the standard HappyFace/HappyFaceMobile Monitoring systems on containers. This powerful command can easily ship many monitoring frameworks to Cloud/Cluster/WLCG environments.
@@ -37,41 +41,31 @@ $(basename $0), which uses docker-compose, is designed to build and run the stan
  -d:  Make development environments in $PAYLOADS_DIR
  -U:  Update mad-gantry
  -E:  email addresses
-
  -n:  Use docker-compose no-cache option
- -y:  Set a template YML file [default: $YML_FILE]
- -t:  Select a template [$ALL_TEMPLATES]
- -a:  Actions [build/up/down/logs/reload/inspect]
  -u:  Update development environments, and reload all running containers. Provide a template name [$ALL_TEMPLATES]
 
- -X:  Send a iPhone APK build request to [$MAC_OSX]
+ -t:  Select and build a template [$ALL_TEMPLATES]
+ -b:  Build template
 
- -D:  Set MADMASK_DEVEL
+ -L:  Put a level {0|1|2|3} [default: $CONTAINER_LEVEL]
+ -a:  Actions [setup/build/up/down/logs/reload/inspect]
+
+ -D:  Set MADMASK_DEVEL in docker-compose.yml
  -i:  Select a ship image [default: $SHIP_IMAGE]
  -s:  Select a ship template [$ALL_SHIP_TEMPLATES]
  -c:  Connect a container via ssh
 
- -A:  Put all (top, countries, sites) containers onto a ship
- -T:  Put a top container onto a ship
- -C:  Put a country container onto a ship  [country_code or all]
- -S:  Put a site container onto a a ship [site_name or all]
- -L:  Put a local site container onto a ship [local_name or all]
+ -X:  Send a iPhone APK build request to OSX [$MAC_OSX]
 
  * Examples
- ** Build [$DEFAULT_TEMPLATE] template images and run them
- $0 -a build; $0 -a up
+ ** Build with a template [xdesktop] or a default [$DEFAULT_TEMPLATE] template images and run them
+ $0 -t xdesktop -b; $0 -t xdesktop -a up
+ $0 -b; $0 -a up
 
- ** Build xdesktop template images and run them
- $0 -t xdesktop -a build; $0 -t xdesktop -a up
-
- ** Make deferent levels templates and run their containers
- $0 -T; $0 -s ADC -a up
- $0 -C DE; $0 -s DE -a up
- $0 -S GoeGrid; $0 -s GoeGrid -a up
- $0 -L GoeGrid_Custom; $0 -s GoeGrid_Custom -a up
-
- ** Make all templates [from level0 to level3]
- $0 -A
+ ** Make all templates and run their containers
+ $0 -a setup; $0 -s all -a up
+ ** Run only ADC
+ $0 -s ADC -a up
 
  ** Connect a site container via ssh
  $0 -s GoeGrid -c
@@ -88,18 +82,24 @@ fi
 # Functions
 #--------------------------
 docker_compose_action(){
-    local action="$1"
-    local yml_file="$2"
+    local site="$1"
+    local action="$2"
+    local yml_file="$3"
     [ -z "$yml_file" ] && yml_file=$YML_FILE
 
     ## Check requirements
     ! which docker-compose &> /dev/null && echo "docker-compose does not exist. Use -I option." && exit -1
 
     ## Check YML file
-    [ ! -e $yml_file ] && echo "No YML file [$yml_file]" && return 1
+    [ "$action" != "setup" ] && [ ! -e $yml_file ] && echo "No YML file [$yml_file]" && return 1
     echo "YML = [$yml_file], docker-compose action = [$action]"
 
     case $action in
+	setup)
+	    [ -z "$CONTAINER_LEVEL" ] && echo "CONTAINER_LEVEL [$CONTAINER_LEVEL] is null" && return 1
+	    [ "$CONTAINER_LEVEL" == "all" ] && echo "Set CONTAINER_LEVEL with -L option" && return 1
+	    put_level${CONTAINER_LEVEL}_containers_onto_ship $site
+	    ;;
 	build)
 	    docker-compose -f $yml_file build $DOCKER_COMPOSE_NO_CACHE
 	    return $?
@@ -311,34 +311,43 @@ gunship(){
     SITE_NAME="$1"
     local action="$2"
 
-    [ -z "$SITE_NAME" ] && return 1
-
-    if [ "$SITE_NAME" != "all" ]; then
-	TEMPLATE_DIR=$SHIP_DIR/$SITE_NAME
-	YML_FILE=$TEMPLATE_DIR/docker-compose.yml
-	return 1
-    elif [ "$SITE_NAME" == "all" ] && [ -z "$action" ]; then
-	echo "YML_FILE = [$YML_FILE]"
-	return 1
+    [ -z "$SITE_NAME" ] && echo "SITE_NAME is empty" && return 1
+    [ -z "$action" ] && echo "Action is empty" && return 1
+    if [ "$SITE_NAME" == "all" ]; then
+	[ $action == "setup" ] && output_ship_html
+    else
+	YML_FILE=$SHIP_DIR/$SITE_NAME/docker-compose.yml
+	docker_compose_action $SITE_NAME $action
+	return 0
     fi
 
-    ## Fire!!
     ## Level 0
     YML_FILE=$SHIP_DIR/$LEVEL0_SITE/docker-compose.yml
-    docker_compose_action $action
+    CONTAINER_LEVEL=0
+    docker_compose_action $LEVEL0_SITE $action
 
     ## Level 1
     for i in $(seq 0 $((${#LEVEL1_SITES[*]} - 1)))
     do
 	YML_FILE=$SHIP_DIR/${LEVEL1_SITES[$i]}/docker-compose.yml
-	docker_compose_action $action
+	CONTAINER_LEVEL=1
+	docker_compose_action "${LEVEL1_SITES[$i]}" $action
     done
 
     ## Level 2
     for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
     do
 	YML_FILE=$SHIP_DIR/${ALL_LEVEL2_SITES[$i]}/docker-compose.yml
-	docker_compose_action $action
+	CONTAINER_LEVEL=2
+	docker_compose_action "${ALL_LEVEL2_SITES[$i]}" $action
+    done
+
+    ## Level 3
+    for i in $(seq 0 $((${#ALL_LEVEL3_SITES[*]} - 1)))
+    do
+	YML_FILE=$SHIP_DIR/${ALL_LEVEL3_SITES[$i]}/docker-compose.yml
+	CONTAINER_LEVEL=3
+	docker_compose_action "${ALL_LEVEL3_SITES[$i]}" $action
     done
 
     return 0
@@ -391,7 +400,7 @@ update_by_cron_reload(){
 #--------------------------
 # Getopt
 #--------------------------
-while getopts "IdUE:nDt:a:fu:Xi:y:ATC:S:s:chv" op
+while getopts "IdUE:nDt:ba:fu:Xi:L:s:chv" op
   do
   case $op in
       I) deploy_mailrc
@@ -412,11 +421,10 @@ while getopts "IdUE:nDt:a:fu:Xi:y:ATC:S:s:chv" op
 	  [ ! -e $TEMPLATE_DIR ] && echo "No template for [$TEMPLATE_DIR]" && exit -1
 	  YML_FILE=$TEMPLATE_DIR/docker-compose.yml
 	  ;;
-      y) YML_FILE=$OPTARG
+      b) docker_compose_action "$SITE_NAME" build "$YML_FILE"
 	  ;;
       a) generate_sshkey
-	  gunship "$SITE_NAME" "$OPTARG" && exit 0
-	  docker_compose_action $OPTARG
+	  gunship "$SITE_NAME" "$OPTARG"
 	  ;;
       f) FORCE_UPDATE=true
 	  ;;
@@ -426,18 +434,9 @@ while getopts "IdUE:nDt:a:fu:Xi:y:ATC:S:s:chv" op
 	  ;;
       i) SHIP_IMAGE="$OPTARG"
 	  ;;
-      A) put_level0_container_onto_ship
-	  put_level1_containers_onto_ship all
-	  put_level2_containers_onto_ship all
-	  output_ship_html
+      L) CONTAINER_LEVEL=$OPTARG
 	  ;;
-      T) put_level0_container_onto_ship
-	  ;;
-      C) put_level1_containers_onto_ship $OPTARG
-	  ;;
-      S) put_level2_containers_onto_ship $OPTARG
-	  ;;
-      s) gunship "$OPTARG"
+      s) SITE_NAME="$OPTARG"
 	  ;;
       c) connect_via_ssh $SITE_NAME
 	  ;;

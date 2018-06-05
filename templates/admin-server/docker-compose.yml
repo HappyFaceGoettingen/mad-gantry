@@ -1,0 +1,9 @@
+version: "2.0"
+
+services:
+
+ ## Services prividing HF admin (web2ssh-gateway) server
+ admin-server.el7:
+  build: admin-server.el7
+  image: happyface/admin-server.el7
+

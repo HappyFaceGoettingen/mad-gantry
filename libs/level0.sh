@@ -1,5 +1,5 @@
 ## This function is generating a template of a "top" level container into ship & payloads
-put_level0_container_onto_ship(){
+put_level0_containers_onto_ship(){
     local site_dir=$PAYLOADS_DIR/sites/$LEVEL0_SITE
 
     output_docker_yml "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT"
