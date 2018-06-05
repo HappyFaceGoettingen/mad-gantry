@@ -21,8 +21,9 @@ echo "Changing ownership of Docker volume dirs ..."
 chown -R root:root /root/.ssh 
 
 
-## Starting MadFoxd & MadMaskd (Ionic Mobile Server)
+## Starting SSH adn admin server
 echo "Starting SSH, Admin gateway Socket, Admin gateway Daemon"
+/usr/share/admin-server/start-web2ssh.sh &
 systemctl enable sshd.service
 systemctl enable httpd.service
 
