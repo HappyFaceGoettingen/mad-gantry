@@ -25,21 +25,9 @@ get_ssh_port(){
     local site_name=$1
 
     local i
-
-    ## Level 0
-    [ "$site_name" == "$LEVEL0_SITE" ] && echo $(($SSH_PORT_START + $LEVEL0_PORT)) && return 0
-
-    ## Level 1
-    for i in $(seq 0 $((${#LEVEL1_SITES[*]} - 1)))
+    for i in $(seq 0 $((${#ALL_SITES[*]} - 1)))
     do
-	[ "$site_name" == "${LEVEL1_SITES[$i]}" ] && echo $(($SSH_PORT_START + ${LEVEL1_PORTS[$i]})) && return 0
+	[ "$site_name" == "${ALL_SITES[$i]}" ] && echo $(($SSH_PORT_START + ${ALL_PORTS[$i]})) && return 0
     done
-
-    ## Level 2
-    for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
-    do
-	[ "$site_name" == "${ALL_LEVEL2_SITES[$i]}" ] && echo $(($SSH_PORT_START + ${ALL_LEVEL2_PORTS[$i]})) && return 0
-    done
-
     return 1
 }
