@@ -7,7 +7,7 @@ RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusio
 
 
 ## Development and dependent packages
-RUN yum -y install npm nodejs openssl openssl-libs openssl-devel
+RUN yum -y install npm nodejs openssl openssl-libs openssl-devel openssh-server
 
 
 #--------------------------------------------------------
