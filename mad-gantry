@@ -262,7 +262,7 @@ copy_site_configs(){
     fi
 
     ## Applying unique configurations for this ship
-    apply_custom_ship_configs $site_dir/config.json
+    apply_custom_ship_configs $site $site_dir/config.json
 }
 
 
@@ -285,19 +285,10 @@ output_ship_html(){
     ## Header
     echo "<html><header></header><body>" > $SHIP_DIR/ship.html
 
-    ## Level 0
-    output_href "$LEVEL0_SITE" "$LEVEL0_HOST" "$LEVEL0_PORT" >> $SHIP_DIR/ship.html
-
-    ## Level 1
-    for i in $(seq 0 $((${#LEVEL1_SITES[*]} - 1)))
+    ## Body
+    for i in $(seq 0 $((${#ALL_SITES[*]} - 1)))
     do
-	output_href "${LEVEL1_SITES[$i]}" "${LEVEL1_HOSTS[$i]}" "${LEVEL1_PORTS[$i]}" >> $SHIP_DIR/ship.html
-    done
-
-    ## Level 2
-    for i in $(seq 0 $((${#ALL_LEVEL2_SITES[*]} - 1)))
-    do
-	output_href "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}" >> $SHIP_DIR/ship.html
+	output_href "${ALL_SITES[$i]}" "${ALL_HOSTS[$i]}" "${ALL_PORTS[$i]}" >> $SHIP_DIR/ship.html
     done
 
     ## Footer
