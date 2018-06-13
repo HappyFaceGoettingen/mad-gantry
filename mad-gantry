@@ -395,6 +395,7 @@ while getopts "IdUE:nDt:ba:fu:Xi:L:s:chv" op
   do
   case $op in
       I) deploy_mailrc
+	  make_swap
 	  install_basic_packages
 	  ;;
       d) prepare_madmask_devel_env
