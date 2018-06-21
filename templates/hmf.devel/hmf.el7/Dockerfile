@@ -10,10 +10,10 @@ RUN yum --nogpgcheck -y install https://download1.rpmfusion.org/free/el/rpmfusio
 RUN yum -y install htop bwm-ng nmap
 RUN yum -y install firefox fftw-devel fftw2-devel libjpeg-turbo libjpeg-turbo-devel npm nodejs tmpwatch bc xdotool ImageMagick jq sysstat
 RUN yum -y install ant ant-apache-regexp ant-nodeps java-1.5.0-gcj java-1.7.0-openjdk java-1.7.0-openjdk-devel java-1.7.0-openjdk-headless java_cup libgcj regexp sinjdoc xerces-j2 xml-commons-apis xml-commons-resolver zip
-RUN yum -y install yum install nss-softokn-freebl.i686 libstdc++.i686 zlib.i686
+#RUN yum -y install yum install nss-softokn-freebl.i686 libstdc++.i686 zlib.i686
 RUN yum -y install httpd python-cherrypy python-sqlalchemy python-migrate python-mako python-matplotlib python-sqlite python-psycopg2 python-lxml numpy mod_wsgi sqlite rpmfusion-free-release 
 RUN yum -y install python-BeautifulSoup python-matplotlib
-
+RUN yum -y install cpp gcc gcc-gfortran glibc-devel make tcl tcl-devel tk tk-devel texinfo texinfo-tex
 
 #--------------------------------------------------------
 # Basic packages relating to SSH and Xwin 
