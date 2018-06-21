@@ -52,13 +52,8 @@ if [ "$SITE_NAME" == "ADC" ]; then
     su - happyface3 -c ". /etc/profile; setup_android_sdk; update-android-sdk"
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
-    ## Building the Android application in a backgroud process
-    BUILD_HOME=/tmp/HappyFaceMobile-build
-    echo "Copying HappyFaceMobile from [$MADMASK_HOME] to [$BUILD_HOME] ..."
-    rsync -alogp --delete $MADMASK_HOME/ $BUILD_HOME/
-    su - happyface3 -c "test -e $BUILD_HOME/data/$SITE_NAME/platforms || mkdir -pv $BUILD_HOME/data/$SITE_NAME/platforms"
-    su - happyface3 -c "ln -vs data/$SITE_NAME/platforms $BUILD_HOME/platforms"
-    su - happyface3 -c ". /etc/profile; setup_android_sdk; $BUILD_HOME/madmask -b android &> /tmp/madmask.android-build.log &"
+    ## Building the Android application (using build-apk.sh script) in a backgroud process
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; $PWD/build-apk.sh -P $MADMASK_HOME/data/$SITE_NAME/platforms -O $MADMASK_HOME/data/$SITE_NAME/application -b android &> /tmp/madmask.android-build.log &"
 fi
 
 
