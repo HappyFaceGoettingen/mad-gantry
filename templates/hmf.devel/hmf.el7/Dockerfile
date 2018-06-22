@@ -13,7 +13,7 @@ RUN yum -y install ant ant-apache-regexp ant-nodeps java-1.5.0-gcj java-1.7.0-op
 #RUN yum -y install yum install nss-softokn-freebl.i686 libstdc++.i686 zlib.i686
 RUN yum -y install httpd python-cherrypy python-sqlalchemy python-migrate python-mako python-matplotlib python-sqlite python-psycopg2 python-lxml numpy mod_wsgi sqlite rpmfusion-free-release 
 RUN yum -y install python-BeautifulSoup python-matplotlib
-RUN yum -y install cpp gcc gcc-gfortran glibc-devel make tcl tcl-devel tk tk-devel texinfo texinfo-tex
+RUN yum -y install cpp gcc gcc-c++ gcc-gfortran glibc-devel make tcl tcl-devel tk tk-devel texinfo texinfo-tex texlive-* tre tre-devel xz-devel bzip2-devel cups cups-devel
 
 #--------------------------------------------------------
 # Basic packages relating to SSH and Xwin 
