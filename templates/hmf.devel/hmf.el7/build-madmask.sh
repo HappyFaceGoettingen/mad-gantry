@@ -24,7 +24,7 @@ echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
 ./build-rpms.sh -b rlibs
 ./build-rpms.sh -b hf
 ./build-rpms.sh -b hf_atlas
-[ "$SITE_NAME" == "ADC" ] && ./build-rpms.sh -b android-sdk
+[ "$SITE_NAME" == "ApplicationBuilder" ] && ./build-rpms.sh -b android-sdk
 ./build-rpms.sh -t all
 popd
 
@@ -40,8 +40,8 @@ chown -R happyface3:happyface3 /firefox/*
 MADMASK_HOME=/var/lib/HappyFace3/MadMask
 
 
-## ADC is special for ATLAS, so building android application
-if [ "$SITE_NAME" == "ADC" ]; then
+## The ApplicationBuilder instance can build android application
+if [ "$SITE_NAME" == "ApplicationBuilder" ]; then
     ## Building the Android application package
     ANDROID_TOOLS=/usr/local/android-tools
 
