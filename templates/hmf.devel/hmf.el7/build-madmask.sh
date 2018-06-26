@@ -53,7 +53,7 @@ if [ "$SITE_NAME" == "ApplicationBuilder" ]; then
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
     ## Building the Android application (using build-apk.sh script) in a backgroud process
-    su - happyface3 -c ". /etc/profile; setup_android_sdk; $PWD/build-apk.sh -P $MADMASK_HOME/data/$SITE_NAME/platforms -O $MADMASK_HOME/data/$SITE_NAME/application -b android &> /tmp/madmask.android-build.log &"
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; $MADMASK_HOME/build-apk.sh -P $MADMASK_HOME/data/$SITE_NAME/platforms -O $MADMASK_HOME/data/$SITE_NAME/application -b android &> /tmp/madmask.android-build.log &"
 fi
 
 
