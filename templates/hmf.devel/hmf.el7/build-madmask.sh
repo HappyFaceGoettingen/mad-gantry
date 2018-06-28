@@ -26,6 +26,7 @@ echo "MADMASK_DEVEL = \"$MADMASK_DEVEL\""
 ./build-rpms.sh -b hf_atlas
 [ "$SITE_NAME" == "ApplicationBuilder" ] && ./build-rpms.sh -b android-sdk
 ./build-rpms.sh -t all
+popd
 
 ## Changing ownership of Docker volume dirs to root and HappyFace user.
 echo "Changing ownership of Docker volume dirs ..."
@@ -52,7 +53,7 @@ if [ "$SITE_NAME" == "ApplicationBuilder" ]; then
     rsync -alogp --delete $MADMASK_HOME/../.android $ANDROID_TOOLS
 
     ## Building the Android application (using build-apk.sh script) in a backgroud process
-    su - happyface3 -c ". /etc/profile; setup_android_sdk; ./build-apk.sh -P $MADMASK_HOME/data/$SITE_NAME/platforms -O $MADMASK_HOME/data/$SITE_NAME/application -b android &> /tmp/madmask.android-build.log &"
+    su - happyface3 -c ". /etc/profile; setup_android_sdk; /devel/PackageBuilder/build-apk.sh -P $MADMASK_HOME/data/$SITE_NAME/platforms -O $MADMASK_HOME/data/$SITE_NAME/application -b android &> /tmp/madmask.android-build.log &"
 fi
 
 
