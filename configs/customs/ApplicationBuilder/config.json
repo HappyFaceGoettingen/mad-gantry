@@ -6,7 +6,7 @@
     "ionic_port": "8111",
     "mobile_port": "8111",
     "web_port": "80",
-    "data_dir": "data/ADC",
+    "data_dir": "data/ApplicationBuilder",
     "keep_data_days": 7,
     "log_level": "INFO",
     "detector_algorithm": "BCP",
