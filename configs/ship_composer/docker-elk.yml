@@ -1,0 +1,46 @@
+version: \"$DOCKER_YML_VERSION\"
+services:
+
+  # ELK framework Ship Platform
+  elasticsearch:
+    image: happyface/elasticsearch
+    volumes:
+      - \"$PWD/$PAYLOADS_DIR/ELK/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml\"
+    ports:
+      - \"9200:9200\"
+      - \"9300:9300\"
+    environment:
+      ES_JAVA_OPTS: \"-Xmx256m -Xms256m\"
+    networks:
+      - elk
+
+  logstash:
+    image: happyface/logstash
+    volumes:
+      - \"$PWD/$PAYLOADS_DIR/ELK/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml\"
+      - \"$PWD/$PAYLOADS_DIR/ELK/logstash/pipeline:/usr/share/logstash/pipeline\"
+    ports:
+      - \"5000:5000\"
+    environment:
+      LS_JAVA_OPTS: \"-Xmx256m -Xms256m\"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  ${site}:
+    image: happyface/kibana
+    volumes:
+      - \"$PWD/$PAYLOADS_DIR/ELK/kibana/config/:/usr/share/kibana/config\"
+    ports:
+      - \"5601:5601\"
+      - \"${ssh_port}:$DEFAULT_SSH_PORT\"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+
+  elk:
+    driver: bridge

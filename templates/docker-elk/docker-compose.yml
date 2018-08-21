@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+
+  elasticsearch:
+    build: elasticsearch/
+    image: happyface/elasticsearch
+
+  logstash:
+    build: logstash/
+    image: happyface/logstash
+
+  kibana:
+    build: kibana/
+    image: happyface/kibana

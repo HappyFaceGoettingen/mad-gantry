@@ -99,6 +99,7 @@ docker_compose_action(){
 	    [ -z "$CONTAINER_LEVEL" ] && echo "CONTAINER_LEVEL [$CONTAINER_LEVEL] is null" && return 1
 	    [ "$CONTAINER_LEVEL" == "all" ] && echo "Set CONTAINER_LEVEL with -L option" && return 1
 	    put_level${CONTAINER_LEVEL}_containers_onto_ship $site
+	    make_kibana_payloads	  
 	    ;;
 	build)
 	    docker-compose -f $yml_file build $DOCKER_COMPOSE_NO_CACHE
@@ -153,6 +154,7 @@ output_docker_yml(){
     local site_names=($1)
     local hosts=($2)
     local ports=($3)
+    local ship_types=($4)
 
     local i
     for i in $(seq 0 $((${#site_names[*]} - 1)))
@@ -163,37 +165,15 @@ output_docker_yml(){
 	local web_port=$(($WEB_PORT_START + ${ports[$i]}))
 	local mobile_port=$(($MOBILE_PORT_START + ${ports[$i]}))
 	local ssh_port=$(($SSH_PORT_START + ${ports[$i]}))
+	local ship_type=${ship_types[$i]}
 
 	echo "Writing [$docker_yml_file] ($site, $host, $web_port, $mobile_port)..."
 	[ ! -e $(dirname $docker_yml_file) ] && mkdir -v $(dirname $docker_yml_file)
 
-	## Output minimum site configuration
-	echo "version: \"$DOCKER_YML_VERSION\"
-services:
-
- # Mad-Gantry Ship Platform
- ${site}:
-  image: $SHIP_IMAGE
-  environment:
-    - MADMASK_DEVEL=$MADMASK_DEVEL
-  ports:
-    - \"${web_port}:$DEFAULT_WEB_PORT\"
-    - \"${mobile_port}:$DEFAULT_MOBILE_PORT\"
-    - \"${ssh_port}:$DEFAULT_SSH_PORT\"
-  volumes: 
-    - \"$PWD/$PAYLOADS_DIR/sites/${site}:$PAYLOAD_SITES/${site}:ro\"
-    - \"$PWD/$PAYLOADS_DIR/devel:$PAYLOAD_DEVEL:ro\"
-    - \"$PWD/$PAYLOADS_DIR/data/${site}:$PAYLOAD_DATA/${site}\"
-    - \"$PWD/$PAYLOADS_DIR/android-tools:$PAYLOAD_ANDROID_TOOLS\"
-    - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
-    - \"$PWD/$PAYLOADS_DIR/firefox:/firefox\"
-  # The followings are to avoid D-Bus error in CentOS7
-    - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
-  cap_add:
-    - SYS_ADMIN
-  security_opt:
-    - seccomp:unconfined
-" > $docker_yml_file
+	## Output a site YML file (docker-compose.yml for ship)
+	[ -z "${ship_type}" ] && ship_type=standard
+	local site_yml_template=$SHIP_COMPOSER_TEMPLATE_DIR/${ship_type}.yml
+	eval echo "\"$(cat $site_yml_template)\"" > $docker_yml_file
     done
 
 }

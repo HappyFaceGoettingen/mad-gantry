@@ -1,20 +1,16 @@
 # Start HappyFace & HappyFaceMobile services
+
+## The environments in our tset systems
+ * Scientific Linux 7.3 or CentOS 7.3
+ * Docker Ver. 1.2
+ * Docker-compose Ver. 2.0
+
+
 ## Build HF template services 
      $ ./mad-gantry -a build
 
 ## Start HF template services
      $ ./mad-gantry -a up
-
-
-# Start Jenkins service
-## https://www.cloudbees.com/blog/get-started-jenkins-20-docker
-     $ docker pull jenkins
-     $ docker run --name jenkins -p 8080:8080 jenkins
-     $ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-
-## In mad-gantry
-     $ ./mad-gantry -a build -y templates/jenkins.template/docker-compose.yml
-     $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 
 
 # The mad-gantry CLI
@@ -97,6 +93,22 @@
 | HMF Integration el6 | OK | OK |
 | HMF Integration el7 | OK | OK |
 | Jenkins | X | OK |
+
+
+## Jenkins service (testing the template for now)
+### https://www.cloudbees.com/blog/get-started-jenkins-20-docker
+     $ docker pull jenkins
+     $ docker run --name jenkins -p 8080:8080 jenkins
+     $ docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+### In mad-gantry
+     $ ./mad-gantry -a build -y templates/jenkins.template/docker-compose.yml
+     $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
+
+
+
+## Some templates we've included
+* https://github.com/deviantony/docker-elk
 
 
 ## Reference
