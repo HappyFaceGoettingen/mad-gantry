@@ -10,7 +10,7 @@ put_level1_containers_onto_ship(){
 	    local sites=$(eval echo "\${LEVEL2_${site}_SITES[*]}")
 	    local hosts=$(eval echo "\${LEVEL2_${site}_HOSTS[*]}")
 	    local ports=$(eval echo "\${LEVEL2_${site}_PORTS[*]}")
-	    copy_site_configs level1 $site_dir
+	    copy_site_configs level1 $site_dir "${LEVEL1_SHIPS[$i]}"
 	    output_meta_meta_config "$sites" "$hosts" "$ports" $site_dir
 	fi
     done

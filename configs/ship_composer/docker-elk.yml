@@ -2,10 +2,12 @@ version: \"$DOCKER_YML_VERSION\"
 services:
 
   # ELK framework Ship Platform
-  elasticsearch:
+  ${lsite}elasticsearch:
     image: happyface/elasticsearch
     volumes:
-      - \"$PWD/$PAYLOADS_DIR/ELK/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml\"
+      - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+      - \"$PWD/$PAYLOADS_DIR/data/${site}/billing:/billing\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml\"
     ports:
       - \"9200:9200\"
       - \"9300:9300\"
@@ -14,11 +16,13 @@ services:
     networks:
       - elk
 
-  logstash:
+  ${lsite}logstash:
     image: happyface/logstash
     volumes:
-      - \"$PWD/$PAYLOADS_DIR/ELK/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml\"
-      - \"$PWD/$PAYLOADS_DIR/ELK/logstash/pipeline:/usr/share/logstash/pipeline\"
+      - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+      - \"$PWD/$PAYLOADS_DIR/data/${site}/billing:/billing\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash/pipeline:/usr/share/logstash/pipeline\"
     ports:
       - \"5000:5000\"
     environment:
@@ -26,19 +30,28 @@ services:
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      - ${lsite}elasticsearch
 
   ${site}:
     image: happyface/kibana
-    volumes:
-      - \"$PWD/$PAYLOADS_DIR/ELK/kibana/config/:/usr/share/kibana/config\"
     ports:
       - \"5601:5601\"
       - \"${ssh_port}:$DEFAULT_SSH_PORT\"
     networks:
       - elk
     depends_on:
-      - elasticsearch
+      - ${lsite}elasticsearch
+
+    volumes:
+      - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+      - \"$PWD/$PAYLOADS_DIR/data/${site}/billing:/billing\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/kibana/:/usr/share/kibana/config\"
+    # The followings are to avoid D-Bus error in CentOS7
+      - \"/sys/fs/cgroup:/sys/fs/cgroup:ro\"
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
 
 networks:
 

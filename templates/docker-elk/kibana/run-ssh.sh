@@ -1,4 +1,4 @@
 #!/bin/bash
 
-systemctl start sshd.service
+#systemctl start sshd.service
 

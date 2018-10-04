@@ -30,3 +30,19 @@ apply_custom_ship_configs(){
     fi
     return 0
 }
+
+
+## Selecting sub-functions, according to "ship_name"
+apply_special_custom_ship_configs(){
+    local site=$1
+    local site_dir=$2
+    local ship_name=$3
+
+    case $ship_name in
+	docker-elk)
+	    apply_elk_ship_configs $site $site_dir
+	    ;;
+	*)
+	    ;;
+    esac
+}

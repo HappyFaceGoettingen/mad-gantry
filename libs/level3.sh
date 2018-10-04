@@ -11,7 +11,7 @@ put_level3_containers_onto_ship(){
 	    [ ! -z "${ALL_LEVEL3_IMAGES[$i]}" ] && SHIP_IMAGE="${ALL_LEVEL3_IMAGES[$i]}"
 	    local site_dir=$PAYLOADS_DIR/sites/${ALL_LEVEL3_SITES[$i]}
 	    output_docker_yml "${ALL_LEVEL3_SITES[$i]}" "${ALL_LEVEL3_HOSTS[$i]}" "${ALL_LEVEL3_PORTS[$i]}" "${ALL_LEVEL3_SHIPS[$i]}"
-	    copy_site_configs level3 $site_dir
+	    copy_site_configs level3 $site_dir "${ALL_LEVEL3_SHIPS[$i]}"
 	    output_meta_meta_config "" "" "" $site_dir
 	fi
     done

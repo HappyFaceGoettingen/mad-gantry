@@ -114,7 +114,7 @@
 ## Reference
 * docker-compose: https://docs.docker.com/compose/
 * https://devcenter.bitrise.io/docker/run-your-build-locally-in-docker/
-
+* dCache logstash config: https://github.com/dCache/logstash4dcache
 
 ## Automatic rebuild (hourly CRON job)
      # Add the following line into crontab, then mad-gantry checks, rebuilds and reload the running containers every hour

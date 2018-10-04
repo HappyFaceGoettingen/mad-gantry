@@ -8,7 +8,7 @@ put_level2_containers_onto_ship(){
 	if [ "${ALL_LEVEL2_SITES[$i]}" == "$site" ]; then
 	    local site_dir=$PAYLOADS_DIR/sites/${ALL_LEVEL2_SITES[$i]}
 	    output_docker_yml "${ALL_LEVEL2_SITES[$i]}" "${ALL_LEVEL2_HOSTS[$i]}" "${ALL_LEVEL2_PORTS[$i]}" "${ALL_LEVEL2_SHIPS[$i]}"
-	    copy_site_configs level2 $site_dir
+	    copy_site_configs level2 $site_dir "${ALL_LEVEL2_SHIPS[$i]}"
 	    output_meta_meta_config "" "" "" $site_dir
 	fi
     done

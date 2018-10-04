@@ -161,6 +161,7 @@ output_docker_yml(){
     do
 	local docker_yml_file=$SHIP_DIR/${site_names[$i]}/docker-compose.yml
 	local site=${site_names[$i]}
+	local lsite=$(echo "$site" | sed 's/\(.*\)/\L\1/')
 	local host=${hosts[$i]}
 	local web_port=$(($WEB_PORT_START + ${ports[$i]}))
 	local mobile_port=$(($MOBILE_PORT_START + ${ports[$i]}))
@@ -225,6 +226,7 @@ output_meta_meta_config(){
 copy_site_configs(){
     local level=$1
     local site_dir=$2
+    local ship_name=$3
     local site=$(basename $site_dir)
 
     [ ! -e $site_dir ] && mkdir -pv $site_dir
@@ -243,6 +245,10 @@ copy_site_configs(){
 
     ## Applying unique configurations for this ship
     apply_custom_ship_configs $site $site_dir/config.json
+
+    ## Applying special custom configs such as Kibana. The action is distinguished by "ship" type
+    apply_special_custom_ship_configs $site $site_dir $ship_name
+    
 }
 
 

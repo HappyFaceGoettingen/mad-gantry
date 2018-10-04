@@ -25,6 +25,6 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 ## run ssh daemon
 ADD run-ssh.sh /usr/local/sbin/run-ssh.sh
-CMD ["/usr/local/sbin/run-ssh.sh"]
+#CMD ["/usr/local/sbin/run-ssh.sh"]
 
 
