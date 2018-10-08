@@ -106,15 +106,20 @@
      $ ./mad-gantry -a up -y templates/jenkins.template/docker-compose.yml
 
 
-
-## Some templates we've included
+## ELK (Elasticsearch - Logstash - Kibana) framework
+### dCache Logstash configuration
+* https://github.com/dCache/logstash4dcache
 * https://github.com/deviantony/docker-elk
+
+### Test dCache billing queries
+* To elasticsearch http://127.0.0.1:9200/dcache-billing-*/_search?pretty=true&q=*:*
 
 
 ## Reference
 * docker-compose: https://docs.docker.com/compose/
 * https://devcenter.bitrise.io/docker/run-your-build-locally-in-docker/
 * dCache logstash config: https://github.com/dCache/logstash4dcache
+* Elastic search reference: https://www.elastic.co/guide/en/elasticsearch/reference/index.html
 
 ## Automatic rebuild (hourly CRON job)
      # Add the following line into crontab, then mad-gantry checks, rebuilds and reload the running containers every hour

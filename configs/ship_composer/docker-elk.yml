@@ -23,6 +23,7 @@ services:
       - \"$PWD/$PAYLOADS_DIR/data/${site}/billing:/billing\"
       - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml\"
       - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash/pipeline:/usr/share/logstash/pipeline\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash/patterns:/usr/share/logstash/patterns\"
     ports:
       - \"5000:5000\"
     environment:
