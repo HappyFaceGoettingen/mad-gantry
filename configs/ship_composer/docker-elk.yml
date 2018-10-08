@@ -36,7 +36,7 @@ services:
   ${site}:
     image: happyface/kibana
     ports:
-      - \"5601:5601\"
+      - \"20261:5601\"
       - \"${ssh_port}:$DEFAULT_SSH_PORT\"
     networks:
       - elk
