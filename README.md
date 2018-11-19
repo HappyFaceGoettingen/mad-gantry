@@ -84,14 +84,10 @@
 ----|----|----
 | HF Core el6 | OK | OK |
 | HF Core el7 | OK | NO |
-| MF Core el6 | OK | OK |
-| MF Core el7 | OK | OK |
-| HF Mobile el6 | OK | -- |
-| HF Mobile el7 | OK | -- |
-| MF Mobile el6 | OK | -- |
-| MF Mobile el7 | OK | -- |
-| HMF Integration el6 | OK | OK |
-| HMF Integration el7 | OK | OK |
+| HF v1 Mobile el6 | OK | -- |
+| HF v1 Mobile el7 | OK | -- |
+| HF v2 Mobile development el6 | NO | NO |
+| HF v2 Mobile development el7 | OK | OK |
 | Jenkins | X | OK |
 
 
