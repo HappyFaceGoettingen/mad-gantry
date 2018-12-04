@@ -57,3 +57,5 @@ REQUEST_DCAP %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} (\[%{DATA:
 REMOVE_ON_POOL %{BILLING_TIME:billing_time} Pool=%{DATA:cell_name};RemoveFiles=,%{GREEDYDATA:pnfsids}
 REMOVE_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} %{PNFSID_SIZE} %{PATH} %{SUNIT} %{ERROR}
 REMOVE_SRM %{BILLING_TIME:billing_time} %{CELL_AND_DOMAIN_AND_TYPE} %{REQUESTDN} %{PNFSID_TSIZE} %{PATH} <Unknown> 0 0 %{ERROR}
+
+POOL_WARNING %{BILLING_TIME:billing_time} \[PoolManager:PoolManager:warning\] %{ERROR}
