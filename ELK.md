@@ -1,6 +1,9 @@
 # Elasticsearch - Logstash - Kibana (ELK) framework
 
 ## Command snippets
+* Check logs in elasticseach instance
+     docker logs -f $(docker ps | grep elastic| awk '{print $1}')
+
 * List indexes
      curl 'localhost:9200/_cat/indices?v'
 * Simple matches
