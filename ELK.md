@@ -1,9 +1,11 @@
 # Elasticsearch - Logstash - Kibana (ELK) framework
 
 ## Command snippets
+* List indexes
+     curl 'localhost:9200/_cat/indices?v'
 * Simple matches
-     curl -XPOST 'localhost:9200/_search' -d '{"query": { "match_all": {} } }'
-     curl -XPOST 'localhost:9200/_search' -d '{"query": { "match": { "pool_name": "pool-p1-1-data" } } }'
+     curl -XPOST 'localhost:9200/_search?pretty=true' -d '{"query": { "match_all": {} } }'
+     curl -XPOST 'localhost:9200/_search?pretty=true' -d '{"query": { "match": { "pool_name": "pool-p1-1-data" } } }'
 
 * Aggregations
      curl -XPOST 'localhost:9200/_search' -d '{"aggs": { "all_interests": { "terms": {"field": "size"} } } }'
