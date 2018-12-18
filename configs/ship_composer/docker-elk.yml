@@ -8,6 +8,7 @@ services:
       - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
       - \"$PWD/$PAYLOADS_DIR/data/${site}/billing:/billing\"
       - \"$PWD/$PAYLOADS_DIR/sites/${site}/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml\"
+      - \"$PWD/$PAYLOADS_DIR/data/${site}/elasticsearch_index_data:/usr/share/elasticsearch/data\"
     ports:
       - \"9200:9200\"
       - \"9300:9300\"

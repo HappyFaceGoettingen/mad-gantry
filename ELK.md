@@ -1,5 +1,11 @@
 # Elasticsearch - Logstash - Kibana (ELK) framework
 
+## Saving dashboard
+     GET http://localhost:20261/api/kibana/dashboards/export?dashboard=AWeXmuoICywmhE8FvCht > export.json
+     curl -u elastic:changeme -k -XPOST 'http://localhost:20261/api/kibana/dashboards/import' -H 'Content-Type: application/json' -H "kbn-xsrf: true" -d @export.json
+
+
+
 ## Command snippets
 * Check logs in elasticseach instance
      docker logs -f $(docker ps | grep elastic| awk '{print $1}')

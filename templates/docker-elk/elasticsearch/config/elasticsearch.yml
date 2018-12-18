@@ -23,3 +23,4 @@ xpack.security.enabled: false
 xpack.monitoring.enabled: false
 xpack.ml.enabled: false
 xpack.watcher.enabled: false
+xpack.graph.enabled: true
