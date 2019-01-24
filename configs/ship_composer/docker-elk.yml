@@ -14,7 +14,7 @@ services:
       - \"9300:9300\"
     environment:
       #ES_JAVA_OPTS: \"-Xmx5g -Xms5g -XX:NewSize=16g -XX:MaxNewSize=16g -XX:MaxTenuringThreshold=2 -XX:SurvivorRatio=30\"
-      ES_JAVA_OPTS: \"-Xmx5g -Xms5g\"
+      ES_JAVA_OPTS: \"-Xmx7g -Xms7g\"
     networks:
       - elk
 
