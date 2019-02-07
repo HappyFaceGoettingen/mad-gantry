@@ -1,6 +1,6 @@
 # https://github.com/elastic/kibana-docker
 #FROM docker.elastic.co/kibana/kibana:5.6.3
-FROM docker.elastic.co/kibana/kibana:6.3.0
+FROM docker.elastic.co/kibana/kibana:6.3.2
 
 # Add your kibana plugins setup here
 # Example: RUN kibana-plugin install <name|url>
@@ -24,8 +24,8 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 
-## run ssh daemon
-ADD run-ssh.sh /usr/local/sbin/run-ssh.sh
-#CMD ["/usr/local/sbin/run-ssh.sh"]
+## Overwriting the kibana-docker script
+ADD kibana-docker /usr/local/bin/kibana-docker
+
 
 

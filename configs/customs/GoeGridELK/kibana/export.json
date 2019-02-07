@@ -4,7 +4,7 @@
     {
       "id": "AWeXh9o8CywmhE8FvChn",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Average size of transfers [protocol]",
@@ -21,7 +21,7 @@
     {
       "id": "AWeXkIF1CywmhE8FvChr",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Frequency of errors [protocol]",
@@ -38,7 +38,7 @@
     {
       "id": "AWeXj4C6CywmhE8FvChq",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Frequency of errors [error_code]",
@@ -55,7 +55,7 @@
     {
       "id": "AWeXndZCCywmhE8FvChu",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Frequency of transfers [protocol]",
@@ -72,7 +72,7 @@
     {
       "id": "AWeXjaA_CywmhE8FvChp",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Ratio of Protocol errors",
@@ -89,7 +89,7 @@
     {
       "id": "AWeXq2R8CywmhE8FvChw",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Ratio of Error types",
@@ -106,7 +106,7 @@
     {
       "id": "AWeX-aJ5CywmhE8FvChy",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Frequency of pool transfer errors",
@@ -123,7 +123,7 @@
     {
       "id": "AWeX-nj-CywmhE8FvChz",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Ratio of Pool transfer errors",
@@ -140,7 +140,7 @@
     {
       "id": "AWeYL0qGCywmhE8FvCh5",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Ratio of failed domains",
@@ -157,7 +157,7 @@
     {
       "id": "AWeYS0TjCywmhE8FvCh-",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Ratio of failed hosts",
@@ -174,7 +174,7 @@
     {
       "id": "AWeYXeysCywmhE8FwQ-E",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Average time of failed transfers [protocol]",
@@ -191,7 +191,7 @@
     {
       "id": "AWeYX4h7CywmhE8FwjCy",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Average size of failed transfers [protocol]",
@@ -208,7 +208,7 @@
     {
       "id": "AWeYUqbhCywmhE8FvCiA",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Average time of transfers [protocol]",
@@ -225,7 +225,7 @@
     {
       "id": "AWeYp7DbCywmhE8F9-hB",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Error heart map [Host vs Protocol]",
@@ -242,7 +242,7 @@
     {
       "id": "AWeYphIGCywmhE8F9-hA",
       "type": "visualization",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Error heart map [Host vs Pool]",
@@ -259,7 +259,7 @@
     {
       "id": "068a3540-029e-11e9-a9ba-f5d786661b47",
       "type": "visualization",
-      "updated_at": "2018-12-18T08:22:14.932Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Map of Transfers",
@@ -276,7 +276,7 @@
     {
       "id": "ef551650-029e-11e9-a9ba-f5d786661b47",
       "type": "visualization",
-      "updated_at": "2018-12-18T08:28:45.493Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "Map of Errors",
@@ -293,7 +293,7 @@
     {
       "id": "AWeXfKGoCywmhE8FvChk",
       "type": "search",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "pool_exists",
@@ -315,7 +315,7 @@
     {
       "id": "AWeXhM17CywmhE8FvChm",
       "type": "search",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "non_errorcode",
@@ -337,7 +337,7 @@
     {
       "id": "AWeXi7CcCywmhE8FvCho",
       "type": "search",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "nonzero_errorcode",
@@ -359,7 +359,7 @@
     {
       "id": "dcb87d30-029d-11e9-a9ba-f5d786661b47",
       "type": "search",
-      "updated_at": "2018-12-18T08:21:04.771Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "geocity_all",
@@ -381,7 +381,7 @@
     {
       "id": "d07be6a0-029e-11e9-a9ba-f5d786661b47",
       "type": "search",
-      "updated_at": "2018-12-18T08:27:53.738Z",
+      "updated_at": "2019-01-28T12:31:49.744Z",
       "version": 1,
       "attributes": {
         "title": "geocity_all_nonzero",
@@ -403,7 +403,7 @@
     {
       "id": "AWeTCz-yCywmhE8Fd22F",
       "type": "index-pattern",
-      "updated_at": "2018-12-17T19:39:43.183Z",
+      "updated_at": "2019-01-28T15:08:39.882Z",
       "version": 1,
       "attributes": {
         "title": "dcache-billing-*",
@@ -415,8 +415,8 @@
     {
       "id": "0828f3c0-0233-11e9-a277-b55bfb50e3b9",
       "type": "index-pattern",
-      "updated_at": "2018-12-17T19:36:27.284Z",
-      "version": 2,
+      "updated_at": "2019-01-28T12:31:49.744Z",
+      "version": 1,
       "attributes": {
         "title": "dcache-billing-*",
         "timeFieldName": "@timestamp",
@@ -426,18 +426,18 @@
     {
       "id": "AWeXmuoICywmhE8FvCht",
       "type": "dashboard",
-      "updated_at": "2018-12-18T08:30:40.864Z",
-      "version": 3,
+      "updated_at": "2019-01-28T16:03:54.986Z",
+      "version": 2,
       "attributes": {
         "title": "Dashboard",
         "hits": 0,
         "description": "",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":53,\"w\":48,\"h\":30,\"i\":\"1\"},\"id\":\"AWeXh9o8CywmhE8FvChn\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"2\",\"gridData\":{\"x\":0,\"y\":152,\"w\":24,\"h\":15,\"i\":\"2\"},\"id\":\"AWeXkIF1CywmhE8FvChr\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":24,\"y\":152,\"w\":24,\"h\":15,\"i\":\"3\"},\"id\":\"AWeXj4C6CywmhE8FvChq\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":28,\"w\":48,\"h\":25,\"i\":\"4\"},\"id\":\"AWeXndZCCywmhE8FvChu\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":0,\"y\":167,\"w\":24,\"h\":15,\"i\":\"6\"},\"id\":\"AWeXjaA_CywmhE8FvChp\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":24,\"y\":167,\"w\":24,\"h\":15,\"i\":\"7\"},\"id\":\"AWeXq2R8CywmhE8FvChw\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":24,\"y\":182,\"w\":24,\"h\":15,\"i\":\"9\"},\"id\":\"AWeX-aJ5CywmhE8FvChy\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"10\",\"gridData\":{\"x\":0,\"y\":182,\"w\":24,\"h\":15,\"i\":\"10\"},\"id\":\"AWeX-nj-CywmhE8FvChz\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"11\",\"gridData\":{\"x\":24,\"y\":137,\"w\":24,\"h\":15,\"i\":\"11\"},\"id\":\"AWeYL0qGCywmhE8FvCh5\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"15\",\"gridData\":{\"x\":0,\"y\":137,\"w\":24,\"h\":15,\"i\":\"15\"},\"id\":\"AWeYS0TjCywmhE8FvCh-\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"17\",\"gridData\":{\"x\":0,\"y\":197,\"w\":24,\"h\":15,\"i\":\"17\"},\"id\":\"AWeYXeysCywmhE8FwQ-E\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"18\",\"gridData\":{\"x\":24,\"y\":197,\"w\":24,\"h\":15,\"i\":\"18\"},\"id\":\"AWeYX4h7CywmhE8FwjCy\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"19\",\"gridData\":{\"x\":0,\"y\":83,\"w\":48,\"h\":25,\"i\":\"19\"},\"id\":\"AWeYUqbhCywmhE8FvCiA\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"21\",\"gridData\":{\"x\":24,\"y\":212,\"w\":24,\"h\":15,\"i\":\"21\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 50,000\":\"rgb(255,245,240)\",\"100,000 - 150,000\":\"rgb(251,106,74)\",\"150,000 - 200,000\":\"rgb(203,24,29)\",\"50,000 - 100,000\":\"rgb(252,187,161)\"}}},\"id\":\"AWeYp7DbCywmhE8F9-hB\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"22\",\"gridData\":{\"x\":0,\"y\":212,\"w\":24,\"h\":15,\"i\":\"22\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 8,750\":\"rgb(255,245,240)\",\"17,500 - 26,250\":\"rgb(251,106,74)\",\"26,250 - 35,000\":\"rgb(203,24,29)\",\"8,750 - 17,500\":\"rgb(252,187,161)\"}}},\"id\":\"AWeYphIGCywmhE8F9-hA\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"23\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":28,\"i\":\"23\"},\"version\":\"6.3.0\",\"type\":\"visualization\",\"id\":\"068a3540-029e-11e9-a9ba-f5d786661b47\",\"embeddableConfig\":{\"mapZoom\":3,\"mapCenter\":[50.28933925329178,-1.2304687500000002]}},{\"panelIndex\":\"24\",\"gridData\":{\"x\":0,\"y\":108,\"w\":48,\"h\":29,\"i\":\"24\"},\"version\":\"6.3.0\",\"type\":\"visualization\",\"id\":\"ef551650-029e-11e9-a9ba-f5d786661b47\",\"embeddableConfig\":{\"mapZoom\":3,\"mapCenter\":[50.064191736659104,0.3515625]}}]",
+        "panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":53,\"w\":48,\"h\":30,\"i\":\"1\"},\"id\":\"AWeXh9o8CywmhE8FvChn\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"2\",\"gridData\":{\"x\":0,\"y\":152,\"w\":24,\"h\":15,\"i\":\"2\"},\"id\":\"AWeXkIF1CywmhE8FvChr\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":182,\"w\":24,\"h\":15,\"i\":\"3\"},\"id\":\"AWeXj4C6CywmhE8FvChq\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":28,\"w\":48,\"h\":25,\"i\":\"4\"},\"id\":\"AWeXndZCCywmhE8FvChu\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"6\",\"gridData\":{\"x\":24,\"y\":152,\"w\":24,\"h\":15,\"i\":\"6\"},\"id\":\"AWeXjaA_CywmhE8FvChp\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"7\",\"gridData\":{\"x\":24,\"y\":182,\"w\":24,\"h\":15,\"i\":\"7\"},\"id\":\"AWeXq2R8CywmhE8FvChw\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"9\",\"gridData\":{\"x\":0,\"y\":167,\"w\":24,\"h\":15,\"i\":\"9\"},\"id\":\"AWeX-aJ5CywmhE8FvChy\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"10\",\"gridData\":{\"x\":24,\"y\":167,\"w\":24,\"h\":15,\"i\":\"10\"},\"id\":\"AWeX-nj-CywmhE8FvChz\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"11\",\"gridData\":{\"x\":24,\"y\":137,\"w\":24,\"h\":15,\"i\":\"11\"},\"id\":\"AWeYL0qGCywmhE8FvCh5\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"15\",\"gridData\":{\"x\":0,\"y\":137,\"w\":24,\"h\":15,\"i\":\"15\"},\"id\":\"AWeYS0TjCywmhE8FvCh-\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"17\",\"gridData\":{\"x\":0,\"y\":197,\"w\":24,\"h\":15,\"i\":\"17\"},\"id\":\"AWeYXeysCywmhE8FwQ-E\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"18\",\"gridData\":{\"x\":24,\"y\":197,\"w\":24,\"h\":15,\"i\":\"18\"},\"id\":\"AWeYX4h7CywmhE8FwjCy\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"19\",\"gridData\":{\"x\":0,\"y\":83,\"w\":48,\"h\":25,\"i\":\"19\"},\"id\":\"AWeYUqbhCywmhE8FvCiA\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"21\",\"gridData\":{\"x\":24,\"y\":212,\"w\":24,\"h\":15,\"i\":\"21\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 50,000\":\"rgb(255,245,240)\",\"100,000 - 150,000\":\"rgb(251,106,74)\",\"150,000 - 200,000\":\"rgb(203,24,29)\",\"50,000 - 100,000\":\"rgb(252,187,161)\"}}},\"id\":\"AWeYp7DbCywmhE8F9-hB\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"22\",\"gridData\":{\"x\":0,\"y\":212,\"w\":24,\"h\":15,\"i\":\"22\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 8,750\":\"rgb(255,245,240)\",\"17,500 - 26,250\":\"rgb(251,106,74)\",\"26,250 - 35,000\":\"rgb(203,24,29)\",\"8,750 - 17,500\":\"rgb(252,187,161)\"}}},\"id\":\"AWeYphIGCywmhE8F9-hA\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"23\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":28,\"i\":\"23\"},\"embeddableConfig\":{\"mapCenter\":[50.28933925329178,-1.2304687500000002],\"mapZoom\":3},\"id\":\"068a3540-029e-11e9-a9ba-f5d786661b47\",\"type\":\"visualization\",\"version\":\"6.3.0\"},{\"panelIndex\":\"24\",\"gridData\":{\"x\":0,\"y\":108,\"w\":48,\"h\":29,\"i\":\"24\"},\"embeddableConfig\":{\"mapCenter\":[50.064191736659104,0.3515625],\"mapZoom\":3},\"id\":\"ef551650-029e-11e9-a9ba-f5d786661b47\",\"type\":\"visualization\",\"version\":\"6.3.0\"}]",
         "optionsJSON": "{\"darkTheme\":false,\"useMargins\":false}",
         "version": 1,
         "timeRestore": true,
         "timeTo": "now",
-        "timeFrom": "now-30d",
+        "timeFrom": "now-2y",
         "refreshInterval": {
           "display": "Off",
           "pause": false,
