@@ -171,12 +171,12 @@ restore_kibana_dashboard(){
     ! [ -e $restore_file ] && echo "[$restore_file] does not exist" && exit -1
 
     ## Restoring the service
-    for i in $(seq 1 12)
+    for i in $(seq 1 60)
     do
 	bash -x $restore_file
 	[ $? -eq 0 ] && echo "Restored Kibana Dashboard" && exit 0
 	echo "Failed [$i]: could not restore Kibana dashboard. Retrying..."
-	sleep 300
+	sleep 60
     done
     exit -1
 }

@@ -4,3 +4,6 @@ FROM docker.elastic.co/logstash/logstash:6.5.4
 
 # Add your logstash plugins setup here
 # Example: RUN logstash-plugin install logstash-filter-json
+
+## Replacing docker-entrypoint
+ADD docker-entrypoint /usr/local/bin/
