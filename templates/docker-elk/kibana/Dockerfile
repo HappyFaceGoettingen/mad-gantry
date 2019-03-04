@@ -24,6 +24,11 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 
+## Adding kbn_network plugin
+RUN yum -y install epel-release; yum -y install git npm
+RUN cd /usr/share/kibana/plugins; git clone https://github.com/dlumbrer/kbn_network.git network_vis -b 6.4-dev; cd network_vis; rm -rf images; npm install
+
+
 ## Overwriting the kibana-docker script
 ADD kibana-docker /usr/local/bin/kibana-docker
 
