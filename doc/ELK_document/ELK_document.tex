@@ -20,6 +20,7 @@
 \fi
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{longtable,booktabs}
 \usepackage{graphicx}
 % Redefine \includegraphics so that, unless explicit options are
 % given, the image width will not exceed the width of the page.
@@ -91,13 +92,13 @@ collaborate with different groups of people in different monitoring ways
 simultaneously within the same experiment, in our case, ATLAS. This
 allows us to distribute several types of monitoring and administration
 tasks that are possible in both centralized systems and hierarchical
-models. As for a storage system of German ATLAS computing Tier1/Tier2
-sites, dCache storage system developed by DESY is widely used. The
-dCache can use hierarchical storage management (e.g.~over many RAID
-disks and tapes), provides mechanisms to automatically increase
-performance and balance loads, increase resilience and availability. It
-also supplies advanced control systems and various grid protocols to
-manage data as well as data workflow in each site.
+models {[}8{]}. As for a storage system of German ATLAS computing
+Tier1/Tier2 sites, dCache storage system developed by DESY is widely
+used. The dCache can use hierarchical storage management (e.g.~over many
+RAID disks and tapes), provides mechanisms to automatically increase
+performance and balance loads, increase resilience and availability
+{[}9{]}. It also supplies advanced control systems and various grid
+protocols to manage data as well as data workflow in each site.
 
 \subsection{About Elasticsearch-Logstash-Kibana
 (ELK)}\label{about-elasticsearch-logstash-kibana-elk}
@@ -108,10 +109,10 @@ unstructured data source, at any scale. From centralizing infrastructure
 logs, traces, and metrics to deliver administrators. ELK is a combined
 system that parse the records, collect and display information of
 different log files or messages so that one can recall and display
-specific records. In our practical use-case, final outcomes given by the
-Kibana dashbaord has been displayed by internal/external dCache data
-workflow and information recorded by its billing log files so far. Many
-organizations worldwide are using the ELK Stack for various
+specific records {[}4{]}. In our practical use-case, final outcomes
+given by the Kibana dashbaord has been displayed by internal/external
+dCache data workflow and information recorded by its billing log files
+so far. Many organizations worldwide are using the ELK Stack for various
 mission-critical use cases in ATLAS and some large Tier1s as well.
 
 \subsection{Docker}\label{docker}
@@ -199,8 +200,26 @@ Our settings running with test data of GoeGrid Tier2 site are
 \item
   Docker Compose: X.X.X
 \item
-  Size of dCache billing log (10 years): XXX
+  Size of dCache billing log (10 years): 442GB
 \end{itemize}
+
+\begin{longtable}[c]{@{}cccc@{}}
+\toprule\addlinespace
+Size of billing (GB) & Years & Index size & Elapsed time (hours)
+\\\addlinespace
+\midrule\endhead
+72 & 1 & 156.2 & Y
+\\\addlinespace
+129 & 2 & 296.8 & Y
+\\\addlinespace
+365 & 4 & 512.6 & Y
+\\\addlinespace
+430 & 8 & X & Y
+\\\addlinespace
+442 & 10 & X & Y
+\\\addlinespace
+\bottomrule
+\end{longtable}
 
 \section{Logstash}\label{logstash}
 
@@ -211,20 +230,25 @@ message bus clients. There are many built-in patterns and plugins that
 are supported out-of-the-box by Logstash for filtering items such as
 words, numbers, and dates. If we cannot find the pattern we need, we can
 write own custom pattern. In our dCache billing log use-case so far, we
-put our pattern based on a standard dCache logstash template (Ref X).
+put our pattern based on a standard dCache logstash template
+{[}4{]}{[}5{]}.
 
 \subsection{Logstash configuraiton for dCache billing
 log}\label{logstash-configuraiton-for-dcache-billing-log}
 
+The pattern and pipeline files are defined by
+`customs/\emph{/logstash/pattern' and 'customs/}/logstash/pipeline'.
+
 \section{Elasticsearch}\label{elasticsearch}
 
-Elasticsearch is a real-time distributed search and analytics engine. It
-allows one to explore data at a speed and at a scale never before
-possible. It is used for full-text search, structured search, analytics,
-and all in combination. Elasticsearch is an open-source search engine
-built on top of Apache Lucene, a fulltext search-engine library.
-However, Elasticsearch is much more than just Lucene and much more than
-just full-text search. It can also be described as follows:
+Elasticsearch is a real-time distributed search and analytics engine
+{[}4{]}{[}6{]}. It allows one to explore data at a speed and at a scale
+never before possible. It is used for full-text search, structured
+search, analytics, and all in combination. Elasticsearch is an
+open-source search engine built on top of Apache Lucene, a fulltext
+search-engine library. However, Elasticsearch is much more than just
+Lucene and much more than just full-text search. It can also be
+described as follows:
 
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
@@ -248,6 +272,22 @@ this case) and get number of indices stored.
 
 \begin{verbatim}
   $ curl 'localhost:9200/_cat/indices?v'
+
+  health status index                  uuid                   pri rep docs.count
+  yellow open   dcache-billing-2017.10 9ocm5mfoQX255Z8Z4NWwrA   5   1   33336024
+  yellow open   dcache-billing-2017.09 bz1ZBIa4SmqetFGBpqruWA   5   1   17306766
+  yellow open   dcache-billing-2018.02 iFuFB03PR_SsNNpf6sXpxw   5   1   25118420
+  yellow open   dcache-billing-2018.01 HitUUihaRuGBnd47Ma98Bg   5   1   24001272
+  yellow open   dcache-billing-2017.05 rnU_rxhcTt6Y-D6AeWxy8A   5   1   23641828
+  yellow open   dcache-billing-2017.11 8s3hp4lBRzatjMzXDaNbUQ   5   1   49539540
+  yellow open   dcache-billing-2018.04 vRUN0b08T4iZrvyNpxOcgA   5   1   26639090
+  yellow open   dcache-billing-2018.12 GFhoMTqfSWKO80lp6iurfg   5   1   63447534
+  yellow open   dcache-billing-2017.07 cleYoAc-QM2DgcpfiJnj6Q   5   1   31308502
+  yellow open   dcache-billing-2018.11 QJxVUAqESSOGumiG5lk1cA   5   1   48383944
+  yellow open   dcache-billing-2018.07 gfCszQ_4RUulIjn42guNUw   5   1   16616834
+  green  open   .kibana                E-J_GSkdRj22BN7DQHMN_Q   1   0         27
+  yellow open   dcache-billing-2019.04 A9Ic3--tQjaML_Zg_daFXA   5   1   11335536
+  yellow open   dcache-billing-2018.09 MkD363YHRUqsIAZvTMCsCA   5   1   29330778
 \end{verbatim}
 
 \section{Kibana}\label{kibana}
@@ -255,22 +295,23 @@ this case) and get number of indices stored.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/kibana.png}
-\caption{Figure 5-1. Main dashboard}
+\caption{Figure 5-1. Main Dashboard}
 \end{figure}
 
 Kibana is an open source analytics and visualization platform designed
-to work with Elasticsearch. We use Kibana to search, view, and interact
-with data stored in Elasticsearch indices. We can easily perform the
-data analysis and visualize our data in a variety of charts, tables, and
-maps. Kibana makes a large local site easy to understand large volumes
-of data, for instance, dCache billing log. Its simple, browser-based
-interface enables you to quickly create and share dynamic dashboards
-that display changes to Elasticsearch queries in real time.
+to work with Elasticsearch {[}4{]}{[}6{]}. We use Kibana to search,
+view, and interact with data stored in Elasticsearch indices. We can
+easily perform the data analysis and visualize our data in a variety of
+charts, tables, and maps. Kibana makes a large local site easy to
+understand large volumes of data, for instance, dCache billing log. Its
+simple, browser-based interface enables you to quickly create and share
+dynamic dashboards that display changes to Elasticsearch queries in real
+time.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/kibana_error.png}
-\caption{Figure 5-1. Main error dashboard}
+\caption{Figure 5-1. Main Error Dashboard}
 \end{figure}
 
 \section{Cookbook}\label{cookbook}
@@ -294,7 +335,8 @@ site}\label{running-elk-stack-in-a-atlas-tier2-site}
 
   billing elasticsearch\_index\_data
 \item
-  Copy billing logs into the billing directory
+  Copy billing logs into the billing directory (Note: indices will be
+  kept in the `elasticsearch\_index\_data' directory)
 \item
   Turn GoeGridELK instance up
 
@@ -303,11 +345,115 @@ site}\label{running-elk-stack-in-a-atlas-tier2-site}
   \$ docker ps
 \end{itemize}
 
+\subsection{Configuration files and
+templates}\label{configuration-files-and-templates}
+
+There are some templates for ELK and dCache. These can most easily be
+configured by copying them. Please note the templates of ELK used for
+the test instance above mentioned can be found in
+`configs/customs/GoeGridELK' and the templates are copied into
+`ship/GoeGridELK' directory when it is set up. The interal configuration
+parameters in the template files, such as `\textbf{SITE}',
+`\textbf{PORT}' and so, on are adjusted by a configuration of
+`ticket.conf'.
+
+For instance, the site names and the docker images of `GoeGridELK' are
+defined by Tier3 section of the `ticket.conf' file.
+
+\begin{verbatim}
+  ## ALL level3 sites (= Level3), level 3 sites are not in a tree structure
+  ALL_LEVEL3_SITES=(AdminServer ApplicationBuilder GoeGridELK)
+  ALL_LEVEL3_IMAGES=("happyface/admin-server.el7" "" "happyface/kibana")
+  ALL_LEVEL3_HOSTS=($CLOUD0 $CLOUD0 $CLOUD0)
+  ALL_LEVEL3_PORTS=(101 102 103)
+  ALL_LEVEL3_SHIPS=("" "" "docker-elk")
+\end{verbatim}
+
+When the GoeGridELK and setup option of the gantry command are called,
+the ship YAML file (ship/GoeGridELK/docker-compose.yml) generated and
+the custom tempalates are copied (from `configs/customs/GoeGridELK') to
+`payloads/sites/GoeGridELK'.
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  configs/customs/GoeGridELK/kibana/kibana.yml
+\end{itemize}
+
+Default Kibana configuration from kibana-docker.
+
+\begin{verbatim}
+  ## from https://github.com/elastic/kibana-docker/blob/master/build/kibana/config/kibana.yml
+  #
+  server.name: kibana
+  server.host: "0"
+  elasticsearch.url: http://__SITE__elasticsearch:__PORT__
+  
+  ## Disable X-Pack
+  ## see https://www.elastic.co/guide/en/x-pack/current/xpack-settings.html
+  ##     https://www.elastic.co/guide/en/x-pack/current/installing-xpack.html#xpack-enabling
+  #
+  xpack.security.enabled: false
+  xpack.monitoring.enabled: false
+  xpack.ml.enabled: false
+  xpack.graph.enabled: true
+  xpack.reporting.enabled: false
+  xpack.grokdebugger.enabled: false
+\end{verbatim}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  ship/GoeGridELK/docker-compose.yml
+\end{itemize}
+
+A final template for Docker Compose
+
+\begin{verbatim}
+ Version: "2.0"
+    services:
+    
+    # ELK framework Ship Platform
+    goegridelkelasticsearch:
+    image: happyface/elasticsearch
+    volumes:
+       - "/home/gen/mad-gantry/payloads/ssh:/root/.ssh"
+       - "/home/gen/mad-gantry/payloads/data/GoeGridELK/billing:/billing"
+       - "/home/gen/mad-gantry/payloads/sites/GoeGridELK/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+       - "/home/gen/mad-gantry/payloads/data/GoeGridELK/elasticsearch_index_data:/usr/share/elasticsearch/data"
+    ports:
+       - "9200:9200"
+       - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx7g -Xms7g"
+    networks:
+       - elk
+    .......
+\end{verbatim}
+
 \subsection{Manipulating Kibana
 Visualisation}\label{manipulating-kibana-visualisation}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/kibana_vis1.png}
+\caption{Figure 6-1. Kibana Visualisation Tab}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/kibana_vis1.png}
+\caption{Figure 6-2. Selecting a Kibana Visualisation Panel}
+\end{figure}
+
 \subsection{Manipulating Kibana
 Dashboard}\label{manipulating-kibana-dashboard}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{images/kibana_error.png}
+\caption{Figure 6-3. Kibana Main Dashboard}
+\end{figure}
 
 \subsection{Saving Kibana dashboard}\label{saving-kibana-dashboard}
 
@@ -316,15 +462,20 @@ WeXmuoICywmhE8FvCht). So, exporting the JSON output, and re-using it
 when the service is up again.
 
 \begin{verbatim}
- $ GET http://localhost:20261/api/kibana/dashboards/export?dashboard=AWeXmuoICywmhE8FvCht > export.json
- $ curl -u elastic:changeme -k -XPOST 'http://localhost:20261/api/kibana/dashboards/import' -H 'Content-Type: application/json' -H "kbn-xsrf: true" -d @export.json
+ $ id=WeXmuoICywmhE8FvCht
+ $ export_url="http://localhost:20261/api/kibana/dashboards/export?dashboard=$id"
+ $ GET "$export_url" > export.json
+
+ $ import_url="http://localhost:20261/api/kibana/dashboards/import"
+ $ curl -u elastic:changeme -k -XPOST "$import_url" \
+     -H 'Content-Type: application/json' -H "kbn-xsrf: true" -d @export.json
 \end{verbatim}
 
 \subsection{Command snippets for
 Elasticsearch}\label{command-snippets-for-elasticsearch}
 
 There are many client tools for Elasticsearch. These can most easily be
-communicated through REstFul web service in Elasticsearch engine.
+communicated through RESTful web service in Elasticsearch engine.
 
 \begin{itemize}
 \item
@@ -361,5 +512,26 @@ communicated through REstFul web service in Elasticsearch engine.
 \end{itemize}
 
 \section{Reference}\label{reference}
+
+{[}1{]} Docker, https://www.docker.com/
+
+{[}2{]} Docker Hub, https://hub.docker.com/
+
+{[}3{]} Docker Compose, https://docs.docker.com/compose/
+
+{[}4{]} ELK Stack, https://www.elastic.co/elk-stack
+
+{[}5{]} Logstash, https://www.elastic.co/products/logstash
+
+{[}6{]} Elasticsearch, https://www.elastic.co/products/elasticsearch
+
+{[}7{]} Kibana, https://www.elastic.co/products/kibana
+
+{[}8{]} Campana, S., \& Atlas Collaboration. (2014). Evolution of the
+ATLAS distributed computing system during the LHC long shutdown. In
+Journal of Physics: Conference Series (Vol. 513, No. 3, p.~032016). IOP
+Publishing.
+
+{[}9{]} dCache, https://www.dcache.org/
 
 \end{document}
