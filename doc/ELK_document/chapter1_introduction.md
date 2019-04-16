@@ -19,7 +19,7 @@ What is the ELK stack, and why should we care? ELK stack deliver actionable insi
 
 Docker has become the de facto standard that developers and system administrators use for packaging, deploying, and running distributed applications. It provides tools for simplifying mission-critial operations and administrations by enabling developers to create templates called images that can be used to create lightweight virtual machines called containers, which include their applications and all of their applications’ dependencies. These lightweight virtual machines can be promoted through testing and production environments where system administrators deploy and run them.
 
-![Figure 1-1. How docker works.](images/docker.png)
+![How docker works.](images/docker.png)
 
 Similar to the popular version control software Git, Docker has a social aspect, in that developers and administrators are able to share their images via Docker Hub (Figure 1-1). Docker is an open-source solution that runs natively on Linux but also works on Windows and Mac using a lightweight Linux distribution and VirtualBox. Many tools have also grown up around Docker to make it easier to manage and orchestrate complex distributed applications such as grid monitoring tools and the ELK stack.
 

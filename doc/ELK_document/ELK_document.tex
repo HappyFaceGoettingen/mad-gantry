@@ -130,7 +130,7 @@ administrators deploy and run them.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/docker.png}
-\caption{Figure 1-1. How docker works.}
+\caption{How docker works.}
 \end{figure}
 
 Similar to the popular version control software Git, Docker has a social
@@ -188,19 +188,19 @@ Our settings running with test data of GoeGrid Tier2 site are
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  CPU: XXX
+  CPU: Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz x 40 Cores
 \item
-  Memory: XXX
+  Memory: 65 GB
 \item
-  HDD and SSD: XXX
+  HDD and SSD: 1 TB
 \item
   Operating system: Scientific Linux 7.5
 \item
-  Docker: X.X.X
+  Docker: 1.12.6
 \item
-  Docker Compose: X.X.X
+  Docker Compose: 1.9.0
 \item
-  Size of dCache billing log (10 years): 442GB
+  Size of dCache billing log (10 years): 442 GB
 \end{itemize}
 
 \begin{longtable}[c]{@{}cccc@{}}
@@ -208,11 +208,11 @@ Our settings running with test data of GoeGrid Tier2 site are
 Size of billing (GB) & Years & Index size & Elapsed time (hours)
 \\\addlinespace
 \midrule\endhead
-72 & 1 & 156.2 & Y
+72 & 1 & 156.2 & 13.5
 \\\addlinespace
-129 & 2 & 296.8 & Y
+129 & 2 & 296.8 & 27.3
 \\\addlinespace
-365 & 4 & 512.6 & Y
+365 & 4 & 512.6 & 131.9
 \\\addlinespace
 430 & 8 & X & Y
 \\\addlinespace
@@ -237,7 +237,48 @@ put our pattern based on a standard dCache logstash template
 log}\label{logstash-configuraiton-for-dcache-billing-log}
 
 The pattern and pipeline files are defined by
-`customs/\emph{/logstash/pattern' and 'customs/}/logstash/pipeline'.
+`customs/*/logstash/pattern' and `customs/*/logstash/pipeline'.
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Some examples of dCache log pattern
+\end{itemize}
+
+The raw information about all dCache activities can be found in
+/var/lib/dcache/billing/YYYY/MM/billing-YYYY.MM.DD. A typical line looks
+like
+
+\begin{verbatim}
+ 05.31 22:35:16 [pool:pool-name:transfer] [000100000000000000001320,24675] \
+ myStore:STRING@osm 24675 474 true {GFtp-1.0 client-host-fqn 37592} {0:""}
+\end{verbatim}
+
+The first bracket contains the pool name, the second the pnfs ID and the
+size of the file which is transferred. Then follows the storage class,
+the actual amount of bytes transferred, and the number of milliseconds
+the transfer took. The next entry is true if the transfer was a wrote
+data to the pool. The first braces contain the protocol, client FQN, and
+the client host data transfer listen port. The final bracket contains
+the return status and a possible error message. The billing info keeps
+such general accountings about the cell, pool, door and actions, such as
+removal, move and so on, for listing the details of their requests. The
+output of those requests often contains useful information for
+describing details of the transfers and solving problems. For instance,
+the following patterns describe a general (classical) transfer request
+and a store request. Each accounting line should have appropriate fields
+such as datetime, PNFS ID, file size, transfered time, protocol, pool or
+door names, error and so on. The fields are already defined by
+`customs/*/logstash/pattern' and its pattern file is called by
+`customs/*/logstash/pipeline'.
+
+\begin{verbatim}
+ TRANSFER_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_TYPE} %{PNFSID_SIZE} %{PATH} \
+ %{SUNIT} %{TRANSFER_SIZE} %{TRANSFER_TIME} %{IS_WRITE} %{PROTOCOL} %{DOOR} %{ERROR}
+
+ STORE_CLASSIC %{BILLING_TIME:billing_time} %{CELL_AND_TYPE} %{PNFSID_TSIZE} %{PATH} \
+ %{SUNIT} %{TRANSFER_TIME} %{QUEUE_TIME} %{ERROR}
+\end{verbatim}
 
 \section{Elasticsearch}\label{elasticsearch}
 
@@ -295,7 +336,7 @@ this case) and get number of indices stored.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/kibana.png}
-\caption{Figure 5-1. Main Dashboard}
+\caption{Main Dashboard}
 \end{figure}
 
 Kibana is an open source analytics and visualization platform designed
@@ -311,7 +352,7 @@ time.
 \begin{figure}[htbp]
 \centering
 \includegraphics{images/kibana_error.png}
-\caption{Figure 5-1. Main Error Dashboard}
+\caption{Main Error Dashboard}
 \end{figure}
 
 \section{Cookbook}\label{cookbook}
@@ -434,26 +475,17 @@ A final template for Docker Compose
 \subsection{Manipulating Kibana
 Visualisation}\label{manipulating-kibana-visualisation}
 
-\begin{figure}[htbp]
-\centering
 \includegraphics{images/kibana_vis1.png}
-\caption{Figure 6-1. Kibana Visualisation Tab}
-\end{figure}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/kibana_vis1.png}
-\caption{Figure 6-2. Selecting a Kibana Visualisation Panel}
-\end{figure}
+\includegraphics{images/kibana_vis2.png} The Kibana web interface
+contains under the menu point ``Visualize'' tab listing from all plots
+we created. The visualisation plots can also be redirected.
 
 \subsection{Manipulating Kibana
 Dashboard}\label{manipulating-kibana-dashboard}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{images/kibana_error.png}
-\caption{Figure 6-3. Kibana Main Dashboard}
-\end{figure}
+\includegraphics{images/kibana_main1.png} Each visualisation plot is
+gathered and sorted by the main dashboard, so that one changes the
+visualisation plot it will affect the dashboard view.
 
 \subsection{Saving Kibana dashboard}\label{saving-kibana-dashboard}
 

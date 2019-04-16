@@ -89,12 +89,13 @@ A final template for Docker Compose
 
 
 ## Manipulating Kibana Visualisation
-![Figure 6-1. Kibana Visualisation Tab](images/kibana_vis1.png)
-
-![Figure 6-2. Selecting a Kibana Visualisation Panel](images/kibana_vis1.png)
+![Kibana Visualisation Tab](images/kibana_vis1.png)
+![Selecting a Kibana Visualisation Panel](images/kibana_vis2.png)
+The Kibana web interface contains under the menu point "Visualize" tab listing from all plots we created. The visualisation plots can also be redirected.
 
 ## Manipulating Kibana Dashboard
-![Figure 6-3. Kibana Main Dashboard](images/kibana_error.png)
+![Manipulating Kibana Main Dashboard](images/kibana_main1.png)
+Each visualisation plot is gathered and sorted by the main dashboard, so that one changes the visualisation plot it will affect the dashboard view.
 
 
 ## Saving Kibana dashboard
