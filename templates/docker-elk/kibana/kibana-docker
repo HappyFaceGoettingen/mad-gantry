@@ -181,7 +181,7 @@ restore_kibana_dashboard(){
     exit -1
 }
 
-restore_kibana_dashboard &
+#restore_kibana_dashboard &
 
 ## --------------------------------------------------------------------
 ## End:
@@ -201,4 +201,4 @@ restore_kibana_dashboard &
 # Therefore, we set this value here so that cgroup statistics are
 # available for the container this process will run in.
 
-exec /usr/share/kibana/bin/kibana --cpu.cgroup.path.override=/ --cpuacct.cgroup.path.override=/ ${longopts} "$@"
+exec /usr/share/kibana/bin/kibana --cpu.cgroup.path.override=/ --cpuacct.cgroup.path.override=/ ${longopts} --allow-root "$@"

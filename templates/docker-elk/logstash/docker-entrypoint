@@ -9,7 +9,7 @@ env2yaml /usr/share/logstash/config/logstash.yml
 export LS_JAVA_OPTS="-Dls.cgroup.cpuacct.path.override=/ -Dls.cgroup.cpu.path.override=/ $LS_JAVA_OPTS"
 
 ##----------------------------------------------
-WAIT=300
+WAIT=30
 echo "Waiting [$WAIT] sec"
 sleep $WAIT
 ##----------------------------------------------

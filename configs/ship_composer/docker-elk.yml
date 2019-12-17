@@ -18,7 +18,7 @@ services:
     networks:
       - elk
 
-  ${lsite}logstash:
+  ${lsite}logstash_billing:
     image: happyface/logstash
     volumes:
       - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
@@ -34,6 +34,24 @@ services:
       - elk
     depends_on:
       - ${lsite}elasticsearch
+
+  ${lsite}logstash_htcondor:
+    image: happyface/logstash
+    volumes:
+      - \"$PWD/$PAYLOADS_DIR/ssh:/root/.ssh\"
+      - \"$PWD/$PAYLOADS_DIR/data/${site}/htcondor:/htcondor\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash_htcondor/logstash.yml:/usr/share/logstash/config/logstash.yml\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash_htcondor/pipeline:/usr/share/logstash/pipeline\"
+      - \"$PWD/$PAYLOADS_DIR/sites/${site}/logstash_htcondor/patterns:/usr/share/logstash/patterns\"
+    ports:
+      - \"5100:5000\"
+    environment:
+      LS_JAVA_OPTS: \"-Xmx1g -Xms1g\"
+    networks:
+      - elk
+    depends_on:
+      - ${lsite}elasticsearch
+
 
   ${site}:
     image: happyface/kibana

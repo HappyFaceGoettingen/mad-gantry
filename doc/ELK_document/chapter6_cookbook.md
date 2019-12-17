@@ -8,7 +8,7 @@
 
     $  cd mad-gantry
 
-    $  ./mad-gantry -b -t templates/docker-elk
+    $  ./mad-gantry -t templates/docker-elk -b
 
     $  ./mad-gantry -D -a setup
 
@@ -120,6 +120,10 @@ There are many client tools for Elasticsearch. These can most easily be communic
 * Filter if error_code in billing log is '0'
 
      $ curl -XPOST 'localhost:9200/_search' -d '{"query": { "bool": { "filter": { "term": {"error_code": "0"} } } } }'
+
+* Simple search
+
+     $ curl 'localhost:9200/_search?pretty=true'
 
 * Simple matches using pool_name in 'billing log'
 
